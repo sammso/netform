@@ -148,6 +148,7 @@ public class TimestampField extends TextField
 		l_TimestampField.setNullIsAllowed(isNullAllowed());
 		l_TimestampField.setEmptyIsNull(isEmptyNull());
 		l_TimestampField.setTrim(isTrim());
+		l_TimestampField.setComponentValidator(getComponentValidator());
 		
 		return l_TimestampField;
 	}
@@ -159,7 +160,7 @@ public class TimestampField extends TextField
 	{
 		if (hasComponentData())
 		{
-			setTimestamp((Timestamp)getData());
+			//setTimestamp((Timestamp)getData());
 		}
 	}
 }

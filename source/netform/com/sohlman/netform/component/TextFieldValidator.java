@@ -7,7 +7,7 @@ import com.sohlman.netform.ComponentValidator;
 import com.sohlman.netform.Validate;
 
 /**
- * Validator, which is usign regExp and future other methods to validate String
+ * Validator, which is usign regExp to validate and future other methods to validate String
  * 
  * @author Sampsa Sohlman
  * 

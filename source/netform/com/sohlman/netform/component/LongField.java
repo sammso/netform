@@ -138,7 +138,7 @@ public class LongField extends TextField
 			}
 			else
 			{
-				if (i_DecimalFormat == null)
+				if (i_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
 					i_DecimalFormat.format(i_Long.longValue(), l_StringBuffer, new FieldPosition(0));
@@ -175,6 +175,7 @@ public class LongField extends TextField
 		l_LongField.setNullIsAllowed(isNullAllowed());
 		l_LongField.setEmptyIsNull(isEmptyNull());
 		l_LongField.setTrim(isTrim());
+		l_LongField.setComponentValidator(getComponentValidator());
 		
 		return l_LongField;
 	}
@@ -186,7 +187,7 @@ public class LongField extends TextField
 	{
 		if (hasComponentData())
 		{
-			setLong((Long)getData());
+		//	setLong((Long)getData());
 		}
 	}
 }

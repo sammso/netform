@@ -1,5 +1,6 @@
 package com.sohlman.netform.component;
 
+import com.sohlman.netform.*;
 import com.sohlman.netform.Component;
 
 /**

@@ -247,7 +247,7 @@ public class TextField extends Component
 	{
 		if(hasComponentData())
 		{			
-			iS_Text = (String)getData();
+		//	iS_Text = (String)getData();
 		}
 	}
 	/**

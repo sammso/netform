@@ -124,7 +124,7 @@ public class FloatField extends TextField
 			}
 			else
 			{
-				if (i_DecimalFormat == null)
+				if (i_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
 					i_DecimalFormat.format(i_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
@@ -161,6 +161,7 @@ public class FloatField extends TextField
 		l_FloatField.setNullIsAllowed(isNullAllowed());
 		l_FloatField.setEmptyIsNull(isEmptyNull());
 		l_FloatField.setTrim(isTrim());
+		l_FloatField.setComponentValidator(getComponentValidator());
 		
 		return l_FloatField;
 	}
@@ -172,7 +173,7 @@ public class FloatField extends TextField
 	{
 		if (hasComponentData())
 		{
-			setFloat((Float)getData());
+			//setFloat((Float)getData());
 		}
 	}
 }

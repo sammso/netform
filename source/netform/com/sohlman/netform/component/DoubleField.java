@@ -119,7 +119,7 @@ public class DoubleField extends TextField
 			}
 			else
 			{
-				if (i_DecimalFormat == null)
+				if (i_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
 					i_DecimalFormat.format(l_Long.doubleValue(), l_StringBuffer, new FieldPosition(0));
@@ -156,6 +156,7 @@ public class DoubleField extends TextField
 		l_DoubleField.setNullIsAllowed(isNullAllowed());
 		l_DoubleField.setEmptyIsNull(isEmptyNull());
 		l_DoubleField.setTrim(isTrim());
+		l_DoubleField.setComponentValidator(getComponentValidator());
 		
 		return l_DoubleField;
 	}
@@ -167,7 +168,7 @@ public class DoubleField extends TextField
 	{
 		if (hasComponentData())
 		{
-			setDouble((Double)getData());
+			//setDouble((Double)getData());
 		}
 	}
 }

@@ -149,7 +149,7 @@ public class IntegerField extends TextField
 			}
 			else
 			{
-				if (i_DecimalFormat == null)
+				if (i_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
 					i_DecimalFormat.format(i_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
@@ -186,6 +186,7 @@ public class IntegerField extends TextField
 		l_IntegerField.setNullIsAllowed(isNullAllowed());
 		l_IntegerField.setEmptyIsNull(isEmptyNull());
 		l_IntegerField.setTrim(isTrim());
+		l_IntegerField.setComponentValidator(getComponentValidator());
 		
 		return l_IntegerField;
 	}
@@ -197,7 +198,7 @@ public class IntegerField extends TextField
 	{
 		if (hasComponentData())
 		{
-			setInteger((Integer)getData());
+			//setInteger((Integer)getData());
 		}
 	}
 }
