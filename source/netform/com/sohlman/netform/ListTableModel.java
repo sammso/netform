@@ -9,10 +9,22 @@ import java.util.List;
 public abstract class ListTableModel extends TableModel
 {
 	private List i_List = null;
+	private String[] iS_ColumnNames = null;
 	
 	public void setList(List a_List)
 	{
 		i_List = a_List;
+	}
+	
+	/**
+	 * Set columnNames to ListTable<br>
+	 * <b>This has be called on constructor of inherited class</b>
+	 * 
+	 * @param aS_ColumnNames
+	 */
+	protected void setColumnNames(String[] aS_ColumnNames)
+	{
+		iS_ColumnNames = aS_ColumnNames;
 	}
 	
 	/**
@@ -37,12 +49,27 @@ public abstract class ListTableModel extends TableModel
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to insert row out of range");
 		}
-		i_List.add(ai_before - 1, createRow());
+		Object l_Object = createRow();
+		
+		if(l_Object==null)
+		{
+			throw new NullPointerException("Result of create row is not allowed to be null.");
+		}
+		
+		i_List.add(ai_before - 1, l_Object);
 		fireInsert(ai_before);
 		return ai_before;
 	}
 	
-	public abstract Object createRow();
+	/**
+	 * This returns object to be crated inside List
+	 * 
+	 * @return Object to be created, return null is not allowed
+	 */
+	public Object createRow()
+	{
+		throw new NotSupportedException(this.getClass().getName() +  " is read only and createRow() is not supported");
+	}
 
 	/**
 	 * @see com.sohlman.netform.TableModel#delete(int)
@@ -76,7 +103,10 @@ public abstract class ListTableModel extends TableModel
 	/**
 	 * @see com.sohlman.netform.TableModel#getColumnCount()
 	 */
-	public abstract int getColumnCount();
+	public int getColumnCount()
+	{
+		return iS_ColumnNames.length;
+	}
 
 	/**
 	 * @see com.sohlman.netform.TableModel#getValueAt(int, int)
@@ -87,13 +117,20 @@ public abstract class ListTableModel extends TableModel
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried get from out of row range");
 		}	
-		if(ai_column < 1 && ai_column > getColumnCount() )
+		if(ai_column < 1 || ai_column > getColumnCount() )
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to get column out of column range. Column range is always 1");
 		}		
 		return mapObjectFromRow(i_List.get(ai_row - 1), ai_column);
 	}
 
+	/**
+	 * Maps Object from row.
+	 * 
+	 * @param aO_Row Row where from Object readed
+	 * @param ai_columnIndex and which index
+	 * @return result object
+	 */
 	protected abstract Object mapObjectFromRow(Object aO_Row, int ai_columnIndex);
 
 	/**
@@ -105,6 +142,11 @@ public abstract class ListTableModel extends TableModel
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of row range");
 		}
+		
+		if(ai_column < 1 || ai_column > getColumnCount())
+		{
+			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of column range");
+		}
 		Object lO_Row = i_List.get(ai_row - 1);
 		mapObjectToRow(a_Object, lO_Row, ai_column);
 		
@@ -112,12 +154,31 @@ public abstract class ListTableModel extends TableModel
 		return true;
 	}
 	
-	protected abstract void mapObjectToRow(Object a_Object, Object aO_Row, int ai_columnIndex);
+	/**
+	 * Maps Object to Row, this is to be implement
+	 * Row is Object inside list
+	 * 
+	 * 
+	 * @param a_Object Object to be mapped
+	 * @param aO_Row Row object
+	 * @param ai_columnIndex columnIndex of object
+	 */
+	protected void mapObjectToRow(Object a_Object, Object aO_Row, int ai_columnIndex)
+	{
+		throw new NotSupportedException(this.getClass().getName() +  " is read only and mapObjectToRow(Object, Object, int) is not supported");
+	}
 
 	/**
 	 * @see com.sohlman.netform.TableModel#getColumnName(int)
 	 */
-	public abstract String getColumnName(int ai_index);
+	public String getColumnName(int ai_index)
+	{
+		if(ai_index < 1 || ai_index > getColumnCount())
+		{
+			throw new ArrayIndexOutOfBoundsException(ai_index + " is too big. Max column index is " + getColumnCount());	
+		}
+		return iS_ColumnNames[ai_index - 1];
+	}
 
 	/**
 	 * @see com.sohlman.netform.TableModel#search(java.lang.Object, int)
@@ -145,6 +206,23 @@ public abstract class ListTableModel extends TableModel
 	/**
 	 * @see com.sohlman.netform.TableModel#getIndexByName(java.lang.String)
 	 */
-	public abstract int getIndexByName(String aS_Name);
+	public int getIndexByName(String aS_Name)
+	{
+		for(int li_index = 1 ; li_index <= getColumnCount() ; li_index++ )
+		{
+			if (aS_Name.equalsIgnoreCase(getColumnName(li_index)))
+			{
+				return li_index;
+			}
+		}
+		throw new IllegalArgumentException(aS_Name + " is not column name");	
+	}
 
+	/**
+	 * @return assosiated List object
+	 */
+	public List getList()
+	{
+		return i_List;
+	}
 }
