@@ -31,6 +31,7 @@ public abstract class ListTableModel extends TableModel
 {
 	private List i_List = null;
 	private String[] iS_ColumnNames = null;
+	private int ii_rowCount = 0;
 	
 	public void setList(List a_List)
 	{
@@ -75,7 +76,7 @@ public abstract class ListTableModel extends TableModel
 			throw new IllegalStateException("List is not defined");
 		}
 		
-		if(ai_before < 1 || ai_before  > ( i_List.size() + 1) )
+		if(ai_before < 1 || ai_before  > ( getRowCount() + 1) )
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to insert row out of range");
 		}
@@ -106,7 +107,7 @@ public abstract class ListTableModel extends TableModel
 	 */
 	public int delete(int ai_row)
 	{
-		if(ai_row < 1 || ( ai_row - 1) >= i_List.size())
+		if(ai_row < 1 || ( ai_row - 1) >= getRowCount())
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to delete row from out of range");
 		}
@@ -122,11 +123,19 @@ public abstract class ListTableModel extends TableModel
 	{
 		if(i_List==null)
 		{
+			ii_rowCount = 0;
 			return 0;
 		}
 		else
 		{
-			return i_List.size();
+			int li_size = i_List.size();
+			
+			if(li_size != ii_rowCount)
+			{
+				ii_rowCount = li_size;
+				fireUpdateAll();
+			}
+			return li_size;
 		}
 	}
 
@@ -143,7 +152,7 @@ public abstract class ListTableModel extends TableModel
 	 */
 	public Object getValueAt(int ai_row, int ai_column)
 	{
-		if(ai_row < 1 || ( ai_row - 1 ) >= i_List.size())
+		if(ai_row < 1 || ( ai_row - 1 ) >= getRowCount())
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried get from out of row range");
 		}	
@@ -168,7 +177,7 @@ public abstract class ListTableModel extends TableModel
 	 */
 	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
 	{
-		if(ai_row < 1 || ( ai_row - 1 ) > i_List.size())
+		if(ai_row < 1 || ( ai_row - 1 ) > getRowCount())
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of row range");
 		}
@@ -217,7 +226,8 @@ public abstract class ListTableModel extends TableModel
 	{
 		if(i_List!=null)
 		{
-			for(int li_index = 1 ; li_index <= i_List.size() ; li_index++)
+			int li_size = getRowCount();
+			for(int li_index = 1 ; li_index <=  li_size ; li_index++)
 			{
 				Object l_Object = getValueAt(li_index, ai_column);
 				if(( l_Object == a_Object ) || (l_Object!=null && a_Object!=null && a_Object.equals(l_Object)))
