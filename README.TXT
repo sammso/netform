@@ -4,8 +4,6 @@
 
    What is new on 0.64
    ------------------------------------------------------------ 
-   - 937703 Bug on Table.getText() doesn't format correctly fixed
-   - JSP inteface Table.getBoolean(..), see JavaDoc
    - New Components
      + PasswordField
      + CheckBox field
@@ -13,16 +11,24 @@
      This was found also on all number fields
    - Button can be attached to Table row, and events from Table components
      are catchable.
-   - Table component events are catchable.
-   - Bug on Table, It caused error on Table.synchRowNumbers() on
-     sertain cases. It is now fixed
+   - Table
+     + component events are catchable.
+     + Bug on Table, It caused error on Table.synchRowNumbers() on
+       sertain cases. It is now fixed
+     + 937703 Bug on Table.getText() doesn't format correctly fixed
+     + JSP inteface Table.getBoolean(..), see JavaDoc
+     + Table Validation is working, still needs little bit optimization
    - ListTableModel, didn't update table when using setList()
+     + When updating List won't cause out of sync situation
    - SimpleTableModel.resetAll(Object[]) -> setObjects()
    - SimpleTableModel.reset() new method makes SimpleTableModel empty
    - New Method DataSetTableModel.setDataSet()
    - More methods for Timestamp
      + To get dates
      + To get value by specific format
+   - Form.getPostAction(), to be used instead of getRequestURI()
+     <form method="POST" action="<%=form.getPostAction() %>">
+   - Timestamp field can be splitted to Date and Time part on JSP page
 
    What is new on 0.63
    ------------------------------------------------------------ 
