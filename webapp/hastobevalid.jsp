@@ -16,11 +16,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <form method="POST" action="<%=form.getPostAction() %>">
 <table>
 	<tr>
-		<td class="text">First TextField<br><i>Lenght has to be more than 5</i></td>
+		<td class="text">First TextField<br><i>Length has to be more than 5</i></td>
 		<td class="text"><input type="text" tabindex="1" name="<%=form.firstTextField.getResponseName() %>" value="<%=form.firstTextField.getText() %>" <%=form.firstTextField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
 	</tr>
 	<tr>
-		<td class="text">Second TextField<br><i>Lenght has to be more than 5</i></td>
+		<td class="text">Second TextField<br><i>Length has to be more than 5</i></td>
 		<td class="text"><input type="text" tabindex="2" name="<%=form.secondTextField.getResponseName() %>" value="<%=form.secondTextField.getText() %>" <%=form.secondTextField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
 	</tr>	
 	<tr>

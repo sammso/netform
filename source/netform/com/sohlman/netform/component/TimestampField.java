@@ -396,13 +396,13 @@ public class TimestampField extends TextField
 	 * 
 	 * @see com.sohlman.netform.Component#checkIfNewValues()
 	 */
-	public boolean checkIfNewValues()
+	public boolean checkIfNewValues(String[] aS_Parameters)
 	{	
 		clearModifiedStatus();
 				
 		if(iS_DateFormat==null && iS_TimeFormat==null)
 		{
-			return super.checkIfNewValues();	
+			return super.checkIfNewValues(aS_Parameters);	
 		}
 		else
 		{

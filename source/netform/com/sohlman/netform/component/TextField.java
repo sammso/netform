@@ -191,18 +191,18 @@ public class TextField extends Component
 	/**
 	 * @see com.sohlman.netform.Component#checkIfNewValues()
 	 */
-	public boolean checkIfNewValues()
+	public boolean checkIfNewValues(String[] aS_Parameters)
 	{
 		clearModifiedStatus();
-		HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
-		String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
+		//HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
+		//String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
 
-		if (lS_Parameters != null && lS_Parameters.length > 0)
+		if (aS_Parameters != null && aS_Parameters.length > 0)
 		{
 			// this is made because 
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
-			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
+			String lS_NewText = Utils.replace(aS_Parameters[0], new String(lc_10), "");
 			//lS_NewText = Utils.htmlToString(lS_NewText);
 			
 			lS_NewText = formatStringByRules(lS_NewText);

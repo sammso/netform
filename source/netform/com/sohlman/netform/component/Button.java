@@ -43,10 +43,10 @@ public class Button extends Component
 		super(a_Form);
 	}	
 
-	public boolean checkIfNewValues()
+	public boolean checkIfNewValues(String[] aS_Parameters)
 	{
 		HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
-		String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
+		String[] lS_Parameters = aS_Parameters;//l_HttpServletRequest.getParameterValues(getResponseName());
 		if (lS_Parameters == null || lS_Parameters.length == 0)
 		{
 			// Check if the button is image then X-Y coordinates are send.

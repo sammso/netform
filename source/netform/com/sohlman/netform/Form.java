@@ -61,6 +61,9 @@ public abstract class Form
 	private HttpServletRequest i_HttpServletRequest;
 	private boolean ib_isInitialized = false;
 	private boolean ib_isValid = true;
+	
+	private boolean ib_isSessionOutOfSync = true;
+	
 	private FormManager i_FormManager;
 	private ServletContext i_ServletContext;
 
@@ -258,6 +261,7 @@ public abstract class Form
 		try
 		{
 			boolean lb_eventsGenerated = false;
+			
 			if (!ib_isInitialized)
 			{
 				ii_currentState = FORM_STATE_INIT;
@@ -265,12 +269,14 @@ public abstract class Form
 				initPortlets();
 				preValidateComponents();
 				ib_isInitialized = true;
+				initSessionOutOfSync();
 				startService();
 				callPortletStartService();
 				
 			}
 			else
 			{
+				initSessionOutOfSync();
 				startService();
 				callPortletStartService();
 
@@ -620,5 +626,38 @@ public abstract class Form
 	public String getStringIfIsNotValid(String a_String)
 	{
 		return getStringIfIsValid("", a_String);
+	}
+	
+	
+	/**
+	 * <b>JSP</b> Tells if session is out of sync. Basically if 
+	 * browsers back button was pressed on form.
+	 * 
+	 * @return true if it is out of sync false if not
+	 */
+	public final boolean isSessionOutOfSync()
+	{
+		return ib_isSessionOutOfSync;
+	}
+	
+	final void setSessionIsSync()
+	{
+		ib_isSessionOutOfSync = false;
+	}
+	
+	/**
+	 * initialize ib_isSessionOutOfSync value
+	 * this is executed on execute() method
+	 */
+	private void initSessionOutOfSync()
+	{		
+		if( iAL_Components == null || iAL_Components.size() <= 0 )
+		{
+			ib_isSessionOutOfSync = false;
+		}
+		else
+		{
+			ib_isSessionOutOfSync = true;
+		}		
 	}
 }

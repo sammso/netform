@@ -441,12 +441,12 @@ public class Table extends Component
 		}
 	}
 
-	protected boolean checkIfNewValues()
+	protected boolean checkIfNewValues(String[] aS_Parameters)
 	{
 		// Following execution order is important. Do not change it.
 		// Change may cause fault on setData method
 
-		boolean lb_newValuesComponents = super.checkIfNewValues(); // checkIfNewValuesComponents();
+		boolean lb_newValuesComponents = super.checkIfNewValues(aS_Parameters); // checkIfNewValuesComponents();
 		boolean lb_newValuesSelection = checkNewValuesSelection();
 
 		// Do not these rows to together to one OR clause
@@ -550,6 +550,45 @@ public class Table extends Component
 		else
 		{
 			return false;
+		}
+	}
+	
+	/**
+	 * Search if value can be found and then selects it.
+	 * Only first value is selected.
+	 * 
+	 * @param a_Object values to be selected
+	 * @param ai_column Column to be searched
+	 */
+	public boolean selectItemByValue(Object a_Object, int ai_column)
+	{
+		int li_index = i_TableModel.search(a_Object, ai_column);
+		return selectItem(li_index);
+	}
+	
+	/**
+	 * Search list of values and select all of them.
+	 * 
+	 * @param a_Object values to be selected
+	 * @param ai_column Column to be searched
+	 */
+	public void selectItemsByValues(Object[] a_Object, int ai_column)
+	{
+		// This is made optimized way
+		
+		IntArray l_IntArray = new IntArray();
+		
+		for(int li_index = 0; li_index < a_Object.length ; li_index++ )
+		{
+			int li_selectedIndex = i_TableModel.search(a_Object[li_index], ai_column);
+			if(li_selectedIndex > 0)
+			{
+				l_IntArray.addValue(li_selectedIndex);
+			}
+		}
+		if(!l_IntArray.isEmpty())
+		{
+			selectItems(l_IntArray.toArray());
 		}
 	}
 

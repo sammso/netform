@@ -1,6 +1,28 @@
 
-   NetForm Web Application Framework for Java V 0.64
+   NetForm Web Application Framework for Java V 0.70
    =================================================
+   
+   What is new on 0.70
+   ------------------------------------------------------------
+   - This version gives netform support for Portlet  based 
+     programming. 
+     + In Netform portlet is reusable component which can
+       be attached to web page.
+     + NetForm application start to support NetForm portlets.
+       - Portlets is part of web page which lives it own life and
+         it is not attached to just one but many pages.
+       - NetForm portlet is not same as java portlet api.
+         (Note NetForm Portlet API is not very tested yet)
+   - New reflection based programming, possibly to connect 
+     directly to POJO of usiness logic.
+      + Related Classes:
+        - ReflectionData
+        - ReflectionValidate
+        - ObjectCollectionTableModel
+   - Session sync is now possible to capture on JSP level,
+     by using form.isSessionOutOfSync() method.
+   
+     
 
    What is new on 0.64
    ------------------------------------------------------------ 

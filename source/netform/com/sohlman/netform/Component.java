@@ -239,7 +239,7 @@ public abstract class Component
 		}
 	}
 
-	private boolean haveNewValues()
+	private boolean canHaveNewValues()
 	{
 		return ib_isVisible && ib_enabled;
 	}
@@ -306,9 +306,18 @@ public abstract class Component
 	{
 		clearModifiedStatus();
 		boolean lb_isModified = false;
-		if (haveNewValues())
+		if (canHaveNewValues())
 		{
-			if (checkIfNewValues())
+			String[] lS_Parameters = getHttpServletRequest()
+				.getParameterValues(getResponseName());
+			if(lS_Parameters!=null)
+			{
+				// Values found so 
+				// Then session is sync
+				getForm().setSessionIsSync();
+			}
+			
+			if (checkIfNewValues(lS_Parameters))
 			{
 				componentIsModified();
 				lb_isModified = true;
@@ -317,7 +326,14 @@ public abstract class Component
 		return lb_isModified;
 	}
 
-	protected boolean checkIfNewValues()
+	/**
+	 * 
+	 * 
+	 * @param aS_Parameters Parameters, which are coming from 
+	 *  l_HttpServletRequest.getParameterValues(getResponseName());
+	 * @return true if there is new values
+	 */
+	protected boolean checkIfNewValues(String[] aS_Parameters)
 	{
 		// Put all values to child components
 		boolean lb_componentIsModified = false;
