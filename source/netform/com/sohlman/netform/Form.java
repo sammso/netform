@@ -485,4 +485,45 @@ public abstract class Form
 	{
 		return null;	
 	}
+
+	/**
+	 * <b>JSP</b> Return String if component is valid othervice ""
+	 * 
+	 * @param aS_ValidString String to be returned when component is valid
+	 * @param aS_NotValidString String to be returned when component is not valid
+	 * @return  String if component is valid othervice ""
+	 */		
+	public String getStringIfIsValid(String aS_ValidString, String aS_NotValidString)
+	{
+		if(isValid())
+		{
+			return aS_ValidString;
+		}
+		else
+		{
+			return aS_NotValidString;
+		}
+	}
+	
+	/**
+	 * <b>JSP</b> Return String if component is valid othervice ""
+	 * 
+	 * @param aS_ValidString String to be returned
+	 * @return  String if component is valid othervice ""
+	 */	
+	public String getStringIfIsValid(String aS_ValidString)
+	{
+		return getStringIfIsValid(aS_ValidString,"");
+	}
+	
+	/**
+	 * <b>JSP</b> Return String if component is not valid othervice ""
+	 * 
+	 * @param a_String String to be returned
+	 * @return  String if component is valid othervice ""
+	 */
+	public String getStringIfIsNotValid(String a_String)
+	{
+		return getStringIfIsValid("", a_String);
+	}
 }
