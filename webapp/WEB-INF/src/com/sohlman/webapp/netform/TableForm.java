@@ -12,8 +12,6 @@ import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
 
 /**
- * 
- * 
  * @author Sampsa Sohlman
  */
 public class TableForm extends MasterForm
