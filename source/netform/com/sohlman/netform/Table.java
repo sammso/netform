@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -124,12 +125,12 @@ public class Table extends Component
 	public int insertRowBeforeFirstSelection()
 	{
 		int li_row = getSelectedRow(0);
-		if(li_row > 0)
+		if (li_row > 0)
 		{
 			return i_TableModel.insert(li_row);
 		}
 		return -1;
-		
+
 	}
 	/**
 	 * Wrapper for
@@ -576,7 +577,7 @@ public class Table extends Component
 			}
 			for (int li_x = 0; li_x < l_Components.length; li_x++)
 			{
-				if(l_Components[li_x]!=null)
+				if (l_Components[li_x] != null)
 				{
 					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_x].getComponentData();
 					l_TableComponentData.setRow(li_y);
@@ -771,7 +772,7 @@ public class Table extends Component
 
 	public void updateComponent(int ai_row, int ai_column)
 	{
-		if (iAL_TableComponentsInRow != null)
+		if (iAL_TableComponentsInRow != null && iAL_TableComponentsInRow.size() > ai_row)
 		{
 			Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_row - 1);
 			if (l_Components.length >= ai_column)
@@ -788,44 +789,70 @@ public class Table extends Component
 	{
 		Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_index - 1);
 
-		if (l_Components != null && i_Component_RowModels != null)
+		if (l_Components != null && i_Component_RowModels != null && l_Components.length > 0 && i_Component_RowModels.length > 0)
 		{
-			for (int li_i = 0; li_i < ii_tableComponent_ModelsSize; li_i++)
+			if (l_Components.length != ii_tableComponent_ModelsSize)
 			{
-				if (l_Components[li_i] == null && i_Component_RowModels != null)
+				l_Components = new Component[ii_tableComponent_ModelsSize];
+				for (int li_index = 0; li_index < ii_tableComponent_ModelsSize; li_index++)
 				{
-					// Component structure has changed
-
-					l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
-					l_Components[li_i].setComponentData(new TableComponentData(i_TableModel));
-					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
-					l_TableComponentData.setRow(ai_index);
-					l_TableComponentData.setColumn(li_i + 1);
-					l_Components[li_i].syncronizeData();
-				}
-				else if (l_Components[li_i] != null && i_Component_RowModels[li_i] == null)
-				{
-					// Component structure has changed
-
-					l_Components[li_i].dispose();
-					l_Components[li_i] = null;
-				}
-				else if (l_Components[li_i].getClass().equals(i_Component_RowModels[li_i].getClass()))
-				{
-					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
-					l_TableComponentData.setRow(ai_index);
-					l_TableComponentData.setColumn(li_i + 1);
-					l_Components[li_i].syncronizeData();
-				}
-				else // Component column type has been changed
+					if (i_Component_RowModels[li_index] != null)
 					{
-					TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
-					l_TableComponentData.setRow(ai_index);
-					l_TableComponentData.setColumn(li_i + 1);
+						TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
+						l_TableComponentData.setRow(ai_index);
+						l_TableComponentData.setColumn(li_index + 1);
 
-					l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
-					l_Components[li_i].setComponentData(l_TableComponentData);
-					l_Components[li_i].syncronizeData();
+						Component l_Component = i_Component_RowModels[li_index].cloneComponent();
+						l_Component.setComponentData(l_TableComponentData);
+						l_Component.syncronizeData();
+						l_Components[li_index] = l_Component;
+
+					}
+				}
+				iAL_TableComponentsInRow.set(ai_index - 1, l_Components);						
+			}
+			else
+			{
+				for (int li_i = 0; li_i < ii_tableComponent_ModelsSize; li_i++)
+				{
+					if(l_Components[li_i] == null && i_Component_RowModels[li_i] == null)
+					{
+						// Do nothing
+					}
+					else if (l_Components[li_i] == null && i_Component_RowModels[li_i] != null)
+					{
+						// Component structure has changed
+						l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
+						l_Components[li_i].setComponentData(new TableComponentData(i_TableModel));
+						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
+						l_TableComponentData.setRow(ai_index);
+						l_TableComponentData.setColumn(li_i + 1);
+						l_Components[li_i].syncronizeData();
+					}
+					else if (l_Components[li_i] != null && i_Component_RowModels[li_i] == null)
+					{
+						// Component structure has changed
+
+						l_Components[li_i].dispose();
+						l_Components[li_i] = null;
+					}
+					else if (l_Components[li_i].getClass().equals(i_Component_RowModels[li_i].getClass()))
+					{
+						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
+						l_TableComponentData.setRow(ai_index);
+						l_TableComponentData.setColumn(li_i + 1);
+						l_Components[li_i].syncronizeData();
+					}
+					else // Component column type has been changed
+						{
+						TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
+						l_TableComponentData.setRow(ai_index);
+						l_TableComponentData.setColumn(li_i + 1);
+
+						l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
+						l_Components[li_i].setComponentData(l_TableComponentData);
+						l_Components[li_i].syncronizeData();
+					}
 				}
 			}
 		}

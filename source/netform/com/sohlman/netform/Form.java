@@ -161,75 +161,92 @@ public abstract class Form
 
 	public final synchronized void execute() throws DoRedirectException
 	{
-		boolean lb_eventsGenerated = false;
-		if (!ib_isInitialized)
+		try
 		{
-			ii_currentState = FORM_STATE_INIT;
-			init();
-			preValidateComponents();
-			ib_isInitialized = true;
-			startService();
-		}
-		else
-		{
-			startService();
-			
-			// We generate events only second run.
-			// Faster :D
-			
-			
-			if (iAL_Components != null)
+			boolean lb_eventsGenerated = false;
+			if (!ib_isInitialized)
 			{
-				Iterator l_Iterator = iAL_Components.iterator();
-
-				while (l_Iterator.hasNext())
-				{
-					Component l_Component = (Component) l_Iterator.next();
-					l_Component.parseValues();
-				}
+				ii_currentState = FORM_STATE_INIT;
+				init();
+				preValidateComponents();
+				ib_isInitialized = true;
+				startService();
 			}
-
-			ii_currentState = FORM_STATE_EVENTS;
-
-			// Generate events to to components
-
-			if (iAL_Components != null)
+			else
 			{
-				Iterator l_Iterator = iAL_Components.iterator();
+				startService();
 
-				while (l_Iterator.hasNext())
+				// We generate events only second run.
+				// Faster :D
+
+				if (iAL_Components != null)
 				{
-					Component l_Component = (Component) l_Iterator.next();
+					Iterator l_Iterator = iAL_Components.iterator();
 
-					if (l_Component.haveEvents())
+					while (l_Iterator.hasNext())
 					{
+						Component l_Component = (Component) l_Iterator.next();
+						l_Component.parseValues();
+					}
+				}
 
-						l_Component.generateEvent();
-						lb_eventsGenerated = true;
+				ii_currentState = FORM_STATE_EVENTS;
+
+				// Generate events to to components
+
+				if (iAL_Components != null)
+				{
+					Iterator l_Iterator = iAL_Components.iterator();
+
+					while (l_Iterator.hasNext())
+					{
+						Component l_Component = (Component) l_Iterator.next();
+
+						if (l_Component.haveEvents())
+						{
+
+							l_Component.generateEvent();
+							lb_eventsGenerated = true;
+						}
 					}
 				}
 			}
-		}
-		endService();
+			endService();
 
-		// Do last thing to components
+			// Do last thing to components
 
-		if (iAL_Components != null)
-		{
-			Iterator l_Iterator = iAL_Components.iterator();
-			while (l_Iterator.hasNext())
+			if (iAL_Components != null)
 			{
-				Component l_Component = (Component) l_Iterator.next();
-				l_Component.lastIteration();
+				Iterator l_Iterator = iAL_Components.iterator();
+				while (l_Iterator.hasNext())
+				{
+					Component l_Component = (Component) l_Iterator.next();
+					l_Component.lastIteration();
+				}
 			}
+			if (!lb_eventsGenerated)
+			{
+				//			checkIfOutOfSynch()
+			}
+			redirectToNextPage();
+			nextValueForComponentResponnsePrefix();
+			ii_currentState = FORM_STATE_TEMPLATING;
 		}
-		if (!lb_eventsGenerated)
+		finally
 		{
-			//			checkIfOutOfSynch()
+			finallyCleanUp(); 
 		}
-		redirectToNextPage();
-		nextValueForComponentResponnsePrefix();
-		ii_currentState = FORM_STATE_TEMPLATING;
+	}
+	
+	/**
+	 * This method is for implement. If something happens on your application and you want to be
+	 * sure that resources are not hanging implement this method to clean up.
+	 * 
+	 * Put db connections back to pool etc.
+	 */
+	protected void finallyCleanUp()
+	{
+		
 	}
 
 	/** Pass the parameters to page components.
@@ -405,7 +422,7 @@ public abstract class Form
 	{
 		return ii_currentState;
 	}
-	
+
 	/**
 	 * Same as HttpServletRequest.getRequestURI();
 	 * 
@@ -415,7 +432,7 @@ public abstract class Form
 	{
 		return i_HttpServletRequest.getRequestURI();
 	}
-	
+
 	/**
 	 * Same as HttpServletRequest.getContextPath()
 	 * 

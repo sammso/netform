@@ -1,6 +1,6 @@
 <%@ page language="java" import="com.sohlman.netform.*" %>
 					<jsp:include page="header.jsp" />
-						<h1>NetForm test application v0.62</h1>
+						<h1>NetForm test application v0.63 Beta</h1>
 						<h2>Introduction</h2>
 						<p>NetForm example application is test and show case of NetForm framework 
 						features and capabilities. </p>

@@ -6,7 +6,9 @@
    ------------------------------------------------------------ 
    - Form new methods getContextPath(), Form.getRequestURI()
      which also effects how to make JSP
+     <form method="POST" action="<%=form.getRequestURI() %>">
    - Fix on Table.insertRowBeforeFirstSelection()
+   - Fixes on table
    
    What is new on 0.62
    ------------------------------------------------------------ 

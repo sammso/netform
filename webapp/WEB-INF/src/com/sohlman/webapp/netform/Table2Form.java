@@ -92,7 +92,10 @@ public class Table2Form extends MasterForm
 						if (i_SimpleTableModel.search(lS_Text, 1) == -1)
 						{
 							int li_row = tableSelect.insertRowBeforeFirstSelection();
-							i_SimpleTableModel.setValueAt(lS_Text, li_row, 1);
+							if(li_row > 0)
+							{
+								i_SimpleTableModel.setValueAt(lS_Text, li_row, 1);
+							}
 						}
 					}
 				}
