@@ -46,6 +46,9 @@ public class TimestampField extends TextField
 	protected Timestamp i_Timestamp = null;
 	protected String iS_TimeFormat = null;
 	protected String iS_DateFormat = null;
+	protected String iS_StringForNullValue = "";
+	protected String iS_StringForDateNullValue = "";
+	protected String iS_StringForTimeNullValue = "";
 	
 	public TimestampField(Component a_Component_Parent)
 	{
@@ -207,7 +210,7 @@ public class TimestampField extends TextField
 	 */
 	public String getDateText()
 	{
-		return getTextByFormat(iS_DateFormat);	
+		return getTextByFormat(iS_DateFormat, iS_StringForDateNullValue);	
 	}
 	
 	/**
@@ -217,7 +220,7 @@ public class TimestampField extends TextField
 	 */	
 	public String getTimeText()
 	{
-		return getTextByFormat(iS_TimeFormat);
+		return getTextByFormat(iS_TimeFormat, iS_StringForTimeNullValue);
 	}
 	
 	/**
@@ -230,14 +233,33 @@ public class TimestampField extends TextField
 	 */
 	public String getTextByFormat(String aS_Format)
 	{
+		return getTextByFormat(aS_Format, iS_StringForNullValue);
+	}
+	
+	/**
+	 * <b>JSP</b>
+	 * <p>
+	 * Returns value by specific format
+	 * 
+	 * @param aS_Format Specific format to be used
+	 * @param aS_NullValue value which is presented if Timestamp field contains null
+	 * @return Timestamp formated by this specific value
+	 */
+	public String getTextByFormat(String aS_Format, String aS_NullValue)
+	{
 		if (hasComponentData() && isValidWithoutChilds())
 		{
 			i_Timestamp = (Timestamp) getData();
 		}
+		
+		if(aS_NullValue==null)
+		{
+			throw new NullPointerException("Parameter aS_NullValue cannot be null");
+		}
 
 		if (i_Timestamp == null)
 		{
-			return "";
+			return aS_NullValue;
 		}
 		else
 		{
@@ -248,11 +270,11 @@ public class TimestampField extends TextField
 			}
 			catch(Exception l_Exception)
 			{
-				return "";
+				return aS_NullValue;
 			}
 				
 		}		
-	}
+	}	
 	
 	/**
 	 * @return Hour of day 0-23, 0 if Timestamp is null
@@ -533,4 +555,46 @@ public class TimestampField extends TextField
 		return new Timestamp(l_Calendar.getTimeInMillis());
 	}
 
+	/**
+	 * @return Returns the stringForDateNullValue.
+	 */
+	public String getStringForDateNullValue()
+	{
+		return iS_StringForDateNullValue;
+	}
+	/**
+	 * @param aS_stringForDateNullValue The stringForDateNullValue to set.
+	 */
+	public void setStringForDateNullValue(String aS_stringForDateNullValue)
+	{
+		iS_StringForDateNullValue = aS_stringForDateNullValue;
+	}
+	/**
+	 * @return Returns the stringForNullValue.
+	 */
+	public String getStringForNullValue()
+	{
+		return iS_StringForNullValue;
+	}
+	/**
+	 * @param aS_stringForNullValue The stringForNullValue to set.
+	 */
+	public void setStringForNullValue(String aS_stringForNullValue)
+	{
+		iS_StringForNullValue = aS_stringForNullValue;
+	}
+	/**
+	 * @return Returns the stringForTimeNullValue.
+	 */
+	public String getStringForTimeNullValue()
+	{
+		return iS_StringForTimeNullValue;
+	}
+	/**
+	 * @param aS_stringForTimeNullValue The stringForTimeNullValue to set.
+	 */
+	public void setStringForTimeNullValue(String aS_stringForTimeNullValue)
+	{
+		iS_StringForTimeNullValue = aS_stringForTimeNullValue;
+	}
 }
