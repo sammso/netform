@@ -74,7 +74,7 @@ public class DeleteRowButton extends Button implements ComponentListener, TableM
 			int li_selectedCount = i_Table.getSelectedCount();
 			
 			
-			if((li_rowCount - li_selectedCount) < ii_minRows )
+			if((li_rowCount - li_selectedCount) > ii_minRows )
 			{
 				i_Table.deleteSelectedRows();
 			}
