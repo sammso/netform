@@ -1,9 +1,10 @@
 <%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*" %>
-<%
-	TableForm form = null;
-	try
+<% 
+	TableForm form = null; 
+	ServletContext l_ServletContext = getServletContext();	
+	try 
 	{
-		form = (TableForm)FormManager.getForm(request, response, TableForm.class, "login.jsp");
+		form = (TableForm)FormManager.getForm(request, response, l_ServletContext, TableForm.class, "login.jsp");
 		form.execute(); 
 %>
 <jsp:include page="header.jsp" />

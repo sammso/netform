@@ -25,6 +25,7 @@ public class DataSetTableModel extends TableModel
 					fireInsert(a_DataSetEvent.getRow());
 					break;
 				case DataSetEvent.COLUMN_CHANGED :
+					//System.out.println("fireUpdate(" + a_DataSetEvent.getRow() + "," + a_DataSetEvent.getColumn() + ")");
 					fireUpdate(a_DataSetEvent.getRow(), a_DataSetEvent.getColumn());
 					break;
 				case DataSetEvent.ROW_REMOVED :
@@ -68,7 +69,7 @@ public class DataSetTableModel extends TableModel
 		return i_DataSet.removeRow(ai_row);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#getRowCount()
 	 */
 	public int getRowCount()
@@ -76,7 +77,7 @@ public class DataSetTableModel extends TableModel
 		return i_DataSet.getRowCount() ;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#getColumnCount()
 	 */
 	public int getColumnCount()
@@ -84,7 +85,7 @@ public class DataSetTableModel extends TableModel
 		return i_DataSet.getColumnCount();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#getValueAt(int, int)
 	 */
 	public Object getValueAt(int ai_row, int ai_column)
@@ -92,7 +93,7 @@ public class DataSetTableModel extends TableModel
 		return i_DataSet.getValueAt(ai_row, ai_column);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#setValueAt(java.lang.Object, int, int)
 	 */
 	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)

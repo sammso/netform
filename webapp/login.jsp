@@ -6,12 +6,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	LoginForm form = null;
 	try
 	{
-		form = (DoLoginForm)FormManager.getForm(request, response,DoLoginForm.class);
+		form = (DoLoginForm)FormManager.getForm(request, response, getServletContext(), DoLoginForm.class);
 		form.setDefaultPageAfterLogin("index.jsp");
-		form.execute(); 
-%>
-<jsp:include page="header.jsp" />
-<h1>Login</h1>s
+		form.execute();  
+%> 
+<jsp:include page="header.jsp" /> 
+<h1>Login</h1>
 <p>To use table.jsp or fields.jsp you need to login first. All user id's and passwords are accepted.</p>
 <form method="POST" action="login.jsp">
 <table>
