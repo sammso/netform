@@ -1263,6 +1263,11 @@ public class Table extends Component
 	{
 		super.lastComponentIteration();
 
+		if(i_TableModel==null)
+		{
+			throw new IllegalStateException("No TableModel defined for Table");
+		}
+
 		if (ib_componentsHasBeenChanged)
 		{
 			updateAllComponents();
