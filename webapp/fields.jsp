@@ -40,6 +40,16 @@ Not valid fields are shown as <b class="pink" >Pink</b></p>
 		<td><input type="text" name="<%=form.longField.getResponseName() %>" value="<%=form.longField.getText() %>" <%=form.longField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
 		<td></td>		
 	</tr>	
+	<tr>  
+		<td rowspan="2" valign="top"  class="text">PasswordField component<br><i>Password fields has to be egual to be valid.</i></td>
+		<td><input type="password" name="<%=form.firstPasswordField.getResponseName() %>" value="<%=form.firstPasswordField.getText() %>" <%=form.firstPasswordField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
+		<td></td>		
+	</tr>	
+	<tr>  
+		<td><input type="password" name="<%=form.secondPasswordField.getResponseName() %>" value="<%=form.secondPasswordField.getText() %>" <%=form.secondPasswordField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
+		<td></td>		
+	</tr>	
+
 	<tr>
 		<td class="text">Timestamp field<br><i>(yyyy-mm-dd)</i></td>
 		<td><input type="text" name="<%=form.timestampField.getResponseName() %>" value="<%=form.timestampField.getText() %> <%=form.timestampField.getStringIfIsNotValid("class=\"notvalid\"")%>"></td>
@@ -75,6 +85,7 @@ Not valid fields are shown as <b class="pink" >Pink</b></p>
 			<input type="submit" name="<%=form.floatToTableButton.getResponseName() %>" value="Float value ->" class="submit"><br>			
 			<input type="submit" name="<%=form.integerToTableButton.getResponseName() %>" value="IntegerField value ->" class="submit"><br>
 			<input type="submit" name="<%=form.longToTableButton.getResponseName() %>" value="LongField value ->" class="submit"><br>			
+			<input type="submit" name="<%=form.passwordToTableButton.getResponseName() %>" value="Password value ->" class="submit"><br>						
 			<input type="submit" name="<%=form.textToTableButton.getResponseName() %>" value="Textfield value ->" class="submit"><br>			
 			<input type="submit" name="<%=form.timestampToTableButton.getResponseName() %>" value="Timestamp value ->" class="submit"><br><br><br>
 			<input type="submit" name="<%=form.deleteSelectedFromTableButton.getResponseName() %>" value="Remove" class="submit"><br><br>
