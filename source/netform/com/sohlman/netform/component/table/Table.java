@@ -57,6 +57,14 @@ public class Table extends Component
 		super(a_Component_Parent);
 		setDataColumn(ai_dataColumn);
 	}
+	
+	public Table(Component a_Component_Parent)
+	{
+		super(a_Component_Parent);
+		setDataColumn(1);
+	}
+	
+	
 	/**
 	 * @param a_Form
 	 */	

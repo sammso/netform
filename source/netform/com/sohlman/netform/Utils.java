@@ -321,13 +321,13 @@ public class Utils
 				case '>' :
 					l_StringBuffer.append("&gt;");
 					break;
-				case '&' :
-					l_StringBuffer.append("&amp;");
-					break;
 				case '"' :
 					l_StringBuffer.append("&quot;");
 					break;
-					/*				case 'à' :
+					/*	
+				case '&' :
+					l_StringBuffer.append("&amp;");
+					break;			case 'à' :
 										l_StringBuffer.append("&agrave;");
 										break;
 									case 'À' :
