@@ -268,7 +268,14 @@ public class IntArray
 	public void setArray(int[] ai_array)
 	{
 		ii_array = ai_array;
-		ii_size = ai_array.length;
+		if(ii_array == null)
+		{
+			ii_size = 0;
+		}
+		else
+		{
+			ii_size = ai_array.length;
+		}
 		ib_isSorted = false;
 	}
 
