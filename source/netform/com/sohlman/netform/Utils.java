@@ -278,7 +278,9 @@ public class Utils
 	public static int stringToInt(String aS_String, int ai_default)
 	{
 		if (aS_String == null)
+		{
 			return ai_default;
+		}
 		aS_String = aS_String.trim();
 		try
 		{

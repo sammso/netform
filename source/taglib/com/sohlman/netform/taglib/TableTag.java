@@ -22,7 +22,6 @@ package com.sohlman.netform.taglib;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.IterationTag;
 
-import com.sohlman.netform.Form;
 import com.sohlman.netform.component.table.Table;
 
 /**

@@ -29,7 +29,14 @@ public class PersonProperty
 	 */
 	public void setName(String aS_Name)
 	{
-		iS_Name = aS_Name;
+		if(aS_Name!=null && aS_Name.length() > 5 )
+		{
+			iS_Name = aS_Name;
+		}
+		else
+		{
+			throw new IllegalArgumentException("");
+		}		
 	}
 	/**
 	 * @return Returns the value.
@@ -43,7 +50,14 @@ public class PersonProperty
 	 */
 	public void setValue(String aS_Value)
 	{
-		iS_Value = aS_Value;
+		if(aS_Value!=null && aS_Value.length() > 5 )
+		{
+			iS_Value = aS_Value;
+		}
+		else
+		{
+			throw new IllegalArgumentException("");
+		}
 	}
 	
 	private String iS_Name = null;

@@ -27,11 +27,6 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Sampsa Sohlman
- * 
- * @version Apr 13, 2004
- */
-/**
  * <p>
  * All the components in NetForm framework are inherited from this class.
  * </p>
@@ -603,13 +598,23 @@ public abstract class Component
 	 * ignored
 	 * 
 	 * @param a_Object
-	 *            Object
 	 */
 	protected void setData(Object a_Object)
 	{
 		if(i_ComponentData != null)
 		{
-			i_ComponentData.setData(a_Object);
+			try
+			{
+				i_ComponentData.setData(a_Object);
+			}
+			catch(NetFormException l_NetFormException)
+			{
+				throw l_NetFormException;
+			}
+			catch(Exception l_Exception)
+			{
+				// Ignore
+			}
 		}
 	}
 
@@ -624,7 +629,10 @@ public abstract class Component
 	{
 		if(i_ComponentData != null)
 		{
-			return i_ComponentData.getData();
+			Object l_Object = i_ComponentData.getData();
+			// TODO: This has to be tested
+			//setData(l_Object);
+			return l_Object;
 		}
 		else
 		{
@@ -865,5 +873,15 @@ public abstract class Component
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Returns same as 
+	 * {@link com.sohlman.netform.Component#getResponseName() getResponseName()}
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString()
+	{
+		return getResponseName();
 	}
 }

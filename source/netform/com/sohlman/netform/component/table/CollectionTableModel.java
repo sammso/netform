@@ -282,7 +282,6 @@ public abstract class CollectionTableModel extends TableModel
 		}
 		Object lO_Row = i_List.get(ai_row - 1);
 		mapObjectToRow(a_Object, lO_Row, ai_column);
-
 		fireColumnChanged(ai_row, ai_column);
 		return true;
 	}
@@ -300,6 +299,7 @@ public abstract class CollectionTableModel extends TableModel
 	 */
 	protected void mapObjectToRow(Object a_Object, Object aO_Row, int ai_columnIndex)
 	{
+		// TODO: Check if this can be changed to NetFormException
 		throw new NotSupportedException(this.getClass().getName()
 				+ " is read only and mapObjectToRow(Object, Object, int) is not supported");
 	}

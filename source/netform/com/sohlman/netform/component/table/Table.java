@@ -291,6 +291,16 @@ public class Table extends Component
 	{
 		return i_IntArray_Selection.size();
 	}
+	
+	/**
+	 * @param a_Object Object to be set at column
+	 * @param ai_row
+	 * @param ai_column
+	 */
+	public void setValueAt(Object a_Object, int ai_row, int ai_column)
+	{
+		i_TableModel.setValueAt(a_Object, ai_row, ai_column);
+	}
 
 	/**
 	 * @param ai_index page index to be changed
@@ -1254,14 +1264,27 @@ public class Table extends Component
 	 */
 	public Component getComponentAt(int ai_displayRow, int ai_column)
 	{
-		int li_row = translateDisplayRowToRealRow(ai_displayRow);
+		return getComponentAt(ai_displayRow, ai_column, true);
+	}
 
-		if (li_row <= 0 || li_row > i_TableModel.getRowCount())
+	/**
+	 * @param ai_row
+	 * @param ai_column
+	 * @param ab_useDisplayRow if row number is handed as display row
+	 * @return Component
+	 */
+	protected Component getComponentAt(int ai_row, int ai_column, boolean ab_useDisplayRow)
+	{	
+		if(ab_useDisplayRow)
 		{
-			throw new ArrayIndexOutOfBoundsException(li_row + " is out of range ( 1 - " + i_TableModel.getRowCount() + " )");			
+			ai_row = translateDisplayRowToRealRow(ai_row);
+		}
+		if (ai_row <= 0 || ai_row > i_TableModel.getRowCount())
+		{
+			throw new ArrayIndexOutOfBoundsException(ai_row + " is out of range ( 1 - " + i_TableModel.getRowCount() + " )");			
 		}
 				
-		Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(li_row - 1);
+		Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_row -1);
 
 		if (l_Components == null)
 		{
@@ -1279,8 +1302,8 @@ public class Table extends Component
 		}
 
 		return l_Components[ai_column - 1];		
-	}
-
+	}	
+	
 	/**
 	 * <b>JSP</p>
 	 * <p>
@@ -1616,6 +1639,19 @@ public class Table extends Component
 		{
 			return getColumnFormat(((TableComponentData) a_ComponentData).getColumn(), a_Class);
 		}
+	}
+	
+	/**
+	 * Search data from table
+	 * {@link TableModel TableModel} has to support search to able to use this method.
+	 * 
+	 * @param aO_Search 
+	 * @param ai_column
+	 * @return int row  
+	 */
+	public int search(Object aO_Search, int ai_column)
+	{
+		return i_TableModel.search(aO_Search, ai_column);
 	}
 	
 	/**

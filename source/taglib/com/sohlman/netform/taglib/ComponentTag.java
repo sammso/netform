@@ -1,25 +1,27 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform.taglib;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Stack;
 
 import javax.servlet.jsp.JspException;
@@ -43,8 +45,7 @@ public abstract class ComponentTag extends MasterTag
 	private String iS_Name = null;
 
 	private int ii_index = 0;
-	
-	
+
 	// This is used on init() method
 	// but it is
 	private Stack i_Stack = new Stack();
@@ -97,25 +98,26 @@ public abstract class ComponentTag extends MasterTag
 		Object l_Object = null;
 		int li_pos = 0;
 		int li_oldPos = 0;
-		
+
 		// TODO:
 		// Finish this
 		// So it is possible to reference object
 		// directly example
 		// form.
-//		if( (li_pos = iS_Name.indexOf(".",li_pos)) > 0)
-//		{
-//			i_Stack.clear();
-//			while(( li_pos = iS_Name.indexOf(".",li_pos))>0 && li_oldPos < iS_Name.length())
-//			{
-//				li_pos = li_pos > 0 ? li_pos : iS_Name.length(); 
-//				String lS_Name = iS_Name.substring(li_oldPos, li_pos);
-//				i_Stack.push(lS_Name);
-//				
-//				li_oldPos = li_pos;
-//			}
-//			
-//		}
+		//		if( (li_pos = iS_Name.indexOf(".",li_pos)) > 0)
+		//		{
+		//			i_Stack.clear();
+		//			while(( li_pos = iS_Name.indexOf(".",li_pos))>0 && li_oldPos <
+		// iS_Name.length())
+		//			{
+		//				li_pos = li_pos > 0 ? li_pos : iS_Name.length();
+		//				String lS_Name = iS_Name.substring(li_oldPos, li_pos);
+		//				i_Stack.push(lS_Name);
+		//				
+		//				li_oldPos = li_pos;
+		//			}
+		//			
+		//		}
 		if(TableTag.class.isInstance(l_Tag))
 		{
 			TableTag l_TableTag = (TableTag) l_Tag;
@@ -135,7 +137,8 @@ public abstract class ComponentTag extends MasterTag
 			}
 			else
 			{
-				throw new JspException("Component in Table tag is not " + Table.class.getName() + ", but " + l_Component.getClass().getName());
+				throw new JspException("Component in Table tag is not " + Table.class.getName() + ", but "
+						+ l_Component.getClass().getName());
 			}
 		}
 		else
@@ -146,6 +149,8 @@ public abstract class ComponentTag extends MasterTag
 				ComponentTag l_ComponentTag = (ComponentTag) l_Tag;
 
 				Component l_Component = l_ComponentTag.getComponentFormThisTag();
+				
+				l_Object = l_Component;
 			}
 			else
 			{
@@ -159,20 +164,61 @@ public abstract class ComponentTag extends MasterTag
 				l_Object = i_Form;
 			}
 
-			Field l_Field = getDeclaredField(l_Object.getClass(), iS_Component);
+			i_Component = getComponent(l_Object.getClass(), l_Object , iS_Component);
 
-			if(l_Field != null)
+		}
+	}
+
+	private Component getComponent(Class a_Class, Object a_Object, String aS_Component) throws JspException
+	{
+		Method l_Method = getComponentMethod(a_Class, aS_Component);
+
+		if(l_Method == null)
+		{
+			try
 			{
-				try
-				{
-					i_Component = (Component) l_Field.get(i_Form);
-				}
-				catch (IllegalAccessException l_IllegalAccessException)
-				{
-					throw new JspException(l_IllegalAccessException);
-				}
+				return (Component) l_Method.invoke(a_Object, null);
+			}
+			catch (IllegalAccessException l_IllegalAccessException)
+			{
+				throw new JspException(l_IllegalAccessException);
+			}
+			catch (InvocationTargetException l_InvocationTargetException)
+			{
+				throw new JspException(l_InvocationTargetException);
 			}
 		}
+		else
+		{
+			Field l_Field = getDeclaredField(a_Class, iS_Component);
+
+			try
+			{
+				return (Component) l_Field.get(a_Object);
+			}
+			catch (IllegalAccessException l_IllegalAccessException)
+			{
+				throw new JspException(l_IllegalAccessException);
+			}
+		}
+	}
+
+	private Method getComponentMethod(Class a_Class, String aS_Component) throws JspException
+	{
+		Method[] l_Methods = a_Class.getMethods();
+
+		String lS_MethodName = "get" + aS_Component;
+
+		for (int li_index = 0; li_index < l_Methods.length; li_index++)
+		{
+			Method l_Method = l_Methods[li_index];
+			if(lS_MethodName.equalsIgnoreCase(l_Method.getName()) && l_Method.getParameterTypes().length == 0
+					&& l_Method.getReturnType().isAssignableFrom(Component.class))
+			{
+				return l_Method;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -184,18 +230,18 @@ public abstract class ComponentTag extends MasterTag
 	 */
 	private Field getDeclaredField(Class a_Class, String aS_Component) throws JspException
 	{
+
 		try
 		{
 			Field l_Field = a_Class.getField(aS_Component);
-
 			return l_Field;
 		}
 		catch (NoSuchFieldException l_NoSuchFieldException)
 		{
 			Field[] l_Fields = a_Class.getFields();
-			
+
 			StringBuffer lSb_Error = new StringBuffer();
-			for(int li_x = 0 ; li_x < l_Fields.length ; li_x++ )
+			for (int li_x = 0; li_x < l_Fields.length; li_x++)
 			{
 				lSb_Error.append("\t\t");
 				lSb_Error.append(l_Fields[li_x].getType().getName());
@@ -203,8 +249,9 @@ public abstract class ComponentTag extends MasterTag
 				lSb_Error.append(l_Fields[li_x].getName());
 				lSb_Error.append("\n");
 			}
-			
-			throw new JspException("Component named " + aS_Component + " not found from " + a_Class + "\n Following fields found:\n" + lSb_Error.toString(),l_NoSuchFieldException);
+
+			throw new JspException("Component named " + aS_Component + " not found from " + a_Class
+					+ "\n Following fields found:\n" + lSb_Error.toString(), l_NoSuchFieldException);
 		}
 	}
 

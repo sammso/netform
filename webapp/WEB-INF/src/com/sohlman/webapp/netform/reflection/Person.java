@@ -3,6 +3,8 @@ package com.sohlman.webapp.netform.reflection;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.sohlman.netform.NetFormException;
+
 /**
  * @author Sampsa Sohlman
  */
@@ -45,7 +47,14 @@ public class Person
 	 */
 	public void setFirstName(String aS_FirstName)
 	{
-		iS_FirstName = aS_FirstName;
+		if(aS_FirstName!=null && aS_FirstName.length() > 0 && aS_FirstName.length() <= 10)
+		{
+			iS_FirstName = aS_FirstName;
+		}
+		else
+		{
+			throw new IllegalArgumentException("Wrong first name");
+		}
 	}
 	/**
 	 * @param lastName The lastName to set.

@@ -198,7 +198,7 @@ public class FieldForm extends MasterForm
 			{
 				TextFieldValidate l_TextFieldValidate = (TextFieldValidate)a_Validate;
 				
-				if(l_TextFieldValidate.getText().length() > 6 && l_TextFieldValidate.getText().equals(secondPasswordField.getPassword()))
+				if(l_TextFieldValidate.getText()!=null && l_TextFieldValidate.getText().length() > 6 && l_TextFieldValidate.getText().equals(secondPasswordField.getPassword()))
 				{
 					secondPasswordField.setValid(true);
 					return true;
@@ -213,7 +213,7 @@ public class FieldForm extends MasterForm
 			{
 				TextFieldValidate l_TextFieldValidate = (TextFieldValidate)a_Validate;
 				 	
-				if(l_TextFieldValidate.getText().length() > 6 && l_TextFieldValidate.getText().equals(firstPasswordField.getPassword()))
+				if(l_TextFieldValidate.getText()!=null && l_TextFieldValidate.getText().length() > 6 && l_TextFieldValidate.getText().equals(firstPasswordField.getPassword()))
 				{
 					firstPasswordField.setValid(true);
 					return true;

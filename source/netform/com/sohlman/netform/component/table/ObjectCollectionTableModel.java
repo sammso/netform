@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform.component.table;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.sohlman.netform.NetFormException;
@@ -152,9 +153,10 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 	 */
 	public Object createRow()
 	{
+		Object l_Object = null;
 		try
 		{
-			Object l_Object = i_Class_CollectionItem.newInstance();
+			l_Object = i_Class_CollectionItem.newInstance();
 			
 			if(i_Method_SetParent!=null)
 			{
@@ -163,10 +165,19 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 			
 			return l_Object;
 		}
-		catch(Exception l_Exception)
+		catch(InvocationTargetException l_InvocationTargetException)
 		{
-			throw new NetFormException("Couln't setParent() on createRow() for " + iO_Parent.getClass().getName(), l_Exception);
-		}	
+			// Ignore on insert
+			return l_Object;
+		}
+		catch(IllegalAccessException l_IllegalAccessException)
+		{
+			throw new NetFormException(l_IllegalAccessException);
+		}
+		catch(InstantiationException l_InstantiationException)
+		{
+			throw new NetFormException(l_InstantiationException);
+		}
 	}
 	
 	/**
@@ -193,10 +204,14 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 		{
 			i_Method_setMethods[ai_columnIndex - 1].invoke(aO_row, new Object[] {a_Object});
 		}
-		catch(Exception l_Exception)
+		catch(IllegalAccessException l_IllegalAccessException)
 		{
-			throw new NetFormException(l_Exception);
+			throw new NetFormException(l_IllegalAccessException.getMessage(), l_IllegalAccessException);
 		}		
+		catch(InvocationTargetException l_InvocationTargetException)
+		{
+			// Ignore
+		}	
 	}
 	
 	

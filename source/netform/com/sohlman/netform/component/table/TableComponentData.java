@@ -43,7 +43,6 @@ public class TableComponentData implements ComponentData
 		i_TableModel = a_TableModel;
 	}
 	
-	
 	/**
 	 * @see com.sohlman.netform.ComponentData#setData(java.lang.Object)
 	 */

@@ -24,8 +24,8 @@ public class PersonForm extends MasterForm
 	
 	public PersonForm()
 	{
-		propertiesTable.setTableModelComponent(new TextField(propertiesTable), 1);
-		propertiesTable.setTableModelComponent(new TextField(propertiesTable), 2);
+		propertiesTable.setTableModelComponent(new TextField(propertiesTable, false, true, true, true), 1);
+		propertiesTable.setTableModelComponent(new TextField(propertiesTable, false, true, true, true), 2);
 	}
 	
 	/**
@@ -52,6 +52,7 @@ public class PersonForm extends MasterForm
 		l_ObjectCollectionTableModel.assignCollectionColumn("Name",1);
 		l_ObjectCollectionTableModel.assignCollectionColumn("Value",2);
 		propertiesTable.setTableModel(l_ObjectCollectionTableModel);
+		propertiesTable.setMultiSelection(true);
 	}
 	
 	public Person getPerson()
@@ -62,6 +63,8 @@ public class PersonForm extends MasterForm
 			l_Person = new Person();
 			l_Person.addPersonProperty();
 			getHttpSession().setAttribute(this.getClass().getName(), l_Person);
+			firstNameTextField.setValid(false);
+			lastNameTextField.setValid(false);
 		}		
 		return l_Person;
 	}

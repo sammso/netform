@@ -76,12 +76,12 @@ public class Table2Form extends MasterForm
 					if (lS_Text != null && !lS_Text.trim().equals(""))
 					{
 
-						if (i_SimpleTableModel.search(lS_Text, 1) == -1)
+						if (tableSelect.search(lS_Text, 1) == -1)
 						{
 							int li_row = tableSelect.insertRowBeforeFirstSelection();
 							if(li_row > 0)
 							{
-								i_SimpleTableModel.setValueAt(lS_Text, li_row, 1);
+								tableSelect.setValueAt(lS_Text, li_row, 1);
 							}
 						}
 					}
@@ -205,5 +205,10 @@ public class Table2Form extends MasterForm
 
 		i_DataSet.setValueAt(lS_First, li_row, 1);
 		i_DataSet.setValueAt("More text", li_row, 2);
+	}
+	
+	public Table getTableList()
+	{
+		return tableList;
 	}
 }

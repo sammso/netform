@@ -324,7 +324,6 @@ public abstract class Form
 				initSessionOutOfSync();
 				startService();
 				callPortletStartService();
-
 			}
 			else
 			{

@@ -1,5 +1,6 @@
 package com.sohlman.netform.component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.sohlman.netform.ComponentData;
@@ -118,11 +119,14 @@ public class ReflectionData extends Object implements ComponentData
 		{
 			this.setMethod.invoke(this.object, new Object[] { a_Object });
 		}
-		catch(Exception l_Exception)
+		catch(IllegalAccessException l_IllegalAccessException)
 		{
-			throw new NetFormException("Reflection Exception (Set)", l_Exception);
+			throw new NetFormException(l_IllegalAccessException);
 		}
-
+		catch(InvocationTargetException l_InvocationTargetException)
+		{
+			// Ignore
+		}
 	}
 
 	/**

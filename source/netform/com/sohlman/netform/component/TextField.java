@@ -45,6 +45,22 @@ public class TextField extends Component
 	}
 
 	/**
+	 * @param a_Component_Parent parent component
+	 * @param ab_isValid is valid by default
+	 * @param ab_isEmptyNull if empty value is considered as null
+	 * @param ab_isNullAllowed is null allowed
+	 * @param ab_isTrim if spaces are trimmed automaticly out
+	 */
+	public TextField(Component a_Component_Parent, boolean ab_isValid, boolean ab_isEmptyNull, boolean ab_isNullAllowed, boolean ab_isTrim )
+	{
+		super(a_Component_Parent);
+		setValid(ab_isValid);
+		ib_isEmptyNull = ab_isEmptyNull;
+		ib_isNullAllowed = ab_isNullAllowed;
+		ib_isTrim = ab_isTrim;
+	}
+	
+	/**
 	 * @param a_Component_Parent Parent component
 	 * @param ab_isEmptyNull if empty value is considered as null
 	 * @param ab_isNullAllowed is null allowed
@@ -56,7 +72,7 @@ public class TextField extends Component
 		ib_isEmptyNull = ab_isEmptyNull;
 		ib_isNullAllowed = ab_isNullAllowed;
 		ib_isTrim = ab_isTrim;
-	}	
+	}
 	/**
 	 * @param a_Form Form
 	 * @param ab_isEmptyNull if empty value is considered as null
@@ -309,11 +325,11 @@ public class TextField extends Component
 		}
 	}
 	/**
+	 * Override
 	 * @see com.sohlman.netform.Component#validate()
 	 */
 	public void validate()
 	{
 		validate(new TextFieldValidate(this,iS_Text));
 	}
-
 }
