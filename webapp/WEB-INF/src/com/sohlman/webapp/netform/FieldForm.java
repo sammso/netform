@@ -179,4 +179,23 @@ public class FieldForm extends Form
 		deleteSelectedFromTableButton.addComponentListener(i_ComponentListener);
 
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.sohlman.netform.Form#formDestroyed()
+	 */
+	public void formDestroyed()
+	{
+		super.formDestroyed(); 
+		System.out.println("Form Destroyed");
+	}
+
+	/* (non-Javadoc)
+	 * @see com.sohlman.netform.Form#allowFormChange()
+	 */
+	public boolean allowFormChange()
+	{
+		return isValid();
+	}
+
 }

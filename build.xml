@@ -6,7 +6,7 @@
 	<property name="servlet.jar" value="C:\Java\Tomcat 4.1\common\lib\servlet.jar"/>
 	<!-- Put here your dataset.jar -->
 	<property name="dataset.jar" value="C:\Java\Tomcat 4.1\common\lib\dataset.jar"/>
-	<property name="title" value="NetForm Web Application Library v 0.70 "/>
+	<property name="title" value="NetForm Web Application Library v 0.52 "/>
 	<property name="zipfile" value="NetForm.zip"/>
 	<property name="netformsrc" location="source/netform"/>
 	<property name="datasetsrc" location="source/dataset"/>
@@ -104,8 +104,11 @@
 		<!-- Copy Webapp source to .zip -->
 		<copy todir="${NetForm.zip}/webapp">
 			<fileset dir="webapp">
+				<include name="**/*.gif"/>
+				<include name="**/*.jpg"/>				
 				<include name="**/*.jsp"/>
 				<include name="**/*.xml"/>
+				<include name="**/*.css"/>				
 				<include name="**/*.tld"/>				
 			</fileset>
 		</copy>		

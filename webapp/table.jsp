@@ -3,14 +3,8 @@
 	TableForm form = null;
 	try
 	{
-		form = (TableForm)FormManager.getForm(request, TableForm.class);
+		form = (TableForm)FormManager.getForm(request, response, TableForm.class);
 		form.execute(); 
-	}
-	catch(NetFormException netFormException)
-	{
-		// Something is really wrong
-	 
-	}
 %>
 <jsp:include page="header.jsp" />
 <h1>Table Example</h1>
@@ -60,6 +54,15 @@
 <input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
 <input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
 <input type="submit" name="" value="Validate">
-</form>
+</form><%
+	}
+	catch(NetFormException netFormException)
+	{
+		if(netFormException.hasToRedirect())
+		{
+  		response.sendRedirect(netFormException.getUrlString());		
+	  }
+	} 
+%>
 <jsp:include page="footer.jsp" />
 

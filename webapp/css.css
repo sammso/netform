@@ -157,8 +157,19 @@ TD.menutitle1
  line-height: normal;
  font-weight: bold;
  text-decoration: none;
- 
 }
+
+A.menutitle1
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+}
+
 TD.menutitle2 
 {
  color: #000000;

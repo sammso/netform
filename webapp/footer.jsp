@@ -5,9 +5,7 @@
 							<td></td>
 						</tr>
 						<tr>
-							<td width="100%" colspan="3" valign="middle" bgcolor="#0313DD" class="doctitle">
-								<img src="1x1.gif" height="2" alt=""/>
-							</td>
+							<td width="100%" colspan="3" valign="middle" bgcolor="#0313DD"><img src="1x1.gif" height="2" alt="" border="0"/></td>
 						</tr>
 						<tr>
 							<td width="100%" colspan="3" height="21" bgcolor="#FFFFFF" valign="top">

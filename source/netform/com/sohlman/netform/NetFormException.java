@@ -12,6 +12,7 @@ public class NetFormException extends java.lang.Error
 	/** Possible source object.
 	 */
 	private Object i_Object_Source;
+	private String iS_UrlString = null;
 
 	/** Creates new <code>DataSetException</code> without detail message.
 	 */
@@ -26,6 +27,16 @@ public class NetFormException extends java.lang.Error
 	{
 		super(aS_Msg);
 	}
+	
+	/** Constructs an <code>DataSetException</code> with the specified detail message.
+	 * @param aS_Msg Message for user.
+	 */
+	public NetFormException(String aS_Msg, String aS_UrlString)
+	{
+		super(aS_Msg);
+		iS_UrlString = aS_UrlString;
+	}
+	
 
 	/** Constructs an <code>DataSetException</code>
 	 * @param a_Exception Source exception
@@ -117,5 +128,15 @@ public class NetFormException extends java.lang.Error
 		{
 			return super.getMessage();
 		}
+	}
+	
+	public String getUrlString()
+	{
+		return iS_UrlString;
+	}
+	
+	public boolean hasToRedirect()
+	{
+		return iS_UrlString!=null;		
 	}
 }

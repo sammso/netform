@@ -3,16 +3,11 @@
 	FieldForm form = null;
 	try
 	{
-		form = (FieldForm)FormManager.getForm(request, FieldForm.class);
+		form = (FieldForm)FormManager.getForm(request, response,FieldForm.class);
 		form.numberField.setFormat("00000");
 		form.timestampField.setFormat("yyyy-MM-dd");
 		form.execute(); 
-	}
-	catch(NetFormException netFormException)
-	{
-		// Something is really wrong
-	  
-	}
+	
 %>
 <jsp:include page="header.jsp" />
 <h1>Field Example <% if(!form.isValid())
@@ -73,6 +68,15 @@
 		<td class="text" cospan="3"><input type="submit" name="" value="Validate"></td>
 	</tr>		
 </table>
-</form>
+</form><%
+	}
+	catch(NetFormException netFormException)
+	{
+		if(netFormException.hasToRedirect())
+		{
+  		response.sendRedirect(netFormException.getUrlString());		
+	  }
+	} 
+%>
 <jsp:include page="footer.jsp" />
 

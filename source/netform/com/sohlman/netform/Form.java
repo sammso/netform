@@ -233,4 +233,19 @@ public abstract class Form
 	{
 		return ib_isValid;
 	}
+	
+	/**
+	 * This method is called when session is expired or 
+	 * user is going on other page. Do necessary actions.
+	 * 
+	 */
+	public void formDestroyed()
+	{
+		
+	}
+	
+	public boolean allowFormChange()
+	{
+		return true;
+	}
 }

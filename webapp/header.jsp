@@ -28,9 +28,7 @@ String basePath = "http://"+request.getServerName()+":"+request.getServerPort()+
 							</td>
 						</tr>
 						<tr>
-							<td width="100%" colspan="3" valign="middle" bgcolor="#0313DD" class="doctitle">
-								<img src="1x1.gif" height="2" width="700" alt=""/>
-							</td>
+							<td width="100%" colspan="3" valign="middle" bgcolor="#0313DD"><img src="1x1.gif" border="0" height="2" alt=""/></td>
 						</tr>
 						<tr>
 							<td width="20%" valign="top">

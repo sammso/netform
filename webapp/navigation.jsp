@@ -1,27 +1,14 @@
 								<table border="0" width="100%" cellspacing="2" cellpadding="0">																
 									<tr>
-										<td width="100%" colspan="2" class="menutitle1">Application</td>
+										<td width="100%" colspan="2" class="menutitle1"><a href="index.jsp" class="menutitle1">Example forms</a></td>
 									</tr>
 									<tr>
 										<td width="8%"></td>
-										<td width="92%">
-											<a href="index.jsp" class="menuitem">Introduction</a>
-										</td>
-									</tr>
-									<tr>
-										<td width="100%" colspan="2" class="menutitle2">Forms</td>
-									</tr>
-									<tr>
-										<td width="8%"></td>
-										<td width="92%">
-											<a href="fields.jsp" class="menuitem">Fields example</a>
-										</td>
+										<td width="92%"><a href="fields.jsp" class="menuitem">Fields example</a></td>
 									</tr>			
 									<tr>
 										<td width="8%"></td>
-										<td width="92%">
-											<a href="table.jsp" class="menuitem">Table example</a>
-										</td>
+										<td width="92%"><a href="table.jsp" class="menuitem">Table example</a></td>
 									</tr>									
 									<tr>
 										<td width="100%" colspan="2" class="menutitle1">Project</td>
