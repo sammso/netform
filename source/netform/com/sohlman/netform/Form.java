@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
  * 	<li>{@link #init() init()} method <b>Required</b></li>
  * 	<li>{@link #startService() startService()} method <i>Optional</i> </li>
  * 	<li>{@link #endService() endService()} method <i>Optional</i> </li>
+ * 	<li>{@link #allowFormChange() allowFormChange()} method <i>Optional</i> To control if web page change is allowed.</li>
+ * 	<li>{@link #isLoginRequired() isLoginRequired()} method <i>Optional</i> Tells if login is required</li>
  * </ol>
  * @author Sampsa Sohlman
  * @version 2003-03-05
@@ -245,6 +247,11 @@ public abstract class Form
 		
 	}
 	
+	/**
+	 * To be override if web page is not allowed to change.
+	 * 
+	 * @return boolean true if it is allowed
+	 */
 	public boolean allowFormChange()
 	{
 		return true;
@@ -262,11 +269,11 @@ public abstract class Form
 	
 	/**
 	 * This tells if user has to be logged in to system
-	 * 
+	 * <br>default false
 	 * @return true if login this form requires login
 	 */
 	public boolean isLoginRequired()
 	{
-		return true;
+		return false;
 	}
 }
