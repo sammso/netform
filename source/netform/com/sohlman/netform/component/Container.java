@@ -60,7 +60,19 @@ public class Container extends Component
 			
 			iAL_Components.add(a_Component);
 		}
-	}    
+	} 
+	
+	protected void removeComponent(Component a_Component)
+	{
+		if (a_Component != null)
+		{
+			a_Component.setParent(this);
+			if (iAL_Components == null)
+			{
+				iAL_Components.remove(a_Component);
+			}
+		}
+	}
 	
 	public Component cloneComponent()
 	{
