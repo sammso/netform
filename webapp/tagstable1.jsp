@@ -1,7 +1,6 @@
 <%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*, com.sohlman.netform.component.*" %>
 <%@ taglib uri="http://netform.sohlman.com/taglib" prefix="nf" %>
-<nf:init form="com.sohlman.webapp.netform.Table1Form" loginPage="login.jsp">
-</nf:init>
+<nf:init form="com.sohlman.webapp.netform.Table1Form" loginPage="login.jsp"/>
 <jsp:include page="header.jsp" />
 <h1>1. Table Example </h1>
 <h2>Introduction</h2>
@@ -27,10 +26,10 @@ Not valid fields are shown as <b class="pink" >Pink</b></p>
 		<td align="center">
 			<nf:tableSelection/>
 		</td>
-		<td align="center"><nf:textField index="1" style="width: 90;" notValidClass="notvalid"/></td>
+		<td align="center"><nf:textField index="1" style="width: 90;" format="00000" notValidClass="notvalid"/></td>
 		<td align="center"><nf:textField index="2" style="width: 90;" notValidClass="notvalid"/></td>		
 		<td align="center"><nf:textField index="3" style="width: 90;" notValidClass="notvalid"/></td>		
-		<td align="center"><nf:textField index="4" style="width: 90;" notValidClass="notvalid"/></td>		
+		<td align="center"><nf:textField index="4" style="width: 90;" format="yyyy/MM/dd" notValidClass="notvalid"/></td>		
 	</tr>
 	</nf:table>	
 </table>

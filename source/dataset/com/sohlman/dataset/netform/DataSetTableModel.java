@@ -4,6 +4,7 @@ import com.sohlman.dataset.DataSet;
 import com.sohlman.dataset.DataSetEvent;
 import com.sohlman.dataset.DataSetException;
 import com.sohlman.dataset.DataSetListener;
+import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.NetFormException;
 import com.sohlman.netform.component.table.TableModel;
 
@@ -121,7 +122,7 @@ public class DataSetTableModel extends TableModel
 	/**
 	 * @see com.sohlman.netform.component.table.TableModel#setValueAt(java.lang.Object, int, int)
 	 */
-	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
+	public boolean setValueAt(Object a_Object, int ai_row, int ai_column) throws ComponentDataException
 	{
 		return i_DataSet.setValueAt(a_Object, ai_row, ai_column);
 	}

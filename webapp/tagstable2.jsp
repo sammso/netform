@@ -1,6 +1,7 @@
 <%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*, com.sohlman.netform.component.*, com.sohlman.netform.component.table.*" %>
 <%@ taglib uri="http://netform.sohlman.com/taglib" prefix="nf" %>
 <nf:init form="com.sohlman.webapp.netform.Table2Form" loginPage="login.jsp">
+
 </nf:init>
 <jsp:include page="header.jsp" />
 <h1>2. Table Example</h1>
@@ -9,6 +10,7 @@
 <p>First (1) table is table which has combobox, which is table component inside table component. Data source for this combobox is
 same as s second (2) list  and by modifying data inside list naturally changed data inside combobox.</p>
 <nf:form>
+${form.tableList.displayRowCount}
 <table cellpadding="1" cellspacing="1" border="1" >
 <tr>
 	<td>(1) Table</td><td>(2) Edit - Choise List in Table</td>
