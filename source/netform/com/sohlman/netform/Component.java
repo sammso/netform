@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * <li>Validation services</li>
  * </ul>
  * @author  Sampsa Sohlman
- * @version 2001-09-21
+ * @version 2003-11-20
  */
 public abstract class Component
 {
@@ -25,6 +25,7 @@ public abstract class Component
 	private boolean ib_isVisibleChanged = false;
 	private boolean ib_enabledChanged = false;
 	private boolean ib_componentIsModified = false;
+	private long il_count = 0;
 
 	// For validation
 	// First run it has to check if it is valid
@@ -66,7 +67,7 @@ public abstract class Component
 	 */
 	public String getResponseName()
 	{
-		return "SS"  + hashCode();
+		return i_Form.getComponentResponnsePrefix() + "SS"  + hashCode();
 	}
 
 	/**

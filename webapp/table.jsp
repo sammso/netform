@@ -3,7 +3,7 @@
 	TableForm form = null;
 	try
 	{
-		form = (TableForm)FormManager.getForm(request, response, TableForm.class);
+		form = (TableForm)FormManager.getForm(request, response, TableForm.class, "login.jsp");
 		form.execute(); 
 %>
 <jsp:include page="header.jsp" />
@@ -54,15 +54,17 @@
 <input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
 <input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
 <input type="submit" name="" value="Validate">
-</form><%
+</form>
+<jsp:include page="footer.jsp" /><%
+	}
+	catch(DoRedirectException doRedirectException)
+	{
+		response.sendRedirect(doRedirectException.getPage());
 	}
 	catch(NetFormException netFormException)
 	{
-		if(netFormException.hasToRedirect())
-		{
-  		response.sendRedirect(netFormException.getUrlString());		
-	  }
+
 	} 
 %>
-<jsp:include page="footer.jsp" />
+
 

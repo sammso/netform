@@ -1,23 +1,22 @@
 package com.sohlman.webapp.netform;
 
-import com.sohlman.netform.Button;
-import com.sohlman.netform.Component;
-import com.sohlman.netform.ComponentListener;
-import com.sohlman.netform.ComponentValidator;
-import com.sohlman.netform.Form;
-import com.sohlman.netform.Table;
-import com.sohlman.netform.TextField;
 import com.sohlman.dataset.ColumnInfo;
 import com.sohlman.dataset.DataSet;
 import com.sohlman.dataset.RowInfo;
 import com.sohlman.dataset.netform.DataSetTableModel;
+import com.sohlman.netform.Button;
+import com.sohlman.netform.Component;
+import com.sohlman.netform.ComponentListener;
+import com.sohlman.netform.ComponentValidator;
+import com.sohlman.netform.Table;
+import com.sohlman.netform.TextField;
 
 /**
  * 
  * 
  * @author Sampsa Sohlman
  */
-public class TableForm extends Form
+public class TableForm extends MasterForm
 {
 	public Button reloadButton = new Button(this);
 	public Button addRowButton = new Button(this);

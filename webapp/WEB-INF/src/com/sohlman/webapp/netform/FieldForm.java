@@ -7,7 +7,6 @@ import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.ComponentValidator;
-import com.sohlman.netform.Form;
 import com.sohlman.netform.NumberField;
 import com.sohlman.netform.SimpleTableModel;
 import com.sohlman.netform.Table;
@@ -18,7 +17,7 @@ import com.sohlman.netform.TimestampField;
  * 
  * @author Sampsa Sohlman
  */
-public class FieldForm extends Form
+public class FieldForm extends MasterForm
 {
 	public TextField textField = new TextField(this);
 	public NumberField numberField = new NumberField(this, Integer.class);
@@ -181,21 +180,20 @@ public class FieldForm extends Form
 	}
 	
 	
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.Form#formDestroyed()
 	 */
 	public void formDestroyed()
 	{
 		super.formDestroyed(); 
-		System.out.println("Form Destroyed");
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.Form#allowFormChange()
 	 */
 	public boolean allowFormChange()
 	{
-		return isValid();
+		return super.allowFormChange();
 	}
 
 }

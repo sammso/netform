@@ -1,7 +1,24 @@
+<%@ page language="java" import="com.sohlman.netform.*" %>
 								<table border="0" width="100%" cellspacing="2" cellpadding="0">																
 									<tr>
 										<td width="100%" colspan="2" class="menutitle1"><a href="index.jsp" class="menutitle1">Example forms</a></td>
-									</tr>
+									</tr><% 
+		if(!FormManager.isLoggedIn(request, response))
+		{
+									%>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%"><a href="login.jsp" class="menuitem">Login</a></td>
+									</tr><%
+		}
+		else
+		{
+		%>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%"><a href="logout.jsp" class="menuitem">Logout</a></td>
+									</tr><%
+		}%>
 									<tr>
 										<td width="8%"></td>
 										<td width="92%"><a href="fields.jsp" class="menuitem">Fields example</a></td>

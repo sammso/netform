@@ -3,7 +3,7 @@
 	FieldForm form = null;
 	try
 	{
-		form = (FieldForm)FormManager.getForm(request, response,FieldForm.class);
+		form = (FieldForm)FormManager.getForm(request, response,FieldForm.class, "login.jsp");
 		form.numberField.setFormat("00000");
 		form.timestampField.setFormat("yyyy-MM-dd");
 		form.execute(); 
@@ -68,15 +68,17 @@
 		<td class="text" cospan="3"><input type="submit" name="" value="Validate"></td>
 	</tr>		
 </table>
-</form><%
+</form>
+<jsp:include page="footer.jsp" /><%
+	}
+	catch(DoRedirectException doRedirectException)
+	{
+		response.sendRedirect(doRedirectException.getPage());
 	}
 	catch(NetFormException netFormException)
 	{
-		if(netFormException.hasToRedirect())
-		{
-  		response.sendRedirect(netFormException.getUrlString());		
-	  }
+
 	} 
 %>
-<jsp:include page="footer.jsp" />
+
 

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * 	<li>{@link #isLoginRequired() isLoginRequired()} method <i>Optional</i> Tells if login is required</li>
  * </ol>
  * @author Sampsa Sohlman
- * @version 2003-03-05
+ * @version 2003-11-20
  */
 public abstract class Form 
 {
@@ -26,6 +26,7 @@ public abstract class Form
 	final static String SESSION_PAGE = "@PAGE";
 	//private Hashtable iVe_Components;
 	private ArrayList iAL_Components;
+	private String iS_NextPage = null;
 	private HttpServletRequest i_HttpServletRequest;
 	private boolean ib_isInitialized = false;
 	private boolean ib_isValid = true;
@@ -107,15 +108,16 @@ public abstract class Form
 		}		
 	}
 
-	public final synchronized void execute()
+	public final synchronized void execute() throws DoRedirectException
 	{
+		boolean lb_eventsGenerated = false;
 		if(!ib_isInitialized)
 		{
 			init();
 			preValidateComponents();
 			ib_isInitialized = true;
 		}
-			
+		
 		//
 		// Check the all components if they have new values
 		//
@@ -149,6 +151,7 @@ public abstract class Form
 				if (l_Component.haveEvents())
 				{
 					l_Component.generateEvent();
+					lb_eventsGenerated = true;	
 				}
 			}
 		}
@@ -164,6 +167,12 @@ public abstract class Form
 				l_Component.changeVisibleEnable();
 			}
 		}
+		if(!lb_eventsGenerated)
+		{
+//			checkIfOutOfSynch()
+		}
+		redirectToNextPage();
+		nextValueForComponentResponnsePrefix();
 	}
 
 	/** Pass the parameters to page components.
@@ -268,12 +277,49 @@ public abstract class Form
 	}
 	
 	/**
+	 * This method is for need to be make re
+	 * 
+	 * @param aS_Page
+	 */
+	final protected void setNextPage(String aS_Page)
+	{
+		iS_NextPage = aS_Page;
+	}
+	
+	final void redirectToNextPage() throws DoRedirectException
+	{
+		if(iS_NextPage!=null)
+		{
+			String lS_NextPage = iS_NextPage;
+			iS_NextPage = null; // Just in case
+			throw new DoRedirectException(lS_NextPage);			
+		}
+	}
+	
+	final protected String getNextPage()
+	{
+		return iS_NextPage;
+	}
+	
+	/**
 	 * This tells if user has to be logged in to system
 	 * <br>default false
 	 * @return true if login this form requires login
 	 */
-	public boolean isLoginRequired()
+	public static boolean isLoginRequired()
 	{
 		return false;
+	}
+	
+	private long il_count = 0;
+	
+	final String getComponentResponnsePrefix()
+	{
+		return String.valueOf(il_count);
+	}
+	
+	private void nextValueForComponentResponnsePrefix()
+	{
+		il_count++;
 	}
 }

@@ -3,6 +3,9 @@
 						<h2>Introduction</h2>
 						<p>NetForm example application is test and show case of NetForm framework 
 						features and capabilities. </p>
+						<h2>Login form (<a href="login.jsp">login.jsp</a>)</h2>
+						<p>You first have to login to use other forms. If you click these other forms you 
+						are redirected before to login form (<a href="login.jsp">login.jsp</a>) and then after login you are redirected form that you want to use.</p>
 						<h2>Fields form(<a href="fields.jsp">fields.jsp</a>)</h2>
 						<p>Fields form is example of NetForm fields. There is Components like Button, TextField, NumberField, TimestampField and Table.</p>
 						<p>This example also is showing the form ability to validate itself from 
