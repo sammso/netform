@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		form.execute(); 
 %>
 <jsp:include page="header.jsp" />
-<h1>Login</h1>
+<h1>Login</h1>s
 <p>To use table.jsp or fields.jsp you need to login first. All user id's and passwords are accepted.</p>
 <form method="POST" action="login.jsp">
 <table>

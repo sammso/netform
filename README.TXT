@@ -1,6 +1,13 @@
 
-   NetForm Web Application Framework for Java V 0.51
+   NetForm Web Application Framework for Java V 0.60s
    =================================================
+   
+   What is new on 0.60
+   -------------------------------------------------------------
+   - Developement on
+     - Login handling
+     - Browsers back button handling
+     - Little bit big jump on version number :)
    
    What is new on 0.51
    -------------------------------------------------------------
