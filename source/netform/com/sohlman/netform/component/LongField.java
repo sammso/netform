@@ -255,4 +255,14 @@ public class LongField extends TextField
 			setLong((Long) getData(), false);
 		}
 	}
+	
+	/**
+	 * Override
+	 * 
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		validate(new LongFieldValidate(this, i_Long));
+	}	
 }

@@ -600,4 +600,14 @@ public class TimestampField extends TextField
 	{
 		iS_StringForTimeNullValue = aS_stringForTimeNullValue;
 	}
+	
+	/**
+	 * Override
+	 * 
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		validate(new TimestampFieldValidate(this, i_Timestamp));
+	}		
 }

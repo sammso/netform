@@ -243,4 +243,14 @@ public class FloatField extends TextField
 			setFloat((Float) getData(), false);
 		}
 	}
+	
+	/**
+	 * Override
+	 * 
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		validate(new FloatFieldValidate(this, i_Float));
+	}	
 }

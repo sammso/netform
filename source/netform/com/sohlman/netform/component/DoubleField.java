@@ -236,4 +236,14 @@ public class DoubleField extends TextField
 			setDouble((Double)getData(), false);
 		}
 	}
+	
+	/**
+	 * Override
+	 * 
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		validate(new DoubleFieldValidate(this, i_Double));
+	}	
 }

@@ -269,4 +269,14 @@ public class IntegerField extends TextField
 			setInteger((Integer) getData(), false);
 		}
 	}
+	
+	/**
+	 * Override
+	 * 
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		validate(new IntegerFieldValidate(this, i_Integer));
+	}	
 }
