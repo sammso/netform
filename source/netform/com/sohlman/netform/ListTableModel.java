@@ -13,6 +13,10 @@ public abstract class ListTableModel extends TableModel
 	
 	public void setList(List a_List)
 	{
+		if(a_List==null)
+		{
+			throw new NullPointerException("Parameter of ListTableModel.setList cannot be null");
+		}
 		i_List = a_List;
 	}
 	
@@ -24,6 +28,10 @@ public abstract class ListTableModel extends TableModel
 	 */
 	protected void setColumnNames(String[] aS_ColumnNames)
 	{
+		if(aS_ColumnNames==null)
+		{
+			throw new NullPointerException("Parameter of ListTableModel.setColumnNames cannot be null ");
+		}
 		iS_ColumnNames = aS_ColumnNames;
 	}
 	
@@ -187,12 +195,12 @@ public abstract class ListTableModel extends TableModel
 	{
 		if(i_List!=null)
 		{
-			for(int li_index = 0 ; li_index <= i_List.size() ; li_index++)
+			for(int li_index = 1 ; li_index <= i_List.size() ; li_index++)
 			{
 				Object l_Object = getValueAt(li_index, ai_column);
 				if(( l_Object == a_Object ) || (l_Object!=null && a_Object!=null && a_Object.equals(a_Object)))
 				{
-					return li_index + 1;
+					return li_index;
 				}
 			}
 			return -1;
