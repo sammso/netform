@@ -92,9 +92,9 @@ public class TextField extends Component
 
 		iS_Text = aS_Text;
 
-		ib_imValidating = true;
-		validate();
-		ib_imValidating = false;
+		//ib_imValidating = true;
+		validate(new TextFieldValidate(this,aS_Text));
+		//ib_imValidating = false;
 
 		if (hasComponentData() && isValid())
 		{
@@ -103,7 +103,7 @@ public class TextField extends Component
 	}
 
 	/**
-	 * <b>JSP also</b>  Returns current component text.<br>
+	 * <b>JSP</b>  Returns current component text.<br>
 	 * Never returns null value
 	 * {@link ComponentData ComponentData} is not used
 	 * is component is not valid or you are 
@@ -113,7 +113,6 @@ public class TextField extends Component
 	 */
 	public String getText()
 	{
-
 		if (hasComponentData() && isValid() && !ib_imValidating)
 		{
 			Object l_Object = getData();
@@ -139,6 +138,27 @@ public class TextField extends Component
 				return Utils.stringToHTML(iS_Text);
 			}
 		}
+	}
+	
+	public String getTextValue()
+	{
+		if (hasComponentData() && isValid() && !ib_imValidating)
+		{
+			Object l_Object = getData();
+			if (l_Object == null)
+			{
+				return null;
+			}
+			else
+			{
+				return l_Object.toString();
+				
+			}
+		}
+		else
+		{
+			return iS_Text;
+		}		
 	}
 
 	/**

@@ -144,7 +144,7 @@ public abstract class Form
 			iAL_Components.add(a_Component);
 		}
 	}
-
+	/*
 	private void preValidateComponents()
 	{
 		if (iAL_Components != null)
@@ -158,7 +158,8 @@ public abstract class Form
 			}
 		}
 	}
-
+	*/
+	
 	public final synchronized void execute() throws DoRedirectException
 	{
 		try
@@ -168,7 +169,7 @@ public abstract class Form
 			{
 				ii_currentState = FORM_STATE_INIT;
 				init();
-				preValidateComponents();
+				//preValidateComponents();
 				ib_isInitialized = true;
 				startService();
 			}

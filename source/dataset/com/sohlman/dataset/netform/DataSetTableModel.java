@@ -155,7 +155,7 @@ public class DataSetTableModel extends TableModel
 		}
 		catch(DataSetException l_DataSetException)
 		{
-			throw new NetFormException(aS_Name + " not found"s);
+			throw new NetFormException(aS_Name + " not found");
 		}
 	}
 

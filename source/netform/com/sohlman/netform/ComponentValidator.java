@@ -7,6 +7,6 @@ package com.sohlman.netform;
  */
 public interface ComponentValidator 
 {
-    public boolean isValid(Component a_Component);
+    public boolean isValid(Validate a_Validate);
 }
 

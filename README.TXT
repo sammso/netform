@@ -14,6 +14,7 @@
    - Fixes on table
    - New Component FloatField
    - New Component DoubleField
+   - New validation system
    
    What is new on 0.62
    -------------------------------------------------------------

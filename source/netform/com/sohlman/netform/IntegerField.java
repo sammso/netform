@@ -24,36 +24,30 @@ public class IntegerField extends Component
 
 	private ComponentValidator i_ComponentValidator_Number = new ComponentValidator()
 	{
-		public boolean isValid(Component a_Component)
+		public boolean isValid(Validate a_Validate)
 		{
-			String lS_Text = iS_Text;
-			
-			if (lS_Text!=null&&lS_Text.equals(""))
+			Integer l_Integer = ((IntegerFieldValidate) a_Validate).getInteger();
+			if (i_ComponentValidator == null)
 			{
-				lS_Text = null;
-			}
-
-			if (iS_Text == null && ib_emptyIsValid)
-			{
-				return true;
-			}
-			
-			try
-			{
-				// parse succeed then it is valid
-				Integer.parseInt(iS_Text);
-				if(i_ComponentValidator!=null)
-				{
-					return i_ComponentValidator.isValid(a_Component);
-				}
-				else
+				if (l_Integer != null || ib_nullAllowed)
 				{
 					return true;
 				}
+				else
+				{
+					return false;
+				}
 			}
-			catch(NumberFormatException l_NumberFormatException)
+			else
 			{
-				return false;
+				if (l_Integer != null || ib_nullAllowed)
+				{
+					return i_ComponentValidator.isValid(a_Validate);
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 	};
@@ -106,40 +100,31 @@ public class IntegerField extends Component
 
 	public void setInteger(Integer a_Integer)
 	{
-		if(i_DecimalFormat==null)
+		validate(new IntegerFieldValidate(this, a_Integer));
+
+		if (isValid())
 		{
-			iS_Text = String.valueOf(a_Integer);
+			if (i_DecimalFormat != null)
+			{
+				StringBuffer l_StringBuffer = new StringBuffer();
+				i_DecimalFormat.format(a_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
+
+				iS_Text = l_StringBuffer.toString();
+			}
+			else
+			{
+				iS_Text = String.valueOf(a_Integer);
+			}
+			if (hasComponentData())
+			{
+				setData(a_Integer);
+			}
 		}
-		else
-		{
-			StringBuffer l_StringBuffer = new StringBuffer();
-			i_DecimalFormat.format(a_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
-			iS_Text = l_StringBuffer.toString();
-		}
-		
-		if(hasComponentData())
-		{
-			setData(a_Integer);
-		}			
 	}
 
 	public void setInt(int ai_int)
 	{	
-		if(i_DecimalFormat==null)
-		{
-			iS_Text = String.valueOf(ai_int);
-		}
-		else
-		{
-			StringBuffer l_StringBuffer = new StringBuffer();
-			i_DecimalFormat.format(ai_int, l_StringBuffer, new FieldPosition(0));
-			iS_Text = l_StringBuffer.toString();
-		}
-		
-		if(hasComponentData())
-		{
-			setData(new Integer(ai_int));
-		}			
+		setInteger(new Integer(ai_int));		
 	}
 
 	private void setText(String aS_Text)
@@ -149,21 +134,33 @@ public class IntegerField extends Component
 			aS_Text = null;
 		}
 		
-		iS_Text = aS_Text;
-		validate();
-		
-		if(hasComponentData() && isValid())
+		Integer l_Integer = stringToInteger(aS_Text);
+		validate(new IntegerFieldValidate(this, l_Integer));
+
+		if (hasComponentData() && isValid())
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				setData(null);
 			}
 			else
 			{
-				setData(new Integer(aS_Text));
+				setData(l_Integer);
 			}
-		}		
+		}			
 	}
+	
+	private Integer stringToInteger(String a_String)
+	{
+		try
+		{
+			return new Integer(a_String);
+		}
+		catch (NumberFormatException l_NumberFormatException)
+		{
+			return null;
+		}
+	}	
 	
 	public String getText()
 	{

@@ -25,25 +25,18 @@ public class TimestampField extends Component
 
 	private ComponentValidator i_ComponentValidator_Value = new ComponentValidator()
 	{
-		public boolean isValid(Component a_Component)
-		{	
-			if (iS_Text == null && ib_nullAllowed)
+		public boolean isValid(Validate a_Validate)
+		{
+			Timestamp l_Timestamp = ((TimestampFieldValidate) a_Validate).getTimestamp();
+
+			if (l_Timestamp == null && ib_nullAllowed && i_ComponentValidator == null)
 			{
 				return true;
 			}
-			else if (Utils.isTimestamp(iS_Text, iS_DateTimeFormat))
+			else
 			{
-				if(i_ComponentValidator==null)
-				{
-					return true;
-				}
-				else
-				{
-					return i_ComponentValidator.isValid(a_Component);
-				}
-				
+				return i_ComponentValidator.isValid(a_Validate);
 			}
-			return false;
 		}
 	};
 
@@ -55,7 +48,7 @@ public class TimestampField extends Component
 	 */
 	public void setComponentValidator(ComponentValidator a_ComponentValidator)
 	{
-		i_ComponentValidator = a_ComponentValidator;	
+		i_ComponentValidator = a_ComponentValidator;
 	}
 
 	public void setFormat(String aS_Format)
@@ -77,14 +70,18 @@ public class TimestampField extends Component
 
 	public void setTimestamp(Timestamp a_Timestamp)
 	{
-		i_Timestamp = a_Timestamp;
-		if (iS_DateTimeFormat != null)
+		validate(new TimestampFieldValidate(this, a_Timestamp));
+		if (isValid())
 		{
-			iS_Text = Utils.timestampToString(a_Timestamp, iS_DateTimeFormat);
-		}
-		if (hasComponentData())
-		{
-			setData(a_Timestamp);
+			i_Timestamp = a_Timestamp;
+			if (iS_DateTimeFormat != null)
+			{
+				iS_Text = Utils.timestampToString(a_Timestamp, iS_DateTimeFormat);
+			}
+			if (hasComponentData())
+			{
+				setData(a_Timestamp);
+			}
 		}
 	}
 
@@ -114,24 +111,24 @@ public class TimestampField extends Component
 
 	public String getText()
 	{
-		if(hasComponentData() && isValid())
+		if (hasComponentData() && isValid())
 		{
-			Timestamp l_Timestamp = (Timestamp)getData();
-			
-			if(l_Timestamp==null)
+			Timestamp l_Timestamp = (Timestamp) getData();
+
+			if (l_Timestamp == null)
 			{
 				iS_Text = null;
 				return "";
 			}
 			else
 			{
-				iS_Text = Utils.timestampToString(l_Timestamp, iS_DateTimeFormat);
+				iS_Text = Utils.timestampToString(l_Timestamp, getFormat());
 				return Utils.stringToHTML(iS_Text);
-			}			
+			}
 		}
 		else
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				return "";
 			}
@@ -141,20 +138,28 @@ public class TimestampField extends Component
 			}
 		}
 	}
-	
+
+	protected String getFormat()
+	{
+		return iS_DateTimeFormat;
+	}
+
 	private void setText(String aS_Text)
 	{
-		if(ib_emptyIsNull && aS_Text.trim().equals(""))
+		if (ib_emptyIsNull && aS_Text.trim().equals(""))
 		{
 			aS_Text = null;
 		}
-		
+
 		iS_Text = aS_Text;
-		validate();
-		
-		if(hasComponentData() && isValid())
+
+		Timestamp l_Timestamp = Utils.stringToTimestamp(aS_Text, getFormat());
+
+		validate(new TimestampFieldValidate(this, l_Timestamp));
+
+		if (hasComponentData() && isValid())
 		{
-			setData(stringToTimestamp(aS_Text));
+			setData(l_Timestamp);
 		}
 	}
 
@@ -178,7 +183,7 @@ public class TimestampField extends Component
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);
 				setText(lS_NewText);
-				
+
 				return true;
 			}
 			else
@@ -200,7 +205,6 @@ public class TimestampField extends Component
 		throw new NoSuchMethodError("Child components are not supported on TimestampField");
 	}
 
-
 	public Component cloneComponent()
 	{
 		TimestampField l_TimestampField = new TimestampField(getParent());
@@ -221,25 +225,25 @@ public class TimestampField extends Component
 	{
 		return ib_nullAllowed;
 	}
-	
+
 	public void setEmptyIsNull(boolean ab_value)
 	{
 		ib_emptyIsNull = ab_value;
 	}
-	
+
 	public boolean emptyIsNull()
 	{
 		return ib_emptyIsNull;
 	}
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#syncronizeData()
 	 */
 	public void syncronizeData()
 	{
-		if(hasComponentData())
+		if (hasComponentData())
 		{
-			
+
 		}
-	}	
+	}
 }

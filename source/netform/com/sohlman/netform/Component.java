@@ -365,11 +365,11 @@ public abstract class Component
 		return ib_isValid;
 	}
 
-	final void setValid(boolean ab_isValid, boolean ab_useValidator)
+	final void setValid(boolean ab_isValid, Validate a_Validate)
 	{
-		if (i_ComponentValidator != null && ab_isValid && ab_useValidator)
+		if (i_ComponentValidator != null && ab_isValid && a_Validate!=null)
 		{
-			ib_isValid = i_ComponentValidator.isValid(this) && ab_isValid;
+			ib_isValid = i_ComponentValidator.isValid(a_Validate) && ab_isValid;
 		}
 		else
 		{
@@ -388,7 +388,7 @@ public abstract class Component
 
 	public final void setValid(boolean ab_isValid)
 	{
-		setValid(ab_isValid, false);
+		setValid(ab_isValid, null);
 	}
 
 	private void setParentValid(boolean ab_isValid)
@@ -422,9 +422,9 @@ public abstract class Component
 		}
 	}
 
-	public final void validate()
+	public final void validate(Validate a_Validate)
 	{
-		setValid(true, true);
+		setValid(true, a_Validate);
 	}
 
 	protected Iterator getChildComponents()

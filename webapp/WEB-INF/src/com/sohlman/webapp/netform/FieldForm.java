@@ -14,7 +14,9 @@ import com.sohlman.netform.LongField;
 import com.sohlman.netform.SimpleTableModel;
 import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
+import com.sohlman.netform.TextFieldValidate;
 import com.sohlman.netform.TimestampField;
+import com.sohlman.netform.Validate;
 
 /**
  * 
@@ -141,11 +143,11 @@ public class FieldForm extends MasterForm
 
 	ComponentValidator i_ComponentValidator = new ComponentValidator()
 	{
-		public boolean isValid(Component a_Component)
+		public boolean isValid(Validate a_Validate)
 		{
-			if (a_Component == textField)
+			if (a_Validate.getSource() == textField)
 			{
-				String lS_Text = textField.getText();
+				String lS_Text = ((TextFieldValidate)a_Validate).getText();
 
 				if (lS_Text.trim().length() > 0 && lS_Text.trim().length() <= 12)
 				{

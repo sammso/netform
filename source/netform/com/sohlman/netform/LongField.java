@@ -15,7 +15,6 @@ public class LongField extends Component
 {
 	private String iS_Text;
 
-	boolean ib_emptyIsValid = true;
 	boolean ib_nullAllowed = true;
 	String iS_Format;
 	DecimalFormat i_DecimalFormat = null;
@@ -24,37 +23,45 @@ public class LongField extends Component
 
 	private ComponentValidator i_ComponentValidator_Number = new ComponentValidator()
 	{
-		public boolean isValid(Component a_Component)
+		public boolean isValid(Validate a_Validate)
 		{
-			if (iS_Text.equals(""))
+			Long l_Long = ((LongFieldValidate) a_Validate).getLong();
+			if (i_ComponentValidator == null)
 			{
-				iS_Text = null;
-			}
-
-			if (iS_Text == null && ib_emptyIsValid)
-			{
-				return true;
-			}
-
-			try
-			{
-				// parse succeed then it is valid
-				Long.parseLong(iS_Text);
-				if (i_ComponentValidator != null)
-				{
-					return i_ComponentValidator.isValid(a_Component);
-				}
-				else
+				if (l_Long != null || ib_nullAllowed)
 				{
 					return true;
 				}
+				else
+				{
+					return false;
+				}
 			}
-			catch (NumberFormatException l_NumberFormatException)
+			else
 			{
-				return false;
+				if (l_Long != null || ib_nullAllowed)
+				{
+					return i_ComponentValidator.isValid(a_Validate);
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 	};
+
+	private Long stringToLong(String a_String)
+	{
+		try
+		{
+			return new Long(a_String);
+		}
+		catch (NumberFormatException l_NumberFormatException)
+		{
+			return null;
+		}
+	}
 
 	public LongField(Component a_Component_Parent)
 	{
@@ -97,39 +104,30 @@ public class LongField extends Component
 
 	public void setLong(long al_long)
 	{
-		if (i_DecimalFormat != null)
-		{
-			StringBuffer l_StringBuffer = new StringBuffer();
-			i_DecimalFormat.format(al_long, l_StringBuffer, new FieldPosition(0));
-
-			iS_Text = l_StringBuffer.toString();
-		}
-		else
-		{
-			iS_Text = String.valueOf(al_long);
-		}
-		if (hasComponentData())
-		{
-			setData(new Long(al_long));
-		}
+		setLong(new Long(al_long));
 	}
 
 	public void setLong(Long a_Long)
 	{
-		if (i_DecimalFormat != null)
-		{
-			StringBuffer l_StringBuffer = new StringBuffer();
-			i_DecimalFormat.format(a_Long.longValue(), l_StringBuffer, new FieldPosition(0));
+		validate(new LongFieldValidate(this, a_Long));
 
-			iS_Text = l_StringBuffer.toString();
-		}
-		else
+		if (isValid())
 		{
-			iS_Text = String.valueOf(a_Long);
-		}
-		if (hasComponentData())
-		{
-			setData(a_Long);
+			if (i_DecimalFormat != null)
+			{
+				StringBuffer l_StringBuffer = new StringBuffer();
+				i_DecimalFormat.format(a_Long.longValue(), l_StringBuffer, new FieldPosition(0));
+
+				iS_Text = l_StringBuffer.toString();
+			}
+			else
+			{
+				iS_Text = String.valueOf(a_Long);
+			}
+			if (hasComponentData())
+			{
+				setData(a_Long);
+			}
 		}
 	}
 
@@ -141,7 +139,8 @@ public class LongField extends Component
 		}
 
 		iS_Text = aS_Text;
-		validate();
+		Long l_Long = stringToLong(aS_Text);
+		validate(new LongFieldValidate(this, l_Long));
 
 		if (hasComponentData() && isValid())
 		{
@@ -151,7 +150,7 @@ public class LongField extends Component
 			}
 			else
 			{
-				setData(new Long(aS_Text));
+				setData(l_Long);
 			}
 		}
 	}
@@ -205,10 +204,6 @@ public class LongField extends Component
 		setText(l_StringBuffer.toString());
 	}
 
-	public boolean emptyIsValid()
-	{
-		return ib_emptyIsValid;
-	}
 
 	public Component cloneComponent()
 	{

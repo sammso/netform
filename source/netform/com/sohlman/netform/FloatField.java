@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class FloatField extends Component
 {
 	private String iS_Text;
-	
+
 	boolean ib_emptyIsValid = true;
 	boolean ib_nullAllowed = true;
 	String iS_Format;
@@ -24,36 +24,30 @@ public class FloatField extends Component
 
 	private ComponentValidator i_ComponentValidator_Number = new ComponentValidator()
 	{
-		public boolean isValid(Component a_Component)
+		public boolean isValid(Validate a_Validate)
 		{
-			String lS_Text = iS_Text;
-			
-			if (lS_Text!=null&&lS_Text.equals(""))
+			Float l_Float = ((FloatFieldValidate) a_Validate).getFloat();
+			if (i_ComponentValidator == null)
 			{
-				lS_Text = null;
-			}
-
-			if (iS_Text == null && ib_emptyIsValid)
-			{
-				return true;
-			}
-			
-			try
-			{
-				// parse succeed then it is valid
-				Float.parseFloat(iS_Text);
-				if(i_ComponentValidator!=null)
-				{
-					return i_ComponentValidator.isValid(a_Component);
-				}
-				else
+				if (l_Float != null || ib_nullAllowed)
 				{
 					return true;
 				}
+				else
+				{
+					return false;
+				}
 			}
-			catch(NumberFormatException l_NumberFormatException)
+			else
 			{
-				return false;
+				if (l_Float != null || ib_nullAllowed)
+				{
+					return i_ComponentValidator.isValid(a_Validate);
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 	};
@@ -70,8 +64,8 @@ public class FloatField extends Component
 	{
 		super(a_Form);
 		i_DecimalFormat = new DecimalFormat();
-		
-		super.setComponentValidator(i_ComponentValidator);		
+
+		super.setComponentValidator(i_ComponentValidator);
 	}
 
 	/**
@@ -88,7 +82,7 @@ public class FloatField extends Component
 	{
 		setFormat(new DecimalFormat(aS_Format));
 	}
-	
+
 	public void setFormat(DecimalFormat a_DecimalFormat)
 	{
 		i_DecimalFormat = a_DecimalFormat;
@@ -106,81 +100,98 @@ public class FloatField extends Component
 
 	public void setFloat(Float a_Float)
 	{
-		if(i_DecimalFormat!=null)
+		validate(new FloatFieldValidate(this, a_Float));
+		if (isValid())
 		{
-			StringBuffer l_StringBuffer = new StringBuffer();
-			i_DecimalFormat.format(a_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
-			
-			iS_Text = l_StringBuffer.toString();
+			if (i_DecimalFormat != null)
+			{
+				StringBuffer l_StringBuffer = new StringBuffer();
+				i_DecimalFormat.format(a_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
+
+				iS_Text = l_StringBuffer.toString();
+			}
+			else
+			{
+				iS_Text = String.valueOf(a_Float);
+			}
+			if (hasComponentData())
+			{
+				setData(a_Float);
+			}
 		}
-		else
-		{
-			iS_Text = String.valueOf(a_Float);		
-		}
-		if(hasComponentData())
-		{
-			setData(a_Float);
-		}		
 	}
 
 	public void setFloat(float a_float)
 	{
-		if(i_DecimalFormat!=null)
+		if (i_DecimalFormat != null)
 		{
 			StringBuffer l_StringBuffer = new StringBuffer();
 			i_DecimalFormat.format(a_float, l_StringBuffer, new FieldPosition(0));
-			
+
 			iS_Text = l_StringBuffer.toString();
 		}
 		else
 		{
-			iS_Text = String.valueOf(a_float);		
+			iS_Text = String.valueOf(a_float);
 		}
-		if(hasComponentData())
+		if (hasComponentData())
 		{
 			setData(new Float(a_float));
-		}	
+		}
 	}
 
 	private void setText(String aS_Text)
 	{
-		if(aS_Text.trim().equals(""))
+		if (aS_Text.trim().equals(""))
 		{
 			aS_Text = null;
 		}
-		
+
 		iS_Text = aS_Text;
-		validate();
-		
-		if(hasComponentData() && isValid())
+		Float l_Float = stringToFloat(aS_Text);
+		validate(new FloatFieldValidate(this, l_Float));
+
+		if (hasComponentData() && isValid())
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				setData(null);
 			}
 			else
 			{
-				setData(new Float(aS_Text));
+				setData(l_Float);
 			}
-		}		
+		}
 	}
-	
+
+	private Float stringToFloat(String a_String)
+	{
+		try
+		{
+			return new Float(a_String);
+		}
+		catch (NumberFormatException l_NumberFormatException)
+		{
+			return null;
+		}
+	}
+
 	public String getText()
 	{
-		if(hasComponentData() && isValid())
+		if (hasComponentData() && isValid())
 		{
-			Float l_Float = (Float)getData();
-			if(l_Float==null)
+			Float l_Float = (Float) getData();
+			if (l_Float == null)
 			{
 				return "";
 			}
 			else
 			{
-				if(i_DecimalFormat!=null)
+				if (i_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
-					i_DecimalFormat.format(l_Float.intValue(), l_StringBuffer, new FieldPosition(0));			
-					return  Utils.stringToHTML(l_StringBuffer.toString());
+					i_DecimalFormat.format(l_Float.intValue(), l_StringBuffer, new FieldPosition(0));
+					return Utils.stringToHTML(l_StringBuffer.toString());
 				}
 				else
 				{
@@ -190,7 +201,7 @@ public class FloatField extends Component
 		}
 		else
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				return "";
 			}
@@ -200,17 +211,17 @@ public class FloatField extends Component
 			}
 		}
 	}
-	
+
 	public Float getFloat()
 	{
-		if(hasComponentData() && isValid())
+		if (hasComponentData() && isValid())
 		{
-			Float l_Float = (Float)getData();
+			Float l_Float = (Float) getData();
 			return l_Float;
 		}
 		else
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				return null;
 			}
@@ -220,29 +231,29 @@ public class FloatField extends Component
 				{
 					return new Float(iS_Text);
 				}
-				catch(NumberFormatException l_NumberFormatException)
+				catch (NumberFormatException l_NumberFormatException)
 				{
 					return null;
 				}
-				
+
 			}
 		}
 	}
-	
+
 	public float getFloatValue()
 	{
 		Float l_Float = getFloat();
-		
-		if(l_Float==null)
+
+		if (l_Float == null)
 		{
-			return 0; 
+			return 0;
 		}
 		else
 		{
 			return l_Float.floatValue();
 		}
 	}
-	
+
 	public boolean emptyIsValid()
 	{
 		return ib_emptyIsValid;
@@ -256,7 +267,7 @@ public class FloatField extends Component
 		l_FloatField.setNullIsAllowed(isNullAllowed());
 		return l_FloatField;
 	}
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#checkIfNewValues()
 	 */
@@ -297,13 +308,13 @@ public class FloatField extends Component
 	protected void addComponent(Component a_Component)
 	{
 		throw new NoSuchMethodError("Child components are not supported on TimestampField");
-	}	
-	
+	}
+
 	/**
 	 * @see com.sohlman.netform.Component#syncronizeData()
 	 */
 	public void syncronizeData()
 	{
-		
-	}	
+
+	}
 }

@@ -445,7 +445,7 @@ public class Table extends Component
 		if (!i_IntArray_Selection.equals(ai_indexes))
 		{
 			i_IntArray_Selection.setArray(ai_indexes);
-			validate();
+			validate(null);
 
 			if (hasComponentData() && isValid() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
 			{
