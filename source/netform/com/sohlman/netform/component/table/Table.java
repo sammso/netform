@@ -1,3 +1,22 @@
+/*
+NetForm Library
+---------------
+Copyright (C) 2001-2004 - Sampsa Sohlman, Teemu Sohlman
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+*/
 package com.sohlman.netform.component.table;
 
 import java.text.DecimalFormat;
@@ -47,7 +66,6 @@ public class Table extends Component
 
 	private int ii_visibleRows = 0; // 0 all rows are visible
 
-
 	/**
 	 * @param a_Component_Parent
 	 * @param ai_dataColumn to where parent component can optain data
@@ -57,21 +75,20 @@ public class Table extends Component
 		super(a_Component_Parent);
 		setDataColumn(ai_dataColumn);
 	}
-	
+
 	public Table(Component a_Component_Parent)
 	{
 		super(a_Component_Parent);
 		setDataColumn(1);
 	}
-	
-	
+
 	/**
 	 * @param a_Form
-	 */	
+	 */
 	public Table(Form a_Form)
 	{
 		super(a_Form);
-	}	
+	}
 
 	/**
 	 * @param a_Component_Parent
@@ -105,7 +122,7 @@ public class Table extends Component
 		super(a_Form);
 		setTableModel(a_TableModel);
 	}
-	
+
 	/**
 	 * Adds {@link TableModel TableModel} to Table
 	 * <p>
@@ -115,13 +132,13 @@ public class Table extends Component
 	 */
 	public void setTableModel(TableModel a_TableModel)
 	{
-		if(i_TableModel!=null)
+		if (i_TableModel != null)
 		{
 			throw new IllegalStateException("Table model already defined. It is not allowed to reset table model");
 		}
-		
+
 		i_TableModel = a_TableModel;
-		i_TableModel.setTable(this);		
+		i_TableModel.setTable(this);
 	}
 
 	/**
@@ -507,7 +524,7 @@ public class Table extends Component
 		if (!i_IntArray_Selection.equals(ai_indexes))
 		{
 			i_IntArray_Selection.setArray(ai_indexes);
-			
+
 			validate(new TableValidate(this, ai_indexes));
 
 			if (hasComponentData() && isValidWithoutChilds() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
@@ -652,7 +669,7 @@ public class Table extends Component
 
 		ib_componentsHasBeenChanged = true;
 	}
-	
+
 	/**
 	 * <b>JSP use before{@link Form#execute() Form.execute()}</b>
 	 * 
@@ -662,14 +679,14 @@ public class Table extends Component
 	public Component getTableModelComponent(int ai_column)
 	{
 		// TODO: Finish getTableModelComponent
-		if(i_Component_RowModels==null)
+		if (i_Component_RowModels == null)
 		{
 			throw new ArrayIndexOutOfBoundsException("No component at index " + ai_column);
 		}
-		
-		return i_Component_RowModels[ai_column - 1];	
+
+		return i_Component_RowModels[ai_column - 1];
 	}
-	
+
 	/**
 	 * <b>JSP use before{@link Form#execute() Form.execute()}</b>
 	 * <p>
@@ -681,13 +698,13 @@ public class Table extends Component
 	public Table getTableModelTable(int ai_column)
 	{
 		// TODO: Finish getTableModelTable
-		if(i_Component_RowModels==null)
+		if (i_Component_RowModels == null)
 		{
 			throw new ArrayIndexOutOfBoundsException("No component at index " + ai_column);
 		}
-		
-		return (Table)i_Component_RowModels[ai_column - 1];	
-	}	
+
+		return (Table) i_Component_RowModels[ai_column - 1];
+	}
 
 	int insertComponentRow(int ai_before)
 	{
@@ -773,53 +790,49 @@ public class Table extends Component
 	 */
 	public void updateAllComponents()
 	{
-		if (ib_componentsHasBeenChanged)
+		if (i_Component_RowModels == null)
 		{
-
-			if (i_Component_RowModels == null)
-			{
-				return;
-			}
-
-			int li_tableModelCount = i_TableModel.getRowCount();
-
-			if (iAL_TableComponentsInRow == null)
-			{
-				iAL_TableComponentsInRow = new ArrayList();
-			}
-
-			int li_componenRowCount = iAL_TableComponentsInRow.size();
-
-			// Add or remove rows
-
-			if (li_componenRowCount > li_tableModelCount)
-			{
-				int li_count = li_componenRowCount - li_tableModelCount;
-
-				// Remove from last .. faster
-				for (int li_r = 0; li_r < li_count; li_r++)
-				{
-					removeComponentRow(li_componenRowCount - li_r);
-				}
-			}
-			else if (li_componenRowCount < li_tableModelCount)
-			{
-				int li_count = li_tableModelCount - li_componenRowCount;
-				for (int li_r = 0; li_r < li_count; li_r++)
-				{
-					addComponentRow();
-				}
-			}
-
-			// Update all rows
-
-			for (int li_index = 1; li_index <= li_tableModelCount; li_index++)
-			{
-				updateComponentRow(li_index);
-			}
-
-			ib_componentsHasBeenChanged = false;
+			return;
 		}
+
+		int li_tableModelCount = i_TableModel.getRowCount();
+
+		if (iAL_TableComponentsInRow == null)
+		{
+			iAL_TableComponentsInRow = new ArrayList();
+		}
+
+		int li_componenRowCount = iAL_TableComponentsInRow.size();
+
+		// Add or remove rows
+
+		if (li_componenRowCount > li_tableModelCount)
+		{
+			int li_count = li_componenRowCount - li_tableModelCount;
+
+			// Remove from last .. faster
+			for (int li_r = 0; li_r < li_count; li_r++)
+			{
+				removeComponentRow(li_componenRowCount - li_r);
+			}
+		}
+		else if (li_componenRowCount < li_tableModelCount)
+		{
+			int li_count = li_tableModelCount - li_componenRowCount;
+			for (int li_r = 0; li_r < li_count; li_r++)
+			{
+				addComponentRow();
+			}
+		}
+
+		// Update all rows
+
+		for (int li_index = 1; li_index <= li_tableModelCount; li_index++)
+		{
+			updateComponentRow(li_index);
+		}
+
+		ib_componentsHasBeenChanged = false;
 	}
 
 	public void updateComponent(int ai_row, int ai_column)
@@ -971,7 +984,7 @@ public class Table extends Component
 		{
 			String l_String = "";
 			String lS_Format = getColumnFormat(ai_column, l_Object.getClass());
-		
+
 			if (lS_Format != null)
 			{
 				if (java.util.Date.class.isAssignableFrom(l_Object.getClass()))
@@ -984,22 +997,22 @@ public class Table extends Component
 						}
 						l_String = i_SimpleDateFormat.format(l_Object);
 					}
-					catch(Exception l_Exception)		
+					catch (Exception l_Exception)
 					{
 						l_String = l_Object.toString();
 					}
 				}
-				else if(Number.class.isAssignableFrom(l_Object.getClass()))
+				else if (Number.class.isAssignableFrom(l_Object.getClass()))
 				{
 					try
 					{
-						if(i_DecimalFormat==null)
+						if (i_DecimalFormat == null)
 						{
 							i_DecimalFormat = new DecimalFormat(lS_Format);
 						}
-						l_String = i_DecimalFormat.format(((Number)l_Object).doubleValue());
+						l_String = i_DecimalFormat.format(((Number) l_Object).doubleValue());
 					}
-					catch(Exception l_Exception)		
+					catch (Exception l_Exception)
 					{
 						l_String = l_Object.toString();
 					}
@@ -1058,27 +1071,27 @@ public class Table extends Component
 	public boolean getBoolean(int ai_row, int ai_column)
 	{
 		Object l_Object = i_TableModel.getValueAt(ai_row, ai_column);
-		
-		if(l_Object==null)
+
+		if (l_Object == null)
 		{
 			return false;
 		}
-		
-		if(Boolean.class == l_Object.getClass())
+
+		if (Boolean.class == l_Object.getClass())
 		{
-			return ((Boolean)l_Object).booleanValue();
+			return ((Boolean) l_Object).booleanValue();
 		}
-		if(Number.class.isAssignableFrom(l_Object.getClass()))
+		if (Number.class.isAssignableFrom(l_Object.getClass()))
 		{
-			return((Number)l_Object).longValue() != 0;			
+			return ((Number) l_Object).longValue() != 0;
 		}
-		if(String.class == l_Object.getClass())
+		if (String.class == l_Object.getClass())
 		{
-			return ((String)l_Object).trim().equals("");
+			return ((String) l_Object).trim().equals("");
 		}
 		return false;
 	}
-	
+
 	/** 
 	 * JSP Evaluates according to some rules.
 	 * 
@@ -1087,12 +1100,12 @@ public class Table extends Component
 	 * @param ai_row row number
 	 * @param aS_ColumnName Column name
 	 * @return true or false see the table
-	 */	
+	 */
 	public boolean getBoolean(int ai_row, String aS_ColumnName)
 	{
 		return getBoolean(ai_row, i_TableModel.getIndexByName(aS_ColumnName));
 	}
-	
+
 	/**
 	 * <b>JSP</b>
 	 * <p>
@@ -1113,7 +1126,7 @@ public class Table extends Component
 		else
 		{
 			return aS_False;
-		}		
+		}
 	}
 	/**
 	 * <b>JSP</b>
@@ -1125,7 +1138,7 @@ public class Table extends Component
 	 * @param aS_True String to be returned if it is evaluated as true
 	 * @param aS_False String to be returned if it is evaluated as false
 	 * @return String 
-	 */	
+	 */
 	public String getStringFromBoolean(int ai_row, String aS_ColumnName, String aS_True, String aS_False)
 	{
 		if (getBoolean(ai_row, aS_ColumnName))
@@ -1135,8 +1148,8 @@ public class Table extends Component
 		else
 		{
 			return aS_False;
-		}		
-	}	
+		}
+	}
 
 	/**
 	 * For JSP use
@@ -1373,6 +1386,8 @@ public class Table extends Component
 		l_Table.ii_dataColumn = ii_dataColumn;
 		l_Table.ib_multiSelection = ib_multiSelection;
 		l_Table.iAL_ColumnFormats = iAL_ColumnFormats;
+		l_Table.setComponentValidator(this.getComponentValidator());
+		l_Table.shareComponentListenerFrom(this);
 
 		return l_Table;
 	}
@@ -1384,7 +1399,7 @@ public class Table extends Component
 	{
 		super.lastComponentIteration();
 
-		if(i_TableModel==null)
+		if (i_TableModel == null)
 		{
 			throw new IllegalStateException("No TableModel defined for Table");
 		}
@@ -1479,11 +1494,11 @@ public class Table extends Component
 		if (iAL_ColumnFormats.size() < ai_column)
 		{
 			int li_index = iAL_ColumnFormats.size();
-			for( ; li_index < ai_column ; li_index++ )
+			for (; li_index < ai_column; li_index++)
 			{
 				iAL_ColumnFormats.add(null);
 			}
-			
+
 		}
 		iAL_ColumnFormats.set(ai_column - 1, aS_Format);
 	}
