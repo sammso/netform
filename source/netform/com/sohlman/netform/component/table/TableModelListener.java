@@ -17,28 +17,25 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 */
-package com.sohlman.netform.taglib;
-
-import javax.servlet.jsp.JspException;
+package com.sohlman.netform.component.table;
 
 /**
  * @author Sampsa Sohlman
  */
-public class IsValidTag extends ComponentTag
-{	
+public interface TableModelListener
+{
+	// Action
+	public final static int INSERTROW = 1;
+	public final static int DELETEROW = 2;
+	public final static int ROWMODIFIED = 3;
+	public final static int UPDATEALL = 4;
+	public final static int COLUMNCHANGED = 5;
 	/**
-	 * @see javax.servlet.jsp.tagext.Tag#doStartTag()
+	 * This method is called when TableModel is changed.
+	 * 
+	 * @param ai_row
+	 * @param ai_column
+	 * @param ai_action
 	 */
-	public int doStartTag() throws JspException
-	{
-		return 0;
-	}
-
-	/**
-	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
-	 */
-	public int doEndTag() throws JspException
-	{
-		return 0;
-	}
+	public void tableModelChanged(int ai_row, int ai_column, int ai_action);
 }

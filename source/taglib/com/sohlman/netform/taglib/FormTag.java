@@ -60,7 +60,13 @@ public class FormTag extends MasterTag
 	 */
 	public int doStartTag() throws JspException
 	{
-		i_Form = (Form)i_PageContext.getAttribute(FORM);
+		i_Form = (Form)i_PageContext.getRequest().getAttribute(FORM);
+		
+		if(i_Form==null)
+		{
+			throw new JspException("Form is not defined you have to specify that by using init tag");
+		}
+		
 		try
 		{
 			i_PageContext.getOut().print("<form");

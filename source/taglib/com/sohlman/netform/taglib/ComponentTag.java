@@ -1,7 +1,27 @@
+/*
+NetForm Library
+---------------
+Copyright (C) 2001-2004 - Sampsa Sohlman, Teemu Sohlman
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+*/
 package com.sohlman.netform.taglib;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
@@ -97,7 +117,7 @@ public abstract class ComponentTag extends MasterTag
 			}
 			else
 			{
-				i_Form = (Form) i_PageContext.getAttribute(MasterTag.FORM);
+				i_Form = (Form) i_PageContext.getRequest().getAttribute(MasterTag.FORM);
 
 				if(i_Form == null)
 				{
@@ -139,18 +159,29 @@ public abstract class ComponentTag extends MasterTag
 	 * @param aS_Component
 	 * @return
 	 */
-	private Field getDeclaredField(Class a_Class, String aS_Component)
+	private Field getDeclaredField(Class a_Class, String aS_Component) throws JspException
 	{
 		try
 		{
-			Field l_Field = a_Class.getDeclaredField(aS_Component);
+			Field l_Field = a_Class.getField(aS_Component);
 
 			return l_Field;
 		}
 		catch (NoSuchFieldException l_NoSuchFieldException)
 		{
-			System.out.println(aS_Component + " not found");
-			return null;
+			Field[] l_Fields = a_Class.getFields();
+			
+			StringBuffer lSb_Error = new StringBuffer();
+			for(int li_x = 0 ; li_x < l_Fields.length ; li_x++ )
+			{
+				lSb_Error.append("\t\t");
+				lSb_Error.append(l_Fields[li_x].getType().getName());
+				lSb_Error.append(" ");
+				lSb_Error.append(l_Fields[li_x].getName());
+				lSb_Error.append("\n");
+			}
+			
+			throw new JspException("Component named " + aS_Component + " not found from " + a_Class + "\n Following fields found:\n" + lSb_Error.toString(),l_NoSuchFieldException);
 		}
 	}
 

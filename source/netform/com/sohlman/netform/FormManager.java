@@ -45,6 +45,7 @@ public class FormManager implements HttpSessionListener
 	private String iS_NextPageAfterLogin = null;
 	private Hashtable i_Hashtable = null; 
 	private Hashtable iHs_Portlets = null;
+	private HttpSession i_HttpSession = null;
 
 	protected FormManager()
 	{
@@ -290,6 +291,7 @@ public class FormManager implements HttpSessionListener
 		{
 			l_FormManager = new FormManager();
 			l_FormManager.iS_NextPageAfterLogin = a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath();
+			l_FormManager.i_HttpSession = l_HttpSession;
 			l_HttpSession.setAttribute(FormManager.FORM_MANAGER, l_FormManager);
 
 			throw new DoRedirectException(aS_LoginPage);
@@ -436,5 +438,15 @@ public class FormManager implements HttpSessionListener
 		{
 			return true;
 		}
+	}
+	
+	/**
+	 * Return current HttpSession
+	 * 
+	 * @return HttpSession
+	 */
+	public HttpSession getHttpSession()
+	{
+		return i_HttpSession;
 	}
 }

@@ -25,6 +25,7 @@ import java.util.Iterator;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>Form is place where to put your form logic 
@@ -676,5 +677,15 @@ public abstract class Form
 		{
 			ib_isSessionOutOfSync = true;
 		}		
+	}
+	
+	/**
+	 * Returns current HttpSession
+	 * 
+	 * @return HttpSession
+	 */
+	public HttpSession getHttpSession()
+	{
+		return getFormManager().getHttpSession();
 	}
 }

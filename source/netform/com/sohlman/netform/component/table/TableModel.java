@@ -22,6 +22,8 @@ package com.sohlman.netform.component.table;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import com.sohlman.netform.NotSupportedException;
+
 /**
  * Table model for Table component<br>
  * 1st row is 1 and last is getRowCount()
@@ -29,6 +31,8 @@ import java.util.Iterator;
  * <br>
  * Multiple tables may be connected to throuh this table model.
  * @author Sampsa Sohlman
+ *
+ * TODO: Table update through TableModelListener
  *
  * Version: 13.8.2003
  *
@@ -38,6 +42,7 @@ public abstract class TableModel
 {
 	private HashSet iHS_Tables;
 	private Table i_Table;
+	private HashSet iHS_TableModelListener;
 
 	/**
 	 * Add's new row to end of Table
@@ -104,6 +109,17 @@ public abstract class TableModel
 				l_Table.insertComponentRow(ai_before);
 			}
 		}
+		if(iHS_TableModelListener!=null)
+		{
+			Iterator l_Iterator = iHS_TableModelListener.iterator();
+
+			while (l_Iterator.hasNext())
+			{
+				
+				TableModelListener l_TableModelListener = (TableModelListener) l_Iterator.next();
+				l_TableModelListener.tableModelChanged(ai_before,0,TableModelListener.INSERTROW);
+			}			
+		}
 	}
 
 	/**
@@ -121,6 +137,15 @@ public abstract class TableModel
 				l_Table.removeComponentRow(ai_index);
 			}
 		}
+		if(iHS_TableModelListener!=null)
+		{
+			Iterator l_Iterator = iHS_TableModelListener.iterator();
+			while (l_Iterator.hasNext())
+			{				
+				TableModelListener l_TableModelListener = (TableModelListener) l_Iterator.next();
+				l_TableModelListener.tableModelChanged(ai_index,0,TableModelListener.DELETEROW);
+			}
+		}
 	}
 
 	/**
@@ -136,6 +161,15 @@ public abstract class TableModel
 			{
 				Table l_Table = (Table) l_Iterator.next();
 				l_Table.updateAllComponents();
+			}
+		}
+		if(iHS_TableModelListener!=null)
+		{
+			Iterator l_Iterator = iHS_TableModelListener.iterator();
+			while (l_Iterator.hasNext())
+			{				
+				TableModelListener l_TableModelListener = (TableModelListener) l_Iterator.next();
+				l_TableModelListener.tableModelChanged(0,0,TableModelListener.UPDATEALL);
 			}
 		}
 	}
@@ -158,6 +192,17 @@ public abstract class TableModel
 				l_Table.updateComponent(ai_row, ai_column);
 			}
 		}
+		if(iHS_TableModelListener!=null)
+		{
+			Iterator l_Iterator = iHS_TableModelListener.iterator();
+
+			while (l_Iterator.hasNext())
+			{
+				
+				TableModelListener l_TableModelListener = (TableModelListener) l_Iterator.next();
+				l_TableModelListener.tableModelChanged(ai_row, ai_column, TableModelListener.COLUMNCHANGED);
+			}			
+		}		
 	}
 
 	/**
@@ -231,5 +276,18 @@ public abstract class TableModel
 	public boolean isNew(int ai_index)
 	{
 		return false;
+	}
+	
+	/**
+	 * <p>get's object which implements row item.
+	 * <p>Implementation of this method is optional.
+	 * 
+	 * @param ai_index
+	 * @return Object
+	 * @throws NotSupportedException if this feature is not supported.
+	 */
+	public Object getRowItem(int ai_index)
+	{
+		throw new NotSupportedException(this.getClass() + " doesn't support getRowItem(int) method");
 	}
 }

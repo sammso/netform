@@ -19,8 +19,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform.component;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.sohlman.netform.Component;
 import com.sohlman.netform.Form;
 import com.sohlman.netform.Utils;
@@ -46,6 +44,33 @@ public class TextField extends Component
 		super(a_Component_Parent);
 	}
 
+	/**
+	 * @param a_Component_Parent Parent component
+	 * @param ab_isEmptyNull if empty value is considered as null
+	 * @param ab_isNullAllowed is null allowed
+	 * @param ab_isTrim if spaces are trimmed automaticly out
+	 */
+	public TextField(Component a_Component_Parent, boolean ab_isEmptyNull, boolean ab_isNullAllowed, boolean ab_isTrim )
+	{
+		super(a_Component_Parent);
+		ib_isEmptyNull = ab_isEmptyNull;
+		ib_isNullAllowed = ab_isNullAllowed;
+		ib_isTrim = ab_isTrim;
+	}	
+	/**
+	 * @param a_Form Form
+	 * @param ab_isEmptyNull if empty value is considered as null
+	 * @param ab_isNullAllowed is null allowed
+	 * @param ab_isTrim if spaces are trimmed automaticly out
+	 */
+	public TextField(Form a_Form, boolean ab_isEmptyNull, boolean ab_isNullAllowed, boolean ab_isTrim )
+	{
+		super(a_Form);
+		ib_isEmptyNull = ab_isEmptyNull;
+		ib_isNullAllowed = ab_isNullAllowed;
+		ib_isTrim = ab_isTrim;
+	}	
+	
 	public TextField(Form a_Form)
 	{
 		super(a_Form);
@@ -288,8 +313,7 @@ public class TextField extends Component
 	 */
 	public void validate()
 	{
-		// SetText to validate
-		setText(iS_Text);
+		validate(new TextFieldValidate(this,iS_Text));
 	}
 
 }

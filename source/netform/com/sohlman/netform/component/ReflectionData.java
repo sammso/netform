@@ -29,7 +29,7 @@ public class ReflectionData extends Object implements ComponentData
 	 * @param setMethod
 	 */
 	public ReflectionData(Object objectToBeReflected, String getMethod, String setMethod)
-	{
+	{		
 		setObjectToBeReflected(objectToBeReflected);
 		assignGetMethod(getMethod);
 		assignSetMethod(setMethod);
@@ -40,6 +40,11 @@ public class ReflectionData extends Object implements ComponentData
 	 */
 	public void setObjectToBeReflected(Object objectToBeReflected)
 	{
+		if(objectToBeReflected==null)
+		{
+			throw new NullPointerException("null object cannot be reflected");
+		}
+		
 		this.object = objectToBeReflected;
 		this.reflectionClass = objectToBeReflected.getClass();
 	}
@@ -62,8 +67,10 @@ public class ReflectionData extends Object implements ComponentData
 			if(methods[index].getName().equals(getMethod))
 			{
 				this.getMethod = methods[index];
+				return;
 			}
 		}
+		throw new NetFormException("Method " + getMethod + " not found form " + reflectionClass.getName());
 	}
 
 	/**
@@ -113,7 +120,7 @@ public class ReflectionData extends Object implements ComponentData
 	{
 		try 
 		{
-			return this.setMethod.invoke(this.object, null);
+			return this.getMethod.invoke(this.object, null);
 		}
 		catch(Exception l_Exception)
 		{

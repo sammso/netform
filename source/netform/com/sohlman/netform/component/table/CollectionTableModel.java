@@ -81,6 +81,21 @@ public abstract class CollectionTableModel extends TableModel
 	}
 
 	/**
+	 * Set column name for specified column
+	 * 
+	 * @param aS_Name
+	 * @param ai_column
+	 */
+	public void setColumnName(String aS_Name, int ai_column)
+	{
+		if(iS_ColumnNames == null)
+		{
+			iS_ColumnNames = new String[getColumnCount()];
+		}
+		iS_ColumnNames[ai_column - 1] = aS_Name;
+	}
+
+	/**
 	 * @see com.sohlman.netform.component.table.TableModel#add()
 	 */
 	public int add()
@@ -93,9 +108,9 @@ public abstract class CollectionTableModel extends TableModel
 	 */
 	public int insert(int ai_before)
 	{
-		if(i_Collection == null)
+		if(i_List == null)
 		{
-			throw new IllegalStateException("List is not defined");
+			throw new IllegalStateException("Collection is not defined");
 		}
 
 		if(ai_before < 1 || ai_before > (getRowCount() + 1))
@@ -129,7 +144,7 @@ public abstract class CollectionTableModel extends TableModel
 
 	private boolean isList()
 	{
-		return i_Collection==null;
+		return i_Collection == null;
 	}
 
 	/**
@@ -151,18 +166,17 @@ public abstract class CollectionTableModel extends TableModel
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to delete row from out of range");
 		}
-		if(isList())
+
+		Object l_Object = i_List.get(ai_row - 1);
+		i_List.remove(ai_row - 1);
+		if(!isList())
 		{
-			Object l_Object = i_List.get(ai_row - 1);
-			i_List.remove(ai_row - 1);
-			i_Collection.remove(l_Object);			
-		}
-		else
-		{
-			Object l_Object = findObject(ai_row);
 			i_Collection.remove(l_Object);
 		}
 		fireDelete(ai_row);
+
+		rowDeleted(ai_row, l_Object);
+
 		return ai_row;
 	}
 
@@ -178,14 +192,14 @@ public abstract class CollectionTableModel extends TableModel
 			{
 				return null;
 			}
-			
+
 			Iterator l_Iterator = i_Collection.iterator();
 			int li_row = 1;
 			while (l_Iterator.hasNext())
 			{
 				Object l_Object = l_Iterator.next();
-				
-				if(li_row==ai_row)
+
+				if(li_row == ai_row)
 				{
 					return l_Object;
 				}
@@ -220,10 +234,7 @@ public abstract class CollectionTableModel extends TableModel
 	/**
 	 * @see com.sohlman.netform.component.table.TableModel#getColumnCount()
 	 */
-	public int getColumnCount()
-	{
-		return iS_ColumnNames.length;
-	}
+	public abstract int getColumnCount();
 
 	/**
 	 * @see com.sohlman.netform.component.table.TableModel#getValueAt(int, int)
@@ -352,13 +363,13 @@ public abstract class CollectionTableModel extends TableModel
 	{
 		if(isList())
 		{
-			return i_List;	
+			return i_List;
 		}
 		else
 		{
 			throw new NotSupportedException("CollectionTableModel contains Collection not list");
 		}
-		
+
 	}
 
 	/**
@@ -367,5 +378,31 @@ public abstract class CollectionTableModel extends TableModel
 	public Collection getCollection()
 	{
 		return i_Collection;
+	}
+
+	/**
+	 * If after delete the has to do something for deleted object, it is
+	 * possible to do here.
+	 * 
+	 * @param ai_row
+	 * @param a_Object
+	 */
+	public void rowDeleted(int ai_row, Object a_Object)
+	{
+	}
+
+	/**
+	 * @see com.sohlman.netform.component.table.TableModel#getRowItem(int)
+	 */
+	public Object getRowItem(int ai_index)
+	{
+		if(i_Collection != null)
+		{
+			return i_List.get(ai_index - 1);
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
