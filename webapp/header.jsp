@@ -6,35 +6,31 @@ String basePath = "http://"+request.getServerName()+":"+request.getServerPort()+
 <html>
 	<head>
 		<base href="<%=basePath%>">
-		<meta http-equiv="Content-Language" content="en"/>
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
+		<meta http-equiv="Content-Language" content="en">
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 		<title>NetForm - Test Application
 		</title>
-		<link rel="stylesheet" type="text/css" href="css.css"/>
+		<link rel="stylesheet" type="text/css" href="css.css">
 	</head>
 	<body bgcolor="#AAAAAA">
-		<table cellpadding="20" cellspacing="20" bgcolor="#FFFFFF" width="800" align="center">
+		<table cellpadding="20" cellspacing="20" bgcolor="#FFFFFF" width="790" align="center">
 			<tr>
-				<td height="100%">
-					<table border="0" cellspacing="0" cellpadding="0" align="center">
-						<tr>
-							<td width="100%" colspan="3" height="21" bgcolor="#FFFFFF" valign="top">
-								<table border="0" cellpadding="0" cellspacing="0" width="100%">
-									<tr>
-										<td valign="middle" width="10%"><img src="logo.gif" alt=""/><br/><img src="1x1.gif" height="2" alt=""/></td>
-										<td valign="middle" class="pagetitle" width="90%">  NetForm test application</td>
-									</tr>
-								</table>
-							</td>
+				<td>
+					<table border="0" cellspacing="0" cellpadding="0" align="center" width="750">
+						<tr> 
+						  <td valign="middle" width="130" colspan="3"><img src="logo.gif" alt=""></td>
+						  <td valign="middle" class="pagetitle" width="620">NetForm test application</td>
+						</tr>
+						<tr> 
+						  <td colspan="4" valign="middle" bgcolor="#0313DD"><img src="1x1.gif" border="0" height="2" alt=""></td>
 						</tr>
 						<tr>
-							<td width="100%" colspan="3" valign="middle" bgcolor="#0313DD"><img src="1x1.gif" border="0" height="2" alt=""/></td>
-						</tr>
-						<tr>
-							<td width="20%" valign="top">
-							<jsp:include page="navigation.jsp" />
+							<td width="1" bgcolor="#0313DD"><img src="1x1.gif" border="0" height="1" width="1"></td>
+							<td width="128" valign="top">
+<jsp:include page="navigation.jsp" />
 							</td>
-							<td width="80%" valign="top">
-								<table cellpadding="0" cellspacing="5">
+							<td width="1" bgcolor="#0313DD"><img src="1x1.gif" border="0" height="1" width="1"></td>
+							<td width="620" valign="top">
+								<table border="0" cellpadding="10" cellspacing="10" >
 									<tr>
 										<td>

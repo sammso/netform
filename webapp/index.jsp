@@ -1,6 +1,6 @@
 <%@ page language="java" import="com.sohlman.netform.*" %>
 					<jsp:include page="header.jsp" />
-						<h1>NetForm test application v0.63</h1>
+						<h1>NetForm test application v0.64</h1>
 						<h2>Introduction</h2>
 						<p>NetForm example application is test and show case of NetForm framework 
 						features and capabilities. </p>
@@ -21,9 +21,10 @@
 						<h2>Fields form(<a href="fields.jsp">fields.jsp</a>)</h2>
 						<p>Fields form is example of NetForm fields. There is Components like Button, TextField, NumberField, TimestampField and Table.</p>
 						<p>This example also is showing the form ability to validate itself from 
-						components. Form also don't let you go to <a href="table1.jsp">Table form</a> until your the form is validated. This is done by redirecting you back to Fieds form. 
-						This feature can be used as example to segure that user have save changes before leaving form. 
-						Form is validated everytime when button is pressed or page contest is send to server.</p>
+						components. Form is validated everytime when button is pressed or page contest is send to server.</p>
+						<h2>Has to valid form (<a href="hastobevalid.jsp">hastobevalid.jsp</a>)</h2>
+						<p>This is validation example, which shows netform ability to prevent to move another page if form is not valid.
+						</p>
 						<h2>1. Table form (<a href="table1.jsp">table1.jsp</a>)</h2>
 						<p>One of the power of the Netform is it's ability maintain table form data with Table component. 
 						This table component is exactly same as used in Fields example, but it has been layouted little bit different way and also TextFields has been connected to
@@ -31,6 +32,10 @@
 						</p>
 						<h2>2. Table form (<a href="table2.jsp">table2.jsp</a>)</h2>
 						<p>This is another example of Table form. Table itself can be used as Table component. 
-						</p>						
+						</p>
+						<h2>3. Table Example (<a href="table3.jsp">table3.jsp</a>)</h2>
+						<p>To show how to put Button inside table and catch events from that Button.</p>
+						<h2>Tabs Example (<a href="container1.jsp">container1.jsp</a>)</h2>
+						<p>This shows how to make server side tab sheets by using Container component.</p>						
 					<jsp:include page="footer.jsp" />						
 							

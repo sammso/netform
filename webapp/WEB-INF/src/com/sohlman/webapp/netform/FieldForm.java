@@ -13,11 +13,13 @@ import com.sohlman.netform.component.FloatField;
 import com.sohlman.netform.component.IntegerField;
 import com.sohlman.netform.component.LongField;
 import com.sohlman.netform.component.LongFieldValidate;
+import com.sohlman.netform.component.PasswordField;
 import com.sohlman.netform.component.TextField;
 import com.sohlman.netform.component.TextFieldValidate;
 import com.sohlman.netform.component.TimestampField;
 import com.sohlman.netform.component.table.SimpleTableModel;
 import com.sohlman.netform.component.table.Table;
+import com.sohlman.netform.component.table.TableValidate;
 
 /**
  * 
@@ -25,31 +27,6 @@ import com.sohlman.netform.component.table.Table;
  */ 
 public class FieldForm extends MasterForm
 {   
-	public TextField textField = new TextField(this);
-	public IntegerField integerField = new IntegerField(this);
-	public FloatField floatField = new FloatField(this);
-	public DoubleField doubleField = new DoubleField(this);
-	public LongField longField = new LongField(this);
-	public TimestampField timestampField = new TimestampField(this);
-	public Button increaseIntButton = new Button(this);
-	public Button decreaseIntButton = new Button(this);
-	public Button tomorrowButton = new Button(this);
-	public Button yesterdayButton = new Button(this);
-	public Button nextMonthButton = new Button(this);
-	public Button previousMonthButton = new Button(this);
-	public Button todayButton = new Button(this);
-
-	public Button textToTableButton = new Button(this);
-	public Button timestampToTableButton = new Button(this);
-	public Button integerToTableButton = new Button(this);
-	public Button longToTableButton = new Button(this);
-	public Button floatToTableButton = new Button(this);
-	public Button doubleToTableButton = new Button(this);	
-	public Button deleteSelectedFromTableButton = new Button(this);
-	public Table table = new Table(this, new SimpleTableModel());
-	//Table i_Table_Second = new Table(this, new SimpleTableModel());
-
-	//Datefield l_Datefield = new Datefield(this);
 
 	ComponentListener i_ComponentListener = new ComponentListener()
 	{
@@ -132,7 +109,7 @@ public class FieldForm extends MasterForm
 				if (timestampField.isValid())
 				{
 					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
-					l_SimpleTableModel.addValue(timestampField.getText());
+					l_SimpleTableModel.addValue(timestampField.getTextByFormat("dd.MM.yyyy HH:mm"));
 				}
 			}
 			else if (a_Component == textToTableButton)
@@ -166,7 +143,15 @@ public class FieldForm extends MasterForm
 					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
 					l_SimpleTableModel.addValue(longField.getText());
 				}
-			}			
+			}
+			else if(a_Component == passwordToTableButton)
+			{
+				if(firstPasswordField.isValid() && secondPasswordField.isValid())
+				{
+					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
+					l_SimpleTableModel.addValue(firstPasswordField.getPassword());					
+				}
+			}
 		}
 	};
 
@@ -192,7 +177,7 @@ public class FieldForm extends MasterForm
 					return false;
 				}
 			}
-			if(a_Validate.getSource() == longField)
+			else if(a_Validate.getSource() == longField)
 			{
 				Long l_Long =((LongFieldValidate)a_Validate).getLong();
 				if(l_Long==null)
@@ -203,29 +188,91 @@ public class FieldForm extends MasterForm
 				
 				return ll_value >= 1 && ll_value <= 20;	
 			}
+			else if(a_Validate.getSource() == table)
+			{
+				int[] li_selection =((TableValidate)a_Validate).getSelectedItems();
+				int li_rowCount = ((Table)a_Validate.getSource()).getTableModel().getRowCount();
+				return li_rowCount>0;
+			}			
+			else if(a_Validate.getSource() == firstPasswordField ) 
+			{
+				TextFieldValidate l_TextFieldValidate = (TextFieldValidate)a_Validate;
+				
+				if(l_TextFieldValidate.getText().length() > 6 && l_TextFieldValidate.getText().equals(secondPasswordField.getPassword()))
+				{
+					secondPasswordField.setValid(true);
+					return true;
+				}
+				else
+				{
+					secondPasswordField.setValid(false);
+					return false;
+				}
+			}
+			else if(a_Validate.getSource() == secondPasswordField )
+			{
+				TextFieldValidate l_TextFieldValidate = (TextFieldValidate)a_Validate;
+				 	
+				if(l_TextFieldValidate.getText().length() > 6 && l_TextFieldValidate.getText().equals(firstPasswordField.getPassword()))
+				{
+					firstPasswordField.setValid(true);
+					return true;
+				}
+				else
+				{
+					firstPasswordField.setValid(false);
+					return false;					
+				}								
+			}
+			else if(a_Validate.getSource() == table)
+			{
+				// Validate Table
+				return table.getTableModel().getRowCount() > 0;
+			}
+			
 			return false;
-
 		}
 	};
 
-	public void init()
+	public PasswordField firstPasswordField = new PasswordField(this);
+	public PasswordField secondPasswordField = new PasswordField(this);
+	public TextField textField = new TextField(this);
+	public IntegerField integerField = new IntegerField(this);
+	public FloatField floatField = new FloatField(this);
+	public DoubleField doubleField = new DoubleField(this);
+	public LongField longField = new LongField(this);
+	public TimestampField timestampField = new TimestampField(this);
+	public Button increaseIntButton = new Button(this);
+	public Button decreaseIntButton = new Button(this);
+	public Button tomorrowButton = new Button(this);
+	public Button yesterdayButton = new Button(this);
+	public Button nextMonthButton = new Button(this);
+	public Button previousMonthButton = new Button(this);
+	public Button todayButton = new Button(this);
+	public Button passwordToTableButton = new Button(this); 
+
+	public Button textToTableButton = new Button(this);
+	public Button timestampToTableButton = new Button(this);
+	public Button integerToTableButton = new Button(this);
+	public Button longToTableButton = new Button(this);
+	public Button floatToTableButton = new Button(this);
+	public Button doubleToTableButton = new Button(this);	
+	public Button deleteSelectedFromTableButton = new Button(this);
+	public Table table = new Table(this, new SimpleTableModel());
+
+	public FieldForm()
 	{
-		// Set first dafault values
-		// To timestamp field
-		timestampField.setTimestamp(new Timestamp(System.currentTimeMillis()));
-
-		// To NumberField
-		integerField.setInt(11);
-		doubleField.setDouble(15);
-		floatField.setFloat(20);
-		
-
 		textField.setComponentValidator(i_ComponentValidator);
 		longField.setComponentValidator(i_ComponentValidator);
+		firstPasswordField.setComponentValidator(i_ComponentValidator);
+		secondPasswordField.setComponentValidator(i_ComponentValidator);
+		
 
 		// Set multiselection true so that it is posible select
 		// multiple items also server side
-		table.setMultiSelection(true);
+
+
+		
 		// Register listeners
 		decreaseIntButton.addComponentListener(i_ComponentListener);
 		increaseIntButton.addComponentListener(i_ComponentListener);
@@ -241,6 +288,21 @@ public class FieldForm extends MasterForm
 		doubleToTableButton.addComponentListener(i_ComponentListener);
 		floatToTableButton.addComponentListener(i_ComponentListener);
 		deleteSelectedFromTableButton.addComponentListener(i_ComponentListener);
+		passwordToTableButton.addComponentListener(i_ComponentListener);
+		table.setComponentValidator(i_ComponentValidator);
+		table.setMultiSelection(true);				
+	}
+
+	public void init()
+	{
+		// Set first dafault values
+		// To timestamp field
+		timestampField.setTimestamp(new Timestamp(System.currentTimeMillis()));
+
+		// To NumberField
+		integerField.setInt(11);
+		doubleField.setDouble(15);
+		floatField.setFloat(20);
 	}
 	
 	

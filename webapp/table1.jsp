@@ -13,6 +13,7 @@
 %> 
 <jsp:include page="header.jsp" />
 <h1>1. Table Example <% if(!form.isValid()) {%>(form is not valid)<% } %></h1>
+<h2>Introduction</h2>
 <p>This case demonstrate NetForm table component with field components inside, 
 it also demonstrates the validation of fields inside of Table. 
 Form is not valid if all components are not valid. 
@@ -25,21 +26,21 @@ Not valid fields are shown as <b class="pink" >Pink</b></p>
 	<li>Birthday has to be date format (yyyy-MM-dd)</li>
 </ul>
 <p>This is using <a href="http://dataset.sohlman.com">DataSet</a> as internal datastore</p>
-<form method="POST" action="<%=form.getRequestURI() %>">
-<table>
+<form method="POST" action="<%=form.getPostAction() %>">
+<table width="480">
 	<tr>
-		<th>Selected</th><th>Number</th><th>First name</th><th>Last name</th><th>Birthdate</th>
+		<th width="80">Selected</th><th width="100">Number</th><th width="100">First name</th><th  width="100">Last name</th><th  width="100">Birthdate</th>
 	</tr><% 
 			for(int li_y = 1 ; li_y <= form.table.getDisplayRowCount()  ; li_y++)
 			{ %>
 	<tr>
-		<td>
+		<td align="center">
 			<input type="checkbox" name="<%=form.table.getResponseName() %>"  value="<%=form.table.getRowId(li_y) %>"<%=form.table.getStringIfRowSelected(li_y, " checked") %>>
 		</td>
-		<td><input type="text" name="<%=form.table.getComponentAt(li_y,1).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,1).getText() %>" <%=form.table.getComponentAt(li_y, 1).getStringIfIsNotValid("class=\"notvalid\"") %>></td>		
-		<td><input type="text" name="<%=form.table.getComponentAt(li_y,2).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,2).getText() %>" <%=form.table.getComponentAt(li_y, 2).getStringIfIsNotValid("class=\"notvalid\"") %>></td>
-		<td><input type="text" name="<%=form.table.getComponentAt(li_y,3).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,3).getText() %>" <%=form.table.getComponentAt(li_y, 3).getStringIfIsNotValid("class=\"notvalid\"") %>></td>
-		<td><input type="text" name="<%=form.table.getComponentAt(li_y,4).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,4).getText() %>" <%=form.table.getComponentAt(li_y, 4).getStringIfIsNotValid("class=\"notvalid\"") %>></td>
+		<td align="center"><input style="width: 90;" type="text" name="<%=form.table.getComponentAt(li_y,1).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,1).getText() %>" <%=form.table.getComponentAt(li_y, 1).getStringIfIsNotValid("class=\"notvalid\"") %>></td>		
+		<td align="center"><input style="width: 90;" type="text" name="<%=form.table.getComponentAt(li_y,2).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,2).getText() %>" <%=form.table.getComponentAt(li_y, 2).getStringIfIsNotValid("class=\"notvalid\"") %>></td>
+		<td align="center"><input style="width: 90;" type="text" name="<%=form.table.getComponentAt(li_y,3).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,3).getText() %>" <%=form.table.getComponentAt(li_y, 3).getStringIfIsNotValid("class=\"notvalid\"") %>></td>
+		<td align="center"><input style="width: 90;" type="text" name="<%=form.table.getComponentAt(li_y,4).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,4).getText() %>" <%=form.table.getComponentAt(li_y, 4).getStringIfIsNotValid("class=\"notvalid\"") %>></td>
 	</tr><%
 			} 
 	%></table>

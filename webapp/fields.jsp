@@ -5,34 +5,36 @@
 	{
 		form = (FieldForm)FormManager.getForm(request, response, getServletContext(),FieldForm.class, "login.jsp");
 		form.integerField.setFormat("00000");
-		form.timestampField.setFormat("yyyy-MM-dd");
+		form.timestampField.setTimeFormat("HH:mm");
+		form.timestampField.setDateFormat("yyyy-MM-dd");
 		form.execute();
 %>
 <jsp:include page="header.jsp" />
 <h1>Field Example <% if(!form.isValid()) {%>(form is not valid)<% } %></h1>
-<p>This case demonstrates NetForm different field types and validation system. 
+<p>This case demonstrates NetForm different field types and validation system.
 If one field is not valid then whole form is not valid. 
 Not valid fields are shown as <b class="pink" >Pink</b></p>
 <p>Only valid field can inserted to Table Component</p>
-<form method="POST" action="<%=form.getRequestURI() %>">
-<table>
+<form method="POST" action="<%=form.getPostAction() %>">
+<table border="0" width="580">
 	<tr>
 		<td class="text">TextField<br>component<br><i>Valid when contains 1 - 20 characters</i></td>
-		<td colspan="2"><input type="text" name="<%=form.textField.getResponseName() %>" value="<%=form.textField.getText() %>" <%=form.textField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
+		<td colspan="2"><input  style="width: 215px;" type="text" name="<%=form.textField.getResponseName() %>" value="<%=form.textField.getText() %>" <%=form.textField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
 	</tr>
 	<tr>  
 		<td class="text">IntegerField component<br></td>
-		<td><input type="text" name="<%=form.integerField.getResponseName() %>" value="<%=form.integerField.getText() %>" <%=form.integerField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
-		<td><input name="<%=form.increaseIntButton.getResponseName() %>" type="submit" value="+" class="submit"> - <input name="<%=form.decreaseIntButton.getResponseName() %>" type="submit" value="-" class="submit"></td>
+		<td><input style="width: 215px;" type="text" name="<%=form.integerField.getResponseName() %>" value="<%=form.integerField.getText() %>" <%=form.integerField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
+		<td><input style="width: 30px;" name="<%=form.increaseIntButton.getResponseName() %>" type="submit" value="+" class="submit">
+        <input style="width: 30px;" name="<%=form.decreaseIntButton.getResponseName() %>" type="submit" value="-" class="submit"></td>
 	</tr>
 	<tr>  
 		<td class="text">FloatField component<br></td>
-		<td><input type="text" name="<%=form.floatField.getResponseName() %>" value="<%=form.floatField.getText() %>" <%=form.floatField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
+		<td><input style="width: 215px;" type="text" name="<%=form.floatField.getResponseName() %>" value="<%=form.floatField.getText() %>" <%=form.floatField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
 		<td></td>		
 	</tr>	
 	<tr>  
 		<td class="text">DoubleField component<br></td>
-		<td><input type="text" name="<%=form.doubleField.getResponseName() %>" value="<%=form.doubleField.getText() %>  <%=form.doubleField.getStringIfIsNotValid("class=\"notvalid\"")%>"></td>
+		<td><input style="width: 215px;" type="text" name="<%=form.doubleField.getResponseName() %>" value="<%=form.doubleField.getText() %>  <%=form.doubleField.getStringIfIsNotValid("class=\"notvalid\"")%>"></td>
 		<td></td>		
 	</tr>
 	<tr>  
@@ -42,26 +44,37 @@ Not valid fields are shown as <b class="pink" >Pink</b></p>
 	</tr>	
 	<tr>  
 		<td rowspan="2" valign="top"  class="text">PasswordField component<br><i>Password fields has to be egual to be valid.</i></td>
-		<td><input type="password" name="<%=form.firstPasswordField.getResponseName() %>" value="<%=form.firstPasswordField.getText() %>" <%=form.firstPasswordField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
+		<td><input style="width: 215px;" type="password" name="<%=form.firstPasswordField.getResponseName() %>" value="<%=form.firstPasswordField.getText() %>" <%=form.firstPasswordField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
 		<td></td>		
 	</tr>	
 	<tr>  
-		<td><input type="password" name="<%=form.secondPasswordField.getResponseName() %>" value="<%=form.secondPasswordField.getText() %>" <%=form.secondPasswordField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
+		<td><input style="width: 215px;" type="password" name="<%=form.secondPasswordField.getResponseName() %>" value="<%=form.secondPasswordField.getText() %>" <%=form.secondPasswordField.getStringIfIsNotValid("class=\"notvalid\"")%>></td>
 		<td></td>		
 	</tr>	
 
 	<tr>
-		<td class="text">Timestamp field<br><i>(yyyy-mm-dd)</i></td>
-		<td><input type="text" name="<%=form.timestampField.getResponseName() %>" value="<%=form.timestampField.getText() %> <%=form.timestampField.getStringIfIsNotValid("class=\"notvalid\"")%>"></td>
+		<td class="text">Timestamp field<br><i>[<%=form.timestampField.getDateFormat()%>][<%=form.timestampField.getTimeFormat()%>]</i></td>
+		<td>
+			<input style="width: 100px;" type="text" name="<%=form.timestampField.getResponseNameForDate() %>" value="<%=form.timestampField.getDateText() %>" <%=form.timestampField.getStringIfIsNotValid("class=\"notvalid\"")%>>
+			<input style="width: 100px;" type="text" name="<%=form.timestampField.getResponseNameForTime() %>" value="<%=form.timestampField.getTimeText() %>" <%=form.timestampField.getStringIfIsNotValid("class=\"notvalid\"")%>>
+		</td>
 		<td align="middle" >
-			<input name="<%=form.yesterdayButton.getResponseName() %>" type="submit" value="Prev.Day" class="submit"> - <input name="<%=form.tomorrowButton.getResponseName() %>" type="submit" value="Next Day" class="submit"><br>
-			<input name="<%=form.previousMonthButton.getResponseName() %>" type="submit" value="Prev.Month" class="submit"> - <input name="<%=form.nextMonthButton.getResponseName() %>" type="submit" value="Next Month" class="submit">
+			<table cellpadding="0" cellspacing="0" border="0" widht="104">
+				<tr>
+					<td width="40" class="text">Day:</td>
+					<td width="64"><input style="width: 30px;" name="<%=form.yesterdayButton.getResponseName() %>" type="submit" value="-" class="submit"><input style="width: 30px;" name="<%=form.tomorrowButton.getResponseName() %>" type="submit" value="+" class="submit"></td>
+				</tr>
+				<tr>
+					<td class="text">Month:</td>
+					<td><input style="width: 30px;" name="<%=form.previousMonthButton.getResponseName() %>" type="submit" value="-" class="submit"><input style="width: 30px;" name="<%=form.nextMonthButton.getResponseName() %>" type="submit" value="+" class="submit"></td>
+				</tr>
+			</table>
 		</td>
 	</tr>	
 	<tr>
 		<td class="text">Table Component</td>
 		<td colspan="2" valign="top" rowspan="2">	
-			<select name="<%=form.table.getResponseName() %>" size="10" ><%
+			<select style="width: 320px;" name="<%=form.table.getResponseName() %>" size="18" <%=form.table.getStringIfIsNotValid("class=\"notvalid\"")%>><%
 	
 	for(int li_y = 1 ; li_y <= form.table.getDisplayRowCount() ; li_y++)
 	{	
@@ -77,19 +90,20 @@ Not valid fields are shown as <b class="pink" >Pink</b></p>
 		}
 	}
 	%>
+		</select>
 		</td>		
 	</tr>		
 	<tr>
-		<td>
-			<input type="submit" name="<%=form.doubleToTableButton.getResponseName() %>" value="Double value ->" class="submit"><br>						
-			<input type="submit" name="<%=form.floatToTableButton.getResponseName() %>" value="Float value ->" class="submit"><br>			
-			<input type="submit" name="<%=form.integerToTableButton.getResponseName() %>" value="IntegerField value ->" class="submit"><br>
-			<input type="submit" name="<%=form.longToTableButton.getResponseName() %>" value="LongField value ->" class="submit"><br>			
-			<input type="submit" name="<%=form.passwordToTableButton.getResponseName() %>" value="Password value ->" class="submit"><br>						
-			<input type="submit" name="<%=form.textToTableButton.getResponseName() %>" value="Textfield value ->" class="submit"><br>			
-			<input type="submit" name="<%=form.timestampToTableButton.getResponseName() %>" value="Timestamp value ->" class="submit"><br><br><br>
-			<input type="submit" name="<%=form.deleteSelectedFromTableButton.getResponseName() %>" value="Remove" class="submit"><br><br>
-			<input type="submit" name="" value="Validate" class="submit">
+		<td align="center">
+			<input style="width: 130px;" type="submit" name="<%=form.doubleToTableButton.getResponseName() %>" value="Double value ->" class="submit"><br>						
+			<input style="width: 130px;" type="submit" name="<%=form.floatToTableButton.getResponseName() %>" value="Float value ->" class="submit"><br>			
+			<input style="width: 130px;" type="submit" name="<%=form.integerToTableButton.getResponseName() %>" value="IntegerField value ->" class="submit"><br>
+			<input style="width: 130px;" type="submit" name="<%=form.longToTableButton.getResponseName() %>" value="LongField value ->" class="submit"><br>			
+			<input style="width: 130px;" type="submit" name="<%=form.passwordToTableButton.getResponseName() %>" value="Password value ->" class="submit"><br>						
+			<input style="width: 130px;" type="submit" name="<%=form.textToTableButton.getResponseName() %>" value="Textfield value ->" class="submit"><br>			
+			<input style="width: 130px;" type="submit" name="<%=form.timestampToTableButton.getResponseName() %>" value="Timestamp value ->" class="submit"><br><br><br>
+			<input style="width: 130px;" type="submit" name="<%=form.deleteSelectedFromTableButton.getResponseName() %>" value="Remove" class="submit"><br><br>
+			<input style="width: 130px;" type="submit" name="" value="Validate" class="submit">
 		</td> 
 	</tr>	
 </table>

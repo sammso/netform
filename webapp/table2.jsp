@@ -15,7 +15,7 @@
 same as s second (2) list  and by modifying data inside list naturally changed data inside combobox.</p>
 
 
-<form method="POST" action="<%=form.getRequestURI() %>">
+<form method="POST" action="<%=form.getPostAction() %>">
 <table cellpadding="1" cellspacing="1" border="1" >
 <tr>
 	<td>(1) Table</td><td>(2) Edit - Choise List in Table</td>

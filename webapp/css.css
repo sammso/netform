@@ -80,38 +80,26 @@ A.pagetitle:hover
 }
 
 
-A.menuitem:link 
+A.menuitem, A.menuitem:link,  A.menuitem:active,  A.menuitem:visited
 {
  color: #000000;
  font-family: Verdana, Arial, Helvetica, sans-serif;
  FONT-SIZE: 11px;
- font-style: normal;
+ font-style: bold; 
  line-height: normal;
- font-weight: normal;
+ font-weight: bold;
  text-decoration: none;
- 
 }
- A.menuitem:visited 
+
+A.menuitem:hover
 {
- color: #000000;
+ color: #FF0000;
  font-family: Verdana, Arial, Helvetica, sans-serif;
- font-size: 11px;
- font-style: normal;
+ FONT-SIZE: 11px;
+ font-style: bold; 
  line-height: normal;
- font-weight: normal;
+ font-weight: bold;
  text-decoration: none;
- 
-}
- A.menuitem:hover 
-{
- color: #336666;
- font-family: Verdana, Arial, Helvetica, sans-serif;
- font-size: 11px;
- font-style: normal;
- line-height: normal;
- font-weight: normal;
- text-decoration: none;
- 
 }
 
  A.title:link 
@@ -162,36 +150,51 @@ TH
 
 TD.menutitle1 
 {
- color: #000000;
- font-family: Verdana, Arial, Helvetica, sans-serif;
- font-size: 11px;
- font-style: normal;
- line-height: normal;
- font-weight: bold;
- text-decoration: none;
+	color: #FFFF00;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	text-decoration: none;
+	text-indent: 10px;
+	padding: 3px;
+
 }
 
-A.menutitle1
+A.menutitle1, A.menutitle1:visited, A.menutitle1:link  
 {
- color: #000000;
- font-family: Verdana, Arial, Helvetica, sans-serif;
- font-size: 11px;
- font-style: normal;
- line-height: normal;
- font-weight: bold;
- text-decoration: none;
+	color: #FFFF00;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+A.menutitle1:hover
+{
+	color: #FF0000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	text-decoration: none;
 }
 
 TD.menutitle2 
 {
- color: #000000;
- font-family: Verdana, Arial, Helvetica, sans-serif;
- font-size: 11px;
- font-style: normal;
- line-height: normal;
- font-weight: bold;
- text-decoration: none;
- 
+	color: #000000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	text-decoration: none;
+	text-indent: 10px;
+	margin: 3px; 
 }
  TD.shortcut 
 {
@@ -208,13 +211,15 @@ TD.menutitle2
 
 TD.pagetitle 
 {
- color: #333333;
- font-family: Verdana, Arial, Helvetica, sans-serif;
- FONT-SIZE: 20px;
- font-style: normal;
- line-height: normal;
- font-weight: bold;
- text-decoration: none;
+	color: #333333;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	FONT-SIZE: 20px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 5px;
+
  
 }
 
@@ -399,15 +404,13 @@ INPUT
  font-style: normal;
  line-height: normal;
  font-weight: normal;
- text-decoration: none;
- width: 100%; 
+ text-decoration: none; 
 }
 
 input.submit {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
-	font-style: normal;
-	width: auto; 	
+	font-style: normal;	
 	display: caption;
 }
 
@@ -432,6 +435,18 @@ INPUT.notvalid
 SELECT 
 {
  color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+}
+
+SELECT.notvalid 
+{
+ color: #000000;
+ background-color: #FFAAAA; 
  font-family: Verdana, Arial, Helvetica, sans-serif;
  font-size: 11px;
  font-style: normal;
@@ -518,5 +533,3 @@ A.code
  FONT-WEIGHT: normal;
  text-decoration: none;
 }
-
-

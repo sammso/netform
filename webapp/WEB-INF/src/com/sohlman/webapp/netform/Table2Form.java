@@ -16,39 +16,6 @@ import com.sohlman.netform.component.table.Table;
  */
 public class Table2Form extends MasterForm
 {
-	public Button addRowButton;
-	public Button insertRowButton;
-	public Button deleteRowButton;
-	public Button addTextButton;
-	public Button insertTextButton;
-	public Button removeTextButton;
-
-	public TextField textField;
-	public Table tableList; 
-	public Table tableSelect;
-
-	private DataSet i_DataSet;
-	private SimpleTableModel i_SimpleTableModel;
-	
-	public Table2Form()
-	{
-		// Here we create c
-				
-		addRowButton = new Button(this);
-		insertRowButton = new Button(this);
-		deleteRowButton = new Button(this);
-		addTextButton = new Button(this);
-		insertTextButton = new Button(this);
-		removeTextButton = new Button(this);		
-		
-		textField = new TextField(this);
-		
-		tableSelect = new Table(this);
-
-		tableList = new Table(this);
-		tableList.setTableModelComponent(new Table(tableList, 1), 1);
-		tableList.setMultiSelection(true);
-	}
 
 	private ComponentListener i_ComponentListener = new ComponentListener()
 	{
@@ -144,10 +111,26 @@ public class Table2Form extends MasterForm
 		}
 	};
 
-	public void init()
-	{
-		// Add component listener for compnents that we want to listen
+	public Button addRowButton = new Button(this);
+	public Button insertRowButton = new Button(this);
+	public Button deleteRowButton = new Button(this);
+	public Button addTextButton = new Button(this);
+	public Button insertTextButton = new Button(this);
+	public Button removeTextButton = new Button(this);		
+		
+	public TextField textField = new TextField(this);
+		
+	public Table tableSelect = new Table(this);
 
+	public Table tableList = new Table(this);
+
+	private DataSet i_DataSet;
+	private SimpleTableModel i_SimpleTableModel;
+	
+	public Table2Form()
+	{
+		// Here we do component settings
+			
 		addRowButton.addComponentListener(i_ComponentListener);
 		insertRowButton.addComponentListener(i_ComponentListener);
 		deleteRowButton.addComponentListener(i_ComponentListener);
@@ -155,6 +138,16 @@ public class Table2Form extends MasterForm
 		addTextButton.addComponentListener(i_ComponentListener);
 		insertTextButton.addComponentListener(i_ComponentListener);
 		removeTextButton.addComponentListener(i_ComponentListener);
+			
+		tableList.setTableModelComponent(new Table(tableList, 1), 1);
+		tableList.setMultiSelection(true);
+	}
+
+	public void init()
+	{
+		// At init we set data
+		
+		// Add component listener for compnents that we want to listen
 
 		i_SimpleTableModel = new SimpleTableModel();
 
