@@ -3,7 +3,7 @@ package com.sohlman.netform;
 import java.util.Arrays;
 
 /**
- * 
+ * Wrapper for int array, with some specific functionality.
  * 
  * @author Sampsa Sohlman
  * 
@@ -28,12 +28,13 @@ public class IntArray
 	}
 
 	/**
+	 * @see IntArray#setArray(int[])
+	 * 
 	 * @param ai_array
 	 */
 	public IntArray(int[] ai_array)
 	{
-		ii_array = ai_array;
-		ib_isSorted = false;
+		setArray(ai_array);
 	}
 
 	/**
@@ -55,8 +56,10 @@ public class IntArray
 	}
 
 	/**
-	 * @param ai_value
-	 * @return
+	 * Get index of value
+	 * 
+	 * @param ai_value value to be searched
+	 * @return index of value NOTFOUND if not found
 	 */
 	public int getIndexOf(int ai_value)
 	{
@@ -64,26 +67,36 @@ public class IntArray
 	}
 
 	/**
-	 * @param ai_value
-	 * @param ai_startIndex
-	 * @return
+	 * Get index of value
+	 * 
+	 * @param ai_value value to be searched
+	 * @param ai_startIndex from to be look at.
+	 * @return index of value NOTFOUND if not found
 	 */
 	public int getIndexOf(int ai_value, int ai_startIndex)
 	{
-		if(ii_array==null)
+		if (ii_array == null)
 		{
 			return NOTFOUND;
 		}
-		
+
 		if (ib_isSorted)
 		{
-			if(ii_array[ai_startIndex] > ai_value)
+			if (ii_array[ai_startIndex] > ai_value)
 			{
 				return NOTFOUND;
 			}
 			else
 			{
-				return Arrays.binarySearch(ii_array, ai_value);
+				int li_index = Arrays.binarySearch(ii_array, ai_value);
+				if (li_index >= 0)
+				{
+					return li_index;
+				}
+				else
+				{
+					return NOTFOUND;
+				}
 			}
 		}
 		else
@@ -101,7 +114,9 @@ public class IntArray
 	}
 
 	/**
-	 * @param ai_value
+	 * Add value to end of array
+	 * 
+	 * @param ai_value value to be added
 	 */
 	public void addValue(int ai_value)
 	{
@@ -127,8 +142,10 @@ public class IntArray
 	}
 
 	/**
+	 * Remove value from. If the value is twice, both are removed
+	 * 
 	 * @param ai_value
-	 * @return
+	 * @return how many rows are removed
 	 */
 	public int removeValue(int ai_value)
 	{
@@ -146,8 +163,11 @@ public class IntArray
 	}
 
 	/**
-	 * @param ai_index
-	 * @return
+	 * Remove value from index. Remember sorting array is changing indexes.
+	 * <p>Don't change order, so if array is sorted it is sorted after this too. 
+	 * 
+	 * @param ai_index index to be removed
+	 * @return true if success false if not
 	 */
 	public boolean removeValueFromIndex(int ai_index)
 	{
@@ -162,19 +182,21 @@ public class IntArray
 			ii_array = null;
 			ii_size = 0;
 		}
-		else
+		else 
 		{
-			for (int li_y = ai_index; li_y < ii_size - 1; li_y++)
+			ii_size--;
+			for (int li_y = ai_index ; li_y < ii_size ; li_y--)
 			{
 				ii_array[li_y] = ii_array[li_y + 1];
 			}
-			ii_size--;
 		}
 		return true;
 	}
 
 	/**
-	 * @return
+	 * Size of array
+	 * 
+	 * @return int containing size of array 0 if empty
 	 */
 	public int size()
 	{
@@ -182,7 +204,9 @@ public class IntArray
 	}
 
 	/**
-	 * @return
+	 * Tells if array is empty
+	 * 
+	 * @return boolean true if empty false if not
 	 */
 	public boolean isEmpty()
 	{
@@ -190,7 +214,9 @@ public class IntArray
 	}
 
 	/**
-	 * @return
+	 * <u>Copies</u> values to int array
+	 * 
+	 * @return array of ints. If empty then null
 	 */
 	public int[] toArray()
 	{
@@ -207,7 +233,7 @@ public class IntArray
 	}
 
 	/**
-	 * 
+	 * Clear or emtpy array
 	 */
 	public void clear()
 	{
@@ -215,14 +241,22 @@ public class IntArray
 		ii_size = 0;
 	}
 
+	/**
+	 * Sort array. If already sorted then does nothing
+	 */
 	public void sort()
 	{
-		if (ii_array != null && !ib_isSorted)
+		if (!ib_isSorted && ii_array != null)
 		{
-			Arrays.sort(ii_array);
+			Arrays.sort(ii_array, 0, ii_size);
 		}
 	}
 
+	/**
+	 * Tells if array is sorted or not
+	 * 
+	 * @return if array is sorted order
+	 */
 	public boolean isSorted()
 	{
 		return ib_isSorted;
@@ -237,58 +271,96 @@ public class IntArray
 		ii_size = ai_array.length;
 		ib_isSorted = false;
 	}
-	
+
 	/**
 	 * Substract 1 from values that are bigger than given  value
 	 * 
 	 * @param ai_fromValue Given value
 	 */
-	public void substractOneFromAll(int ai_fromValue)
+	public void substractValuesThatAreBiggerThan(int ai_fromValue)
 	{
-		if(ib_isSorted)
+		if (ib_isSorted)
 		{
 			int li_start = getIndexOf(ai_fromValue);
-			for(int li_index = li_start + 1 ; li_index < ii_size ; li_index++ )
+			for (int li_index = li_start + 1; li_index < ii_size; li_index++)
 			{
 				ii_array[li_index]--;
 			}
 		}
 		else
 		{
-			for(int li_index = 0 ; li_index < ii_size ; li_index++ )
+			for (int li_index = 0; li_index < ii_size; li_index++)
 			{
-				if(ii_array[li_index] > ai_fromValue)
+				if (ii_array[li_index] > ai_fromValue)
 				{
 					ii_array[li_index]--;
 				}
-			}			
+			}
 		}
 	}
-	
+
 	/**
 	 * Add 1 to values that are bigger than given value
 	 * 
 	 * @param ai_value Given value
 	 */
-	public void addOneToAll(int ai_value)
+	public void addOneToValuesThatAreBiggerThan(int ai_value)
 	{
-		if(ib_isSorted)
+		if (ib_isSorted)
 		{
+			ai_value++;
 			int li_start = getIndexOf(ai_value);
-			for(int li_index = li_start + 1 ; li_index < ii_size ; li_index++ )
+			if (li_start >= 0)
 			{
-				ii_array[li_index]++;
+
+				for (int li_index = li_start; li_index < ii_size; li_index++)
+				{
+					ii_array[li_index]++;
+				}
 			}
 		}
 		else
 		{
-			for(int li_index = 0 ; li_index < ii_size ; li_index++ )
+			for (int li_index = 0; li_index < ii_size; li_index++)
 			{
-				if(ii_array[li_index] > ai_value)
+				if (ii_array[li_index] > ai_value)
 				{
 					ii_array[li_index]++;
 				}
-			}			
+			}
 		}
-	}	
+	}
+
+	/**
+	 * @param ai_array <b>this array might be sorted</b>
+	 * @return true if array contest is egual to this
+	 */
+	public boolean equals(int[] ai_array)
+	{
+
+		if (ai_array == null && ii_array != null || ai_array != null && ii_array == null)
+		{
+			return false;
+		}
+		else if (ai_array == null && ii_array == null)
+		{
+			return true;
+		}
+		else if (ii_size != ai_array.length)
+		{
+			return false;
+		}
+		else // ai_array.length == ii_size
+			{
+			Arrays.sort(ai_array);
+			for (int li_y = 0; li_y < ii_size; li_y++)
+			{
+				if (ii_array[li_y] != ai_array[li_y])
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+	}
 }

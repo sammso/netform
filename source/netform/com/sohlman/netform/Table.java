@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Vector;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -23,8 +21,8 @@ public class Table extends Component
 	//private int[] ii_currentSelection = null;
 	//private int[] ii_oldSelection = null;
 	private IntArray i_IntArray_Selection = new IntArray();
-	
-	private boolean ib_multiSelection = true;
+
+	private boolean ib_multiSelection = false;
 	private boolean ib_multiPageSelection = false;
 	private TableModel i_TableModel;
 	private int ii_displayCount = -1;
@@ -32,9 +30,9 @@ public class Table extends Component
 	private int ii_displayStart = 1;
 	private int ii_rowCount = 0;
 	private boolean ib_pageSizeFixed = false;
-	private boolean ib_generateRowLevel = false;
+	//private boolean ib_generateRowLevel = false;
 	private HashSet iHs_Components = new HashSet(100);
-	private Vector iVe_NotRowComponents;
+	//private Vector iVe_NotRowComponents;
 	private int ii_dataColumn = -1;
 
 	private int ii_visibleRows = 0; // 0 all rows are visible
@@ -53,12 +51,26 @@ public class Table extends Component
 		i_TableModel.setTable(this);
 	}
 
+	/**
+	 * Tells if row is selected or not
+	 * 
+	 * This is not ment to be used on JSP page.
+	 * 
+	 * @param ai_index row number to checked
+	 * @return row number
+	 */
 	public boolean isSelected(int ai_index)
-	{	
+	{
 		i_IntArray_Selection.sort();
 		return i_IntArray_Selection.hasValue(ai_index);
 	}
 
+	/**
+	 * @param ai_after 
+	 * user 0 if you want to first
+	 * @return first selected row after parameter 
+	 * 0 if not found
+	 */
 	public int getSelectedRow(int ai_after)
 	{
 		int[] li_currentSelection;
@@ -75,35 +87,23 @@ public class Table extends Component
 				}
 			}
 		}
-		
+
 		return 0;
 	}
 
+	/**
+	 * @return index of first selected row 0 if now row selected
+	 */
 	public int getSelectedRow()
 	{
 		return getSelectedRow(0);
 	}
-/*
-	public int getOldSelectedRow(int ai_after)
-	{
-		if (!i_IntArray_oSelection.isEmpty())
-		{
-			for (int li_c = 0; li_c < ii_oldSelection.length; li_c++)
-			{
-				if (ii_oldSelection[li_c] > ai_after)
-				{
-					return ii_oldSelection[li_c];
-				}
-			}
-		}
-		return 0;
-	}
 
-	public int getOldSelectedRow()
-	{
-		return getOldSelectedRow(0);
-	}
-*/
+	/**
+	 * Sorted array of indexes of selected rows
+	 * 
+	 * @return array of selected rows, null without selection
+	 */
 	public int[] getSelectedItems()
 	{
 		if (!i_IntArray_Selection.isEmpty())
@@ -118,14 +118,40 @@ public class Table extends Component
 	}
 
 	/**
-	 * Adds new row after first selected row.
-	 *
+	 * Adds new row after 
+	 * @return inserted row number
 	 */
-
-	public int addRowAfterSelection()
+	public int insertRowBeforeFirstSelection()
 	{
 		int li_row = getSelectedRow(0);
+
 		return i_TableModel.insert(li_row);
+	}
+	/**
+	 * Wrapper for
+	 * @see com.sohlman.netform.TableModel#insert()
+	 */
+	public int insertRow(int ai_before)
+	{
+		return i_TableModel.insert(ai_before);
+	}
+
+	/**
+	 * Wrapper for
+	 * @see com.sohlman.netform.TableModel#add()
+	 */
+	public int addRow()
+	{
+		return i_TableModel.add();
+	}
+
+	/**
+	 * Wrapper for
+	 * @see com.sohlman.netform.TableModel#delete(int)
+	 */
+	public int deleteRow(int ai_index)
+	{
+		return i_TableModel.delete(ai_index);
 	}
 
 	/**
@@ -289,11 +315,9 @@ public class Table extends Component
 	 * 
 	 * @param ai_index Index of selected row
 	 */
-
-	public void selectItem(int ai_index)
+	public boolean selectItem(int ai_index)
 	{
-		i_IntArray_Selection.clear();
-		i_IntArray_Selection.addValue(ai_index);
+		return selectItems(new int[] { ai_index });
 	}
 
 	/**
@@ -359,7 +383,7 @@ public class Table extends Component
 
 		String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
 
-//		ii_oldSelection = ii_currentSelection;
+		//		ii_oldSelection = ii_currentSelection;
 
 		int[] li_newSelection = null;
 
@@ -391,77 +415,80 @@ public class Table extends Component
 				}
 			}
 
-			if (li_newSelection != null)
-			{
-				selectItems(li_newSelection);
-				return true;
-			}
+			return selectItems(li_newSelection);
 		}
 		return false;
 	}
 
 	/**
-	 * Add items to current selection.<br>
-	 * if there is items in current selection, behavior depends
+	 * Select items
 	 * 
-	 *
+	 * @param ai_indexes int array of indexes 
+	 * @return boolean if selection has changed
 	 */
-	public void selectItems(int[] ai_indexes)
+	public boolean selectItems(int[] ai_indexes)
 	{
-		if (ai_indexes == null)
+		// Otro selection makes nothing
+		if (!i_IntArray_Selection.equals(ai_indexes))
 		{
-			return;
-		}
-		i_IntArray_Selection.setArray(ai_indexes);
-/*
-		if (ii_currentSelection == null || !ib_multiSelection || !ib_multiPageSelection)
-		{
-			ii_currentSelection = ai_indexes;
+			i_IntArray_Selection.setArray(ai_indexes);
+			validate();
+
+			if (hasComponentData() && isValid() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
+			{
+				if (i_IntArray_Selection.isEmpty())
+				{
+					setData(null);
+				}
+				else
+				{
+					setData(i_TableModel.getValueAt(i_IntArray_Selection.getValue(0), ii_dataColumn));
+				}
+			}
+			return true;
 		}
 		else
 		{
-			int[] li_selection = new int[ii_currentSelection.length + ai_indexes.length];
-
-			int li_sIndex = (getPage() - 1) * getPageSize();
-			int li_eIndex = (getPage() * getPageSize()) - 1;
-
-			int li_s = 0; // Counter for result selection
-			for (int li_c = 0; li_c < ii_currentSelection.length; li_c++)
-			{
-				if (ii_oldSelection[li_c] < li_sIndex || ii_oldSelection[li_c] > li_eIndex)
-				{
-					li_selection[li_s] = ii_oldSelection[li_c];
-					li_s++;
-				}
-			}
-
-			for (int li_c = 0; li_c < ai_indexes.length; li_c++)
-			{
-				if (ai_indexes[li_c] >= li_sIndex && ai_indexes[li_c] <= li_eIndex)
-				{
-					li_selection[li_s] = ai_indexes[li_c];
-					li_s++;
-				}
-			}
-
-			ii_currentSelection = new int[li_s];
-			System.arraycopy(li_selection, 0, ii_currentSelection, 0, li_s);
-			Arrays.sort(ii_currentSelection);
+			return false;
 		}
-*/
-		validate();
 
-		if (hasComponentData() && isValid() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
-		{
-			if (i_IntArray_Selection.isEmpty())
-			{
-				setData(null);
-			}
-			else
-			{
-				setData(i_TableModel.getValueAt(i_IntArray_Selection.getValue(0), ii_dataColumn));
-			}
-		}
+		/*
+				if (ii_currentSelection == null || !ib_multiSelection || !ib_multiPageSelection)
+				{
+					ii_currentSelection = ai_indexes;
+				}
+				else
+				{
+					int[] li_selection = new int[ii_currentSelection.length + ai_indexes.length];
+		
+					int li_sIndex = (getPage() - 1) * getPageSize();
+					int li_eIndex = (getPage() * getPageSize()) - 1;
+		
+					int li_s = 0; // Counter for result selection
+					for (int li_c = 0; li_c < ii_currentSelection.length; li_c++)
+					{
+						if (ii_oldSelection[li_c] < li_sIndex || ii_oldSelection[li_c] > li_eIndex)
+						{
+							li_selection[li_s] = ii_oldSelection[li_c];
+							li_s++;
+						}
+					}
+		
+					for (int li_c = 0; li_c < ai_indexes.length; li_c++)
+					{
+						if (ai_indexes[li_c] >= li_sIndex && ai_indexes[li_c] <= li_eIndex)
+						{
+							li_selection[li_s] = ai_indexes[li_c];
+							li_s++;
+						}
+					}
+		
+					ii_currentSelection = new int[li_s];
+					System.arraycopy(li_selection, 0, ii_currentSelection, 0, li_s);
+					Arrays.sort(ii_currentSelection);
+				}
+		*/
+
 	}
 
 	/**
@@ -524,19 +551,19 @@ public class Table extends Component
 
 	// Flag if components are changed while data inside 
 	// table
-	private boolean ib_componentsHasBeenChanged;
+	private boolean ib_componentsHasBeenChanged = false;
 
-	private final static int NO_ROWS_REMOVED = -1;
-	private int ii_smallesRemovedRow = NO_ROWS_REMOVED;
+	private final static int NO_ROWS_INSERTED_OR_REMOVED = -1;
+	private int ii_smallesInsertedOrRemovedRow = NO_ROWS_INSERTED_OR_REMOVED;
 
 	private void synchRowNumbers()
 	{
-		if (ii_smallesRemovedRow == NO_ROWS_REMOVED)
+		if (ii_smallesInsertedOrRemovedRow == NO_ROWS_INSERTED_OR_REMOVED)
 		{
 			return;
 		}
 
-		for (int li_y = ii_smallesRemovedRow; li_y <= i_TableModel.getRowCount(); li_y++)
+		for (int li_y = ii_smallesInsertedOrRemovedRow; li_y <= i_TableModel.getRowCount(); li_y++)
 		{
 			Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(li_y - 1);
 			if (l_Components == null)
@@ -545,12 +572,14 @@ public class Table extends Component
 			}
 			for (int li_x = 0; li_x < l_Components.length; li_x++)
 			{
-				TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_x].getComponentData();
-
-				l_TableComponentData.setRow(li_y);
+				if(l_Components[li_x]!=null)
+				{
+					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_x].getComponentData();
+					l_TableComponentData.setRow(li_y);
+				}
 			}
 		}
-		ii_smallesRemovedRow = NO_ROWS_REMOVED;
+		ii_smallesInsertedOrRemovedRow = NO_ROWS_INSERTED_OR_REMOVED;
 	}
 
 	public void setTableModelComponent(Component a_Component, int ai_column)
@@ -635,12 +664,21 @@ public class Table extends Component
 					l_Component.setComponentData(l_TableComponentData);
 					l_Component.syncronizeData();
 					l_Components[li_index] = l_Component;
-					
+
 				}
 			}
 
 			iAL_TableComponentsInRow.add(ai_before - 1, l_Components);
+			if (ai_before < ii_smallesInsertedOrRemovedRow || ii_smallesInsertedOrRemovedRow == NO_ROWS_INSERTED_OR_REMOVED)
+			{
+				ii_smallesInsertedOrRemovedRow = ai_before;
+			}
 		}
+
+		// Increase values for all which value
+
+		i_IntArray_Selection.addOneToValuesThatAreBiggerThan(ai_before);
+
 		return ai_before;
 	}
 
@@ -648,16 +686,14 @@ public class Table extends Component
 	{
 		return insertComponentRow(iAL_TableComponentsInRow.size() + 1);
 	}
-	
+
 	void removeComponentRow(int ai_index)
 	{
 		// Remove row from selection also
 		i_IntArray_Selection.sort();
-		if(i_IntArray_Selection.hasValue(ai_index))
-		{
-			i_IntArray_Selection.substractOneFromAll(ai_index);
-		}
-		
+		i_IntArray_Selection.removeValue(ai_index);
+		i_IntArray_Selection.substractValuesThatAreBiggerThan(ai_index);
+
 		if (iAL_TableComponentsInRow != null)
 		{
 			Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_index - 1);
@@ -675,31 +711,13 @@ public class Table extends Component
 
 			// Update smallest removed row
 
-			if (ai_index < ii_smallesRemovedRow || ii_smallesRemovedRow == NO_ROWS_REMOVED)
+			if (ai_index < ii_smallesInsertedOrRemovedRow || ii_smallesInsertedOrRemovedRow == NO_ROWS_INSERTED_OR_REMOVED)
 			{
-				ii_smallesRemovedRow = ai_index;
+				ii_smallesInsertedOrRemovedRow = ai_index;
 			}
 		}
 	}
-	
-	/*
-		void updateComponentAt(Object a_Object, int ai_row, int ai_column)
-		{
-			if (iAL_TableComponentsInRow != null)
-			{
-				Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_row - 1);
-				
-				if (i_Component_RowModels[ai_column - 1] != null)
-				{
-	//				l_Components[ai_column - 1] = i_Component_RowModels[ai_column - 1].cloneComponent();
-	//				l_Components[ai_column - 1].setComponentData(new TableComponentData(i_TableModel));
-	//				TableComponentData l_TableComponentData = (TableComponentData)l_Components[ai_column - 1].getComponentData();
-	//				l_TableComponentData.setRow(ai_row);
-	//				l_TableComponentData.setColumn(ai_column);
-				}
-			}
-		}
-	*/
+
 	void updateAllComponents()
 	{
 		if (i_Component_RowModels == null)
@@ -752,7 +770,7 @@ public class Table extends Component
 		if (iAL_TableComponentsInRow != null)
 		{
 			Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_row - 1);
-			if (l_Components.length <= ai_column)
+			if (l_Components.length >= ai_column)
 			{
 				if (l_Components[ai_column - 1] != null)
 				{
@@ -773,18 +791,18 @@ public class Table extends Component
 				if (l_Components[li_i] == null && i_Component_RowModels != null)
 				{
 					// Component structure has changed
-					
+
 					l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
 					l_Components[li_i].setComponentData(new TableComponentData(i_TableModel));
 					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
 					l_TableComponentData.setRow(ai_index);
 					l_TableComponentData.setColumn(li_i + 1);
-					l_Components[li_i].syncronizeData();					
+					l_Components[li_i].syncronizeData();
 				}
 				else if (l_Components[li_i] != null && i_Component_RowModels[li_i] == null)
 				{
 					// Component structure has changed
-					
+
 					l_Components[li_i].dispose();
 					l_Components[li_i] = null;
 				}
@@ -793,10 +811,10 @@ public class Table extends Component
 					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
 					l_TableComponentData.setRow(ai_index);
 					l_TableComponentData.setColumn(li_i + 1);
-					l_Components[li_i].syncronizeData(); 
+					l_Components[li_i].syncronizeData();
 				}
 				else // Component column type has been changed
-				{
+					{
 					TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
 					l_TableComponentData.setRow(ai_index);
 					l_TableComponentData.setColumn(li_i + 1);
@@ -945,6 +963,9 @@ public class Table extends Component
 
 		Table l_Table = new Table(getParent(), getTableModel());
 
+		l_Table.ii_dataColumn = ii_dataColumn;
+		l_Table.ib_multiSelection = ib_multiSelection;
+
 		return l_Table;
 	}
 
@@ -977,6 +998,8 @@ public class Table extends Component
 	}
 
 	/**
+	 * Set's DataColumn. This column number is used to store data to DataContainer 
+	 * 
 	 * @param ai_index
 	 */
 	public void setDataColumn(int ai_index)
@@ -1005,14 +1028,10 @@ public class Table extends Component
 		{
 			Object l_Object = getData();
 			int li_row = i_TableModel.search(l_Object, ii_dataColumn);
-			if(li_row > 0 && li_row <= i_TableModel.getRowCount())
+			if (li_row > 0 && li_row <= i_TableModel.getRowCount())
 			{
 				selectItem(li_row);
 			}
 		}
-	}
-	
-	public void removeIndexFromSelection(int ai_index)
-	{
 	}
 }

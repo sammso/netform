@@ -49,6 +49,7 @@
 			} 
 	%></table>
 <input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
+<input type="submit" name="<%=form.insertRowButton.getResponseName()%>" value="Insert">
 <input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
 <input type="submit" name="" value="Validate">
 </form> 

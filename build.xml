@@ -6,7 +6,7 @@
 	<property name="servlet.jar" value="C:\Java\Tomcat 4.1\common\lib\servlet.jar"/>
 	<!-- Put here your dataset.jar -->
 	<property name="dataset.jar" value="..\DataSet\dataset.jar"/>
-	<property name="version" value="0.60"/>
+	<property name="version" value="0.62"/>
 	<property name="title" value="NetForm Web Application Library v ${version}"/>
 	<property name="zipfile" value="NetForm.zip"/>
 	<property name="netformsrc" location="source/netform"/>

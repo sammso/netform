@@ -1,9 +1,9 @@
 package com.sohlman.dataset.netform;
 
-import com.sohlman.netform.TableModel;
 import com.sohlman.dataset.DataSet;
 import com.sohlman.dataset.DataSetEvent;
 import com.sohlman.dataset.DataSetListener;
+import com.sohlman.netform.TableModel;
 
 /**
  * @author Sampsa Sohlman

@@ -17,8 +17,10 @@ import com.sohlman.netform.TextField;
 public class Table2Form extends MasterForm
 {
 	public Button addRowButton = new Button(this);
+	public Button insertRowButton = new Button(this);
 	public Button deleteRowButton = new Button(this);
 	public Button addTextButton = new Button(this);
+	public Button insertTextButton = new Button(this);
 	public Button removeTextButton = new Button(this);	
 	
 	public TextField textField = new TextField(this);
@@ -37,8 +39,15 @@ public class Table2Form extends MasterForm
 				// Add new row to DataSet and Table
 				// Table knows that through TableModel
 				
-				i_DataSet.addRow();
+				tableList.addRow();
 			}
+			else if( a_Component == insertRowButton )
+			{
+				// Add new row to DataSet and Table
+				// Table knows that through TableModel
+				
+				tableList.insertRowBeforeFirstSelection();
+			}			
 			else if( a_Component == deleteRowButton )
 			{
 				// Delete Selected Rows from Table
@@ -57,6 +66,21 @@ public class Table2Form extends MasterForm
 					}
 				}
 			}
+			else if(a_Component == insertTextButton)
+			{
+				// Add new text to choise list
+				
+				String lS_Text = textField.getText();
+				if(lS_Text!=null && !lS_Text.trim().equals(""))
+				{
+					
+					if(i_SimpleTableModel.search(lS_Text,1)==-1)
+					{
+						int li_row = tableSelect.insertRowBeforeFirstSelection();
+						i_SimpleTableModel.setValueAt(lS_Text,li_row, 1);
+					}
+				}
+			}			
 			else if(a_Component == removeTextButton)
 			{
 				// Remove text from choises
@@ -87,9 +111,13 @@ public class Table2Form extends MasterForm
 		// Add component listener for compnents that we want to listen
 		
 		addRowButton.addComponentListener(i_ComponentListener);
+		insertRowButton.addComponentListener(i_ComponentListener);
 		deleteRowButton.addComponentListener(i_ComponentListener);
+		
 		addTextButton.addComponentListener(i_ComponentListener);
+		insertTextButton.addComponentListener(i_ComponentListener);
 		removeTextButton.addComponentListener(i_ComponentListener);
+		
 		
 		i_SimpleTableModel = new SimpleTableModel();	
 	
@@ -111,6 +139,8 @@ public class Table2Form extends MasterForm
 		// data container  
 		
 		Table l_Table = new Table(tableList, i_SimpleTableModel);
+		l_Table.setDataColumn(1);
+		
 		
 		// And connect that to first column of Table
 		
@@ -132,11 +162,12 @@ public class Table2Form extends MasterForm
 		
 		// Fill choise list 
 			
-		String lS_First = "First";
-		String lS_Second = "Second";
+		String lS_First = "First";	
 		
 		i_SimpleTableModel.addValue(lS_First);
-		i_SimpleTableModel.addValue(lS_Second);			
+		i_SimpleTableModel.addValue("Second");
+		i_SimpleTableModel.addValue("Third");
+		i_SimpleTableModel.addValue("Fourth");			
 					
 		// Fill table
 		

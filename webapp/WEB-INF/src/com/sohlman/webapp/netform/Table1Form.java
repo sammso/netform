@@ -9,12 +9,11 @@ import com.sohlman.dataset.netform.DataSetTableModel;
 import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
-import com.sohlman.netform.ComponentValidator;
 import com.sohlman.netform.IntegerField;
-import com.sohlman.netform.Utils;
 import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
 import com.sohlman.netform.TimestampField;
+import com.sohlman.netform.Utils;
 
 /**
  * @author Sampsa Sohlman
@@ -23,11 +22,14 @@ public class Table1Form extends MasterForm
 {
 	public Button reloadButton = new Button(this);
 	public Button addRowButton = new Button(this);
+	public Button insertRowButton = new Button(this);
 	public Button deleteRowButton = new Button(this);
 	public Table table;
 
 	private int ii_counter = 1;
 	private DataSet i_DataSet;  
+	
+	// Event handler
 	
 	private ComponentListener i_ComponentListener = new ComponentListener()
 	{
@@ -35,41 +37,27 @@ public class Table1Form extends MasterForm
 		{
 			if( a_Component == addRowButton )
 			{
-				i_DataSet.addRow();
+				table.addRow();
 			}
+			else if( a_Component == insertRowButton )
+			{
+				table.insertRowBeforeFirstSelection();
+			}			
 			else if( a_Component == deleteRowButton )
 			{
 				table.deleteSelectedRows();
 			}
+			
 		}
 	};
 
-	ComponentValidator i_ComponentValidator = new ComponentValidator()
-	{
-		public boolean isValid(Component a_Component)
-		{
-			return true;
-		}
-	};
-
-	private String formatNumber(int ai_number)
-	{
-		StringBuffer lSb_Number = new StringBuffer();
-		String lS_Number = "" + ai_number;
-
-		for (int li_c = 0; li_c < 5 - lS_Number.length(); li_c++)
-		{
-			lSb_Number.append("0");
-		}
-		lSb_Number.append(lS_Number);
-		return lSb_Number.toString();
-	}
- 
 	public void init()
 	{
 		reloadButton.addComponentListener(i_ComponentListener);
 		addRowButton.addComponentListener(i_ComponentListener);
+		insertRowButton.addComponentListener(i_ComponentListener);
 		deleteRowButton.addComponentListener(i_ComponentListener);
+		
 
 		i_DataSet = new DataSet();
 		ColumnInfo[] l_ColumnInfos =

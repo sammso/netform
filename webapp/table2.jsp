@@ -59,6 +59,7 @@
 	%></table>
 
 <input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
+<input type="submit" name="<%=form.insertRowButton.getResponseName()%>" value="Insert">
 <input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
 <input type="submit" name="" value="Validate">
 </td>
@@ -71,7 +72,7 @@
 			<td><input type="text" name="<%=form.textField.getResponseName() %>" value="<%=form.textField.getText() %>"></td>
 		</tr>
 		<tr>
-			<td><input type="submit" name="<%=form.addTextButton.getResponseName() %>" value="Add">
+			<td><input type="submit" name="<%=form.addTextButton.getResponseName() %>" value="Add"> <input type="submit" name="<%=form.insertTextButton.getResponseName() %>" value="Insert">
 		</tr>		
 		<tr>
 			<td>
