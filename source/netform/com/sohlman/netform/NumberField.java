@@ -54,6 +54,7 @@ public class NumberField extends TextField
 		{
 			throw new IllegalStateException(a_Class.getName() + " is not supported Number class");
 		}
+		setComponentValidator(i_ComponentValidator);
 	}
 
 	public NumberField(Form a_Form, Class a_Class)
@@ -68,7 +69,9 @@ public class NumberField extends TextField
 		if (!(a_Class == Integer.class || a_Class == Short.class || a_Class == Long.class || a_Class == Float.class || a_Class == Double.class))
 		{
 			throw new IllegalStateException(a_Class.getName() + " is not supported Number class");
-		}		
+		}
+		
+		setComponentValidator(i_ComponentValidator);		
 	}
 
 	public void setFormat(String aS_Format)

@@ -27,7 +27,8 @@ public abstract class Component
 	private boolean ib_componentIsModified = false;
 
 	// For validation
-	private boolean ib_isValid = true;
+	// First run it has to check if it is valid
+	private boolean ib_isValid = false;
 
 	private ArrayList iAL_Components = null;
 	private ArrayList iAL_Listeners = null;
@@ -157,6 +158,7 @@ public abstract class Component
 	 * is not generated.
 	 * @param boolean is visible or not
 	 */
+
 	public void setVisible(boolean ab_visible)
 	{
 		ib_newIsVisible = ab_visible;
@@ -328,6 +330,11 @@ public abstract class Component
 		{
 			i_Component_Parent.setParentValid(ib_isValid);
 		}
+		else
+		{
+			// we are now on root and parent is Form
+			i_Form.setValid(ib_isValid);
+		}
 	}
 
 	public final void setValid(boolean ab_isValid)
@@ -347,16 +354,18 @@ public abstract class Component
 		}
 		else if (ib_isValid == false && ab_isValid == true)
 		{
-			Iterator l_Enumeration = iAL_Components.iterator();
-			while (l_Enumeration.hasNext() && ab_isValid)
+			if(iAL_Components!=null)
 			{
-				Component l_Component = (Component) l_Enumeration.next();
-				if (l_Component.isValid() == false)
+				Iterator l_Enumeration = iAL_Components.iterator();
+				boolean lb_isValid = true;
+				while (l_Enumeration.hasNext() && lb_isValid)
 				{
-					ab_isValid = false;
-				}
+					Component l_Component = (Component) l_Enumeration.next();
+					lb_isValid = l_Component.isValid();
+				}		
+				ib_isValid = lb_isValid;		
 			}
-			ib_isValid = ab_isValid;
+
 			if (i_Component_Parent != null)
 			{
 				i_Component_Parent.setParentValid(ib_isValid);

@@ -1,19 +1,76 @@
-					<table>
-						<tr>
-							<td align="center" colspan="2"><a href="http://netform.sohlman.com"><img src="logo.gif" alt="netform Homepage" border="0"></a></td>
-						</tr>
-						<tr>
-							<td colspan="2"><a href="index.jsp" class="menuitem">Main page</td>
-						</tr>
-						<tr>
-							<td class="menutitle1" colspan="2">Examples made<br>without taglib</td>
-						</tr>											
-						<tr>
-							<td><img src="1x1.gif" alt="" height="1" width="5"></td>						
-							<td><a href="table.jsp" class="menuitem">Table component</td>
-						</tr>
-						<tr>
-							<td><img src="1x1.gif" alt="" height="1" width="5"></td>						
-							<td><a href="fields.jsp" class="menuitem">Fields example</td>
-						</tr>						
-					</table>
+								<table border="0" width="100%" cellspacing="2" cellpadding="0">																
+									<tr>
+										<td width="100%" colspan="2" class="menutitle1">Application</td>
+									</tr>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="index.jsp" class="menuitem">Introduction</a>
+										</td>
+									</tr>
+									<tr>
+										<td width="100%" colspan="2" class="menutitle2">Forms</td>
+									</tr>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="fields.jsp" class="menuitem">Fields example</a>
+										</td>
+									</tr>			
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="table.jsp" class="menuitem">Table example</a>
+										</td>
+									</tr>									
+									<tr>
+										<td width="100%" colspan="2" class="menutitle1">Project</td>
+									</tr>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="http://netform.sohlman.com/index.html" class="menuitem">Homepage</a>
+										</td>
+									</tr>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="http://sourceforge.net/projects/netform/" class="menuitem">Sourceforge home</a>
+										</td>
+									</tr>			
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="http://sourceforge.net/project/showfiles.php?group_id=92608" class="menuitem">All downloads</a>
+										</td>
+									</tr>																
+									<tr>
+										<td width="100%" colspan="2" class="menutitle1">Links</td>
+									</tr>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="http://sampsa.sohlman.com" class="menuitem">Sampsa Sohlman</a>
+										</td>
+									</tr>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%">
+											<a href="http://dataset.sohlman.com" class="menuitem">DataSet Project</a>
+										</td>
+									</tr>
+									<tr>
+										<td width="8%"/>
+										<td width="92%"/>
+									</tr>
+									<tr>
+										<td width="8%"/>
+										<td width="92%"/>
+									</tr>
+									<tr>
+										<td width="8%"/>
+										<td width="92%">
+											<img src="http://www.sohlman.com/1x1.gif" width="1" height="300" alt=""/>
+										</td>
+									</tr>
+								</table>

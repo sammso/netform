@@ -2,6 +2,13 @@
    NetForm Web Application Framework for Java V 0.51
    =================================================
    
+   What is new on 0.51
+   -------------------------------------------------------------
+   - Developement on
+     - is valid handing
+     - test application look and feel
+     - fixes on table and other components
+   
    Author
    -------------------------------------------------------------
    Sampsa Sohlman (http://sampsa.sohlman.com)

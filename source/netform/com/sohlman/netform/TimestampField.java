@@ -42,11 +42,13 @@ public class TimestampField extends TextField
 	public TimestampField(Component a_Component_Parent)
 	{
 		super(a_Component_Parent);
+		setComponentValidator(i_ComponentValidator);
 	}
 
 	public TimestampField(Form a_Form)
 	{
 		super(a_Form);
+		setComponentValidator(i_ComponentValidator);
 	}
 
 	public void setTimestamp(Timestamp a_Timestamp)

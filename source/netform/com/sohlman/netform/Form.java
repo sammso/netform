@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * <p>Form is place where to your form logic. 
@@ -27,6 +26,7 @@ public abstract class Form
 	private ArrayList iAL_Components;
 	private HttpServletRequest i_HttpServletRequest;
 	private boolean ib_isInitialized = false;
+	private boolean ib_isValid = true;
 
 	private String iS_Name;
 
@@ -90,11 +90,26 @@ public abstract class Form
 		}
 	}
 
+	private void preValidateComponents()
+	{
+		if (iAL_Components != null)
+		{
+			Iterator l_Iterator = iAL_Components.iterator();
+
+			while (l_Iterator.hasNext())
+			{
+				Component l_Component = (Component) l_Iterator.next();
+				l_Component.validate();
+			}
+		}		
+	}
+
 	public final synchronized void execute()
 	{
 		if(!ib_isInitialized)
 		{
 			init();
+			preValidateComponents();
 			ib_isInitialized = true;
 		}
 			
@@ -179,86 +194,43 @@ public abstract class Form
 	public final String getTimestamp()
 	{
 		return "Made by Sampsa";
+	}	
+	
+	/**
+	 * Internal use
+	 * Set if form is valid or not
+	 * 
+	 * @param ab_isValid
+	 */
+	final void setValid(boolean ab_isValid)
+	{
+		if (ib_isValid == true && ab_isValid == false)
+		{
+			ib_isValid = ab_isValid;
+		}
+		else if (ib_isValid == false && ab_isValid == true)
+		{
+			Iterator l_Enumeration = iAL_Components.iterator();
+			
+			boolean lb_isValid = ab_isValid;
+			
+			while (l_Enumeration.hasNext() && lb_isValid)
+			{
+				Component l_Component = (Component) l_Enumeration.next();
+				lb_isValid = l_Component.isValid();
+			}
+			
+			ib_isValid = lb_isValid;
+		}
 	}
 	
-	public static Form getForm(HttpServletRequest a_HttpServletRequest, Class a_Class_Form) throws NetFormException
+	/**
+	 * This is for JSP use.
+	 * 
+	 * @return boolean valid if all components in form is valid.
+	 */
+	public final boolean isValid()
 	{
-		Form l_Form = null;
-		HttpSession l_HttpSession;
-		
-		l_HttpSession = a_HttpServletRequest.getSession(false);
-
-		if (l_HttpSession != null)
-		{
-			l_Form = (Form) l_HttpSession.getAttribute(Form.FORM_CONTAINER);
-			String lS_Name = a_HttpServletRequest.getServletPath();
-			if (l_Form!=null && lS_Name!=null)
-			{
-				lS_Name=lS_Name.substring(1);
-				if(!lS_Name.equals(l_Form.getName()))
-				{				
-					l_Form = null;
-				}
-			}
-			else
-			{
-				l_Form = null;
-			}
-		}
-
-		if (l_Form == null)
-		{
-			l_Form = createForm(a_HttpServletRequest, a_Class_Form);
-			if (l_Form != null)
-			{
-				l_HttpSession = a_HttpServletRequest.getSession(true);
-				l_HttpSession.setAttribute(Form.FORM_CONTAINER, l_Form);
-				l_HttpSession.setAttribute(Form.SESSION_PAGE, l_Form.getName());
-				l_Form.setHttpServletRequest(a_HttpServletRequest);
-			}
-			else
-			{
-				throw new NetFormException("Couldn't create form");
-			}
-		}
-		else
-		{
-			l_Form.setHttpServletRequest(a_HttpServletRequest);
-			//l_Form.setServletConfig(getServletConfig());
-		}
-		return l_Form;
+		return ib_isValid;
 	}
-
-	private static Form createForm(HttpServletRequest a_HttpServletRequest, Class a_Class) throws NetFormException
-	{
-		String lS_Name = a_HttpServletRequest.getServletPath().substring(1);
-
-		try
-		{
-			Form l_Form = (Form) a_Class.newInstance();
-			l_Form.setName(lS_Name);
-
-			return l_Form;
-		}
-		catch (LinkageError a_LinkageError)
-		{
-			a_LinkageError.printStackTrace();
-			throw new NetFormException("LinkageError\nServlet path: " + lS_Name + "\nClass name: " + a_Class.getName(), a_LinkageError);
-		}
-		catch (IllegalAccessException a_IllegalAccessException)
-		{
-			a_IllegalAccessException.printStackTrace();
-			throw new NetFormException("IllegalAccessException\nServlet path: " + lS_Name + "\nClass name: " + a_Class.getName(), a_IllegalAccessException);
-		}
-		catch (InstantiationException a_InstantiationException)
-		{
-			a_InstantiationException.printStackTrace();
-			throw new NetFormException("InstantiationException\nServlet path: " + lS_Name + "\nClass name: " + a_Class.getName(), a_InstantiationException);
-		}
-		catch (SecurityException a_SecurityException)
-		{
-			a_SecurityException.printStackTrace();
-			throw new NetFormException("SecurityException\nServlet path: " + lS_Name + "\nClass name: " + a_Class.getName(), a_SecurityException);
-		}
-	}	
 }

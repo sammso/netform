@@ -36,81 +36,99 @@ public class FieldForm extends Form
 	public Button deleteSelectedFromTableButton = new Button(this);
 	public Table table = new Table(this, new SimpleTableModel());
 	//Table i_Table_Second = new Table(this, new SimpleTableModel());
-	
-	
+
 	//Datefield l_Datefield = new Datefield(this);
 
 	ComponentListener i_ComponentListener = new ComponentListener()
 	{
 		public void eventAction(Component a_Component)
 		{
-			if(a_Component==increaseNumberButton)
+			if (a_Component == increaseNumberButton)
 			{
-				numberField.setInt(numberField.getInt() + 1);
+				if (numberField.isValid())
+				{
+					numberField.setInt(numberField.getInt() + 1);
+				}
+
 			}
-			else if(a_Component==decreaseNumberButton)
+			else if (a_Component == decreaseNumberButton)
 			{
-				numberField.setInt(numberField.getInt() - 1);
-			}	
-			else if(a_Component==tomorrowButton)
-			{
-				Timestamp l_Timestamp = timestampField.getTimestamp();
-				Calendar l_Calendar = Calendar.getInstance();
-				l_Calendar.setTimeInMillis(l_Timestamp.getTime());
-				l_Calendar.add(Calendar.DATE, 1);
-				timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));
+				if (numberField.isValid())
+				{
+					numberField.setInt(numberField.getInt() - 1);
+				}
 			}
-			else if(a_Component==yesterdayButton)
+			else if (a_Component == tomorrowButton)
 			{
-				Timestamp l_Timestamp = timestampField.getTimestamp();
-				Calendar l_Calendar = Calendar.getInstance();
-				l_Calendar.setTimeInMillis(l_Timestamp.getTime());
-				l_Calendar.add(Calendar.DATE, -1);
-				timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));				
+				if (timestampField.isValid())
+				{
+					Timestamp l_Timestamp = timestampField.getTimestamp();
+					Calendar l_Calendar = Calendar.getInstance();
+					l_Calendar.setTimeInMillis(l_Timestamp.getTime());
+					l_Calendar.add(Calendar.DATE, 1);
+					timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));
+				}
 			}
-			else if(a_Component==nextMonthButton)
+			else if (a_Component == yesterdayButton)
 			{
-				Timestamp l_Timestamp = timestampField.getTimestamp();
-				Calendar l_Calendar = Calendar.getInstance();
-				l_Calendar.setTimeInMillis(l_Timestamp.getTime());
-				l_Calendar.add(Calendar.MONTH, 1);
-				timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));	
+				if (timestampField.isValid())
+				{
+					Timestamp l_Timestamp = timestampField.getTimestamp();
+					Calendar l_Calendar = Calendar.getInstance();
+					l_Calendar.setTimeInMillis(l_Timestamp.getTime());
+					l_Calendar.add(Calendar.DATE, -1);
+					timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));
+				}
 			}
-			else if(a_Component==previousMonthButton)
+			else if (a_Component == nextMonthButton)
 			{
-				Timestamp l_Timestamp = timestampField.getTimestamp();
-				Calendar l_Calendar = Calendar.getInstance();
-				l_Calendar.setTimeInMillis(l_Timestamp.getTime());
-				l_Calendar.add(Calendar.MONTH, -1);
-				timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));				
+				if (timestampField.isValid())
+				{
+					Timestamp l_Timestamp = timestampField.getTimestamp();
+					Calendar l_Calendar = Calendar.getInstance();
+					l_Calendar.setTimeInMillis(l_Timestamp.getTime());
+					l_Calendar.add(Calendar.MONTH, 1);
+					timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));
+				}
 			}
-			else if(a_Component==deleteSelectedFromTableButton)
+			else if (a_Component == previousMonthButton)
+			{
+				if (timestampField.isValid())
+				{
+					Timestamp l_Timestamp = timestampField.getTimestamp();
+					Calendar l_Calendar = Calendar.getInstance();
+					l_Calendar.setTimeInMillis(l_Timestamp.getTime());
+					l_Calendar.add(Calendar.MONTH, -1);
+					timestampField.setTimestamp(new Timestamp(l_Calendar.getTimeInMillis()));
+				}
+			}
+			else if (a_Component == deleteSelectedFromTableButton)
 			{
 				table.deleteSelectedRows();
 			}
-			else if(a_Component==numberToTableButton)
+			else if (a_Component == numberToTableButton)
 			{
-				if(numberField.isValid())
+				if (numberField.isValid())
 				{
-					SimpleTableModel l_SimpleTableModel= (SimpleTableModel)table.getTableModel();
-					l_SimpleTableModel.addValue(numberField.getText());									
+					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
+					l_SimpleTableModel.addValue(numberField.getText());
 				}
 			}
-			else if(a_Component==timestampToTableButton)
+			else if (a_Component == timestampToTableButton)
 			{
-				if(timestampField.isValid())
+				if (timestampField.isValid())
 				{
-					SimpleTableModel l_SimpleTableModel= (SimpleTableModel)table.getTableModel();
-					l_SimpleTableModel.addValue(timestampField.getText());									
+					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
+					l_SimpleTableModel.addValue(timestampField.getText());
 				}
 			}
-			else if(a_Component==textToTableButton)
+			else if (a_Component == textToTableButton)
 			{
-				if(textToTableButton.isValid())
+				if (textField.isValid())
 				{
-					SimpleTableModel l_SimpleTableModel= (SimpleTableModel)table.getTableModel();
-					l_SimpleTableModel.addValue(textField.getText());	
-				}			
+					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
+					l_SimpleTableModel.addValue(textField.getText());
+				}
 			}
 		}
 	};
@@ -119,17 +137,17 @@ public class FieldForm extends Form
 	{
 		public boolean isValid(Component a_Component)
 		{
-			if(a_Component==textField)
+			if (a_Component == textField)
 			{
 				String lS_Text = textField.getText();
-				
-				if(lS_Text.trim().length()>0)
+
+				if (lS_Text.trim().length() > 0 && lS_Text.trim().length() <= 12)
 				{
 					return true;
-				}			
+				}
 			}
 			return false;
-			
+
 		}
 	};
 
@@ -138,12 +156,12 @@ public class FieldForm extends Form
 		// Set first dafault values
 		// To timestamp field
 		timestampField.setTimestamp(new Timestamp(System.currentTimeMillis()));
-		
+
 		// To NumberField
 		numberField.setInt(11);
-		
+
 		textField.setComponentValidator(i_ComponentValidator);
-		
+
 		// Set multiselection true so that it is posible select
 		// multiple items also server side
 		table.setMultiSelection(true);
@@ -159,6 +177,6 @@ public class FieldForm extends Form
 		timestampToTableButton.addComponentListener(i_ComponentListener);
 		numberToTableButton.addComponentListener(i_ComponentListener);
 		deleteSelectedFromTableButton.addComponentListener(i_ComponentListener);
-		
+
 	}
 }

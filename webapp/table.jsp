@@ -3,7 +3,7 @@
 	TableForm form = null;
 	try
 	{
-		form = (TableForm)Form.getForm(request, TableForm.class);
+		form = (TableForm)FormManager.getForm(request, TableForm.class);
 		form.execute(); 
 	}
 	catch(NetFormException netFormException)
