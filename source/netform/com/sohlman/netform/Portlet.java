@@ -27,7 +27,10 @@ import java.util.ArrayList;
  * wide component.
  * <p>In NetForm Portlet is like independed {@link Form Form} inside
  * form. Portlets makes NetForm also tool for Portal services.  
- * 
+ * <p>NetForm Portlet JSR 168 Portlet. NetForm also contains 
+ * portlet container, which allows NetForm applications run as JSR 168 
+ * Portlets
+ * <p>
  * @author Sampsa Sohlman
  * @version 2004-07-03
  */
@@ -36,7 +39,7 @@ public abstract class Portlet extends Component
 	/**
 	 * @param a_Form
 	 */
-	public Portlet(Form a_Form)
+	protected Portlet(Form a_Form)
 	{
 		super(a_Form);
 	}

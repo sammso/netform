@@ -1,29 +1,30 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
-
 
 /**
  * @author Sampsa Sohlman
@@ -31,31 +32,49 @@ import javax.servlet.http.HttpServletRequest;
  * @version Apr 13, 2004
  */
 /**
- * <p>All the components in NetForm framework are inherited from this class. </p>
- * <p>Component class provides basic functionality for all components. Such as:</p>
+ * <p>
+ * All the components in NetForm framework are inherited from this class.
+ * </p>
+ * <p>
+ * Component class provides basic functionality for all components. Such as:
+ * </p>
  * <ul>
- * <li>Event handling services with {@link ComponentListener ComponentListener}</li>
- * <li>Data validation services with {@link ComponentValidator ComponentValidator}</li>
+ * <li>Event handling services with {@link ComponentListener ComponentListener}
+ * </li>
+ * <li>Data validation services with
+ * {@link ComponentValidator ComponentValidator}</li>
  * </ul>
- * <p>Component can be created any time, but when it is destroyed or removed 
- *    {@link #dispose() Component.dispose()} method has to be called. If component
- *    is inherited then this method has to considered also.
+ * <p>
+ * Component can be created any time, but when it is destroyed or removed
+ * {@link #dispose() Component.dispose()}method has to be called. If component
+ * is inherited then this method has to considered also.
  * 
- * @author  Sampsa Sohlman
+ * @author Sampsa Sohlman
  * @version 2003-11-20
  */
 public abstract class Component
 {
 	private boolean ib_isVisible = true;
+
 	private boolean ib_enabled = true;
+
 	private boolean ib_newIsVisible;
+
 	private boolean ib_newEnabled;
+
 	private boolean ib_isVisibleChanged = false;
+
 	private boolean ib_enabledChanged = false;
+
 	private boolean ib_componentIsModified = false;
+
 	private long il_count = 0;
-	private int ii_notValidChildComponentCount = 0; // Component is valid if this is 0
+
+	private int ii_notValidChildComponentCount = 0; // Component is valid if
+													// this is 0
+
 	private String iS_Format = null;
+
 	private boolean ib_isFormatRead = false;
 
 	// For Storing component data
@@ -69,7 +88,7 @@ public abstract class Component
 	// For validation
 
 	// First run it has to check if it is valid
-	// Component assumes that they are 
+	// Component assumes that they are
 	private boolean ib_isValid = true;
 
 	private ArrayList iAL_Listeners = null;
@@ -77,12 +96,14 @@ public abstract class Component
 	private ComponentValidator i_ComponentValidator = null;
 
 	private Form i_Form;
+
 	private String iS_ResponseName = null;
+
 	private Component i_Component_Parent = null;
 
 	/**
-	 * Component constructor. All inherited classes has 
-	 * to call super(a_Form) or super(a_Component_Parent)
+	 * Component constructor. All inherited classes has to call super(a_Form) or
+	 * super(a_Component_Parent)
 	 */
 	public Component(Form a_Form)
 	{
@@ -92,7 +113,7 @@ public abstract class Component
 	}
 
 	/**
-	 * @see Component#Component(Form) 
+	 * @see Component#Component(Form)
 	 */
 	public Component(Component a_Component_Parent)
 	{
@@ -102,8 +123,8 @@ public abstract class Component
 	}
 
 	/**
-	 * @return String Response name of component. Unique name which is used to get values from
-	 * servlet.
+	 * @return String Response name of component. Unique name which is used to
+	 *         get values from servlet.
 	 */
 	public String getResponseName()
 	{
@@ -112,7 +133,9 @@ public abstract class Component
 
 	/**
 	 * Sets ComponentValidator for this Component
-	 * <p> Only one validator is posible
+	 * <p>
+	 * Only one validator is posible
+	 * 
 	 * @param a_ComponentValidator
 	 */
 	public void setComponentValidator(ComponentValidator a_ComponentValidator)
@@ -138,14 +161,16 @@ public abstract class Component
 		return getForm().getHttpServletRequest();
 	}
 
-	/** Sets parent component.<br>
-	 * Don't use this method in runtime.
-	 * Sets Form object to component.
-	 * @param a_Component parent component
+	/**
+	 * Sets parent component. <br>
+	 * Don't use this method in runtime. Sets Form object to component.
+	 * 
+	 * @param a_Component
+	 *            parent component
 	 */
 	public void setParent(Component a_Component)
 	{
-		if (i_Component_Parent == null)
+		if(i_Component_Parent == null)
 		{
 			i_Component_Parent = a_Component;
 		}
@@ -153,6 +178,7 @@ public abstract class Component
 
 	/**
 	 * Gets parent component.
+	 * 
 	 * @return reference to parent compnent if it is in root level returns null.
 	 */
 
@@ -161,9 +187,12 @@ public abstract class Component
 		return i_Component_Parent;
 	}
 
-	/**<b>NetForm Internal use only</b><br>
+	/**
+	 * <b>NetForm Internal use only </b> <br>
 	 * Sets Form object to component.
-	 * @param Form object
+	 * 
+	 * @param Form
+	 *            object
 	 */
 	final void setForm(Form a_Form)
 	{
@@ -173,7 +202,7 @@ public abstract class Component
 
 		Iterator l_Iterator = getChildComponents();
 
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
@@ -188,13 +217,13 @@ public abstract class Component
 	 */
 	public final Form getForm()
 	{
-		if (i_Form == null && i_Component_Parent != null)
+		if(i_Form == null && i_Component_Parent != null)
 		{
 			i_Form = i_Component_Parent.getForm();
 		}
 		return i_Form;
 	}
-	
+
 	/**
 	 * @return FormManager
 	 */
@@ -203,10 +232,13 @@ public abstract class Component
 		return getForm().getFormManager();
 	}
 
-	/** Set Component visiblity state.<br>
-	 * Note not visible components are imposible render, because DOM tree
-	 * is not generated.
-	 * @param boolean is visible or not
+	/**
+	 * Set Component visiblity state. <br>
+	 * Note not visible components are imposible render, because DOM tree is not
+	 * generated.
+	 * 
+	 * @param boolean
+	 *            is visible or not
 	 */
 
 	public void setVisible(boolean ab_visible)
@@ -217,7 +249,7 @@ public abstract class Component
 
 	private void fireEvent()
 	{
-		if (iAL_Listeners != null)
+		if(iAL_Listeners != null)
 		{
 			Iterator l_Iterator = iAL_Listeners.iterator();
 			while (l_Iterator.hasNext())
@@ -229,7 +261,7 @@ public abstract class Component
 
 	public boolean isVisible()
 	{
-		if (ib_isVisibleChanged)
+		if(ib_isVisibleChanged)
 		{
 			return ib_newIsVisible;
 		}
@@ -257,7 +289,7 @@ public abstract class Component
 
 	public boolean isEnabled()
 	{
-		if (ib_enabledChanged)
+		if(ib_enabledChanged)
 		{
 			return ib_newEnabled;
 		}
@@ -269,7 +301,7 @@ public abstract class Component
 
 	public void addComponentListener(ComponentListener a_ComponentListener)
 	{
-		if (iAL_Listeners == null)
+		if(iAL_Listeners == null)
 		{
 			iAL_Listeners = new ArrayList();
 		}
@@ -281,20 +313,20 @@ public abstract class Component
 
 	final void generateEvent()
 	{
-		if (ib_componentIsModified)
+		if(ib_componentIsModified)
 		{
 			fireEvent();
 		}
 
 		Iterator l_Iterator = getChildComponents();
 
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
 
 				Component l_Component = (Component) l_Iterator.next();
-				if (l_Component.haveEvents())
+				if(l_Component.haveEvents())
 				{
 					l_Component.generateEvent();
 				}
@@ -306,18 +338,17 @@ public abstract class Component
 	{
 		clearModifiedStatus();
 		boolean lb_isModified = false;
-		if (canHaveNewValues())
+		if(canHaveNewValues())
 		{
-			String[] lS_Parameters = getHttpServletRequest()
-				.getParameterValues(getResponseName());
-			if(lS_Parameters!=null)
+			String[] lS_Parameters = getHttpServletRequest().getParameterValues(getResponseName());
+			if(lS_Parameters != null)
 			{
-				// Values found so 
+				// Values found so
 				// Then session is sync
 				getForm().setSessionIsSync();
 			}
-			
-			if (checkIfNewValues(lS_Parameters))
+
+			if(checkIfNewValues(lS_Parameters))
 			{
 				componentIsModified();
 				lb_isModified = true;
@@ -329,8 +360,9 @@ public abstract class Component
 	/**
 	 * 
 	 * 
-	 * @param aS_Parameters Parameters, which are coming from 
-	 *  l_HttpServletRequest.getParameterValues(getResponseName());
+	 * @param aS_Parameters
+	 *            Parameters, which are coming from
+	 *            l_HttpServletRequest.getParameterValues(getResponseName());
 	 * @return true if there is new values
 	 */
 	protected boolean checkIfNewValues(String[] aS_Parameters)
@@ -340,28 +372,28 @@ public abstract class Component
 
 		Iterator l_Iterator = getChildComponents();
 
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
 				Component l_Component = (Component) l_Iterator.next();
-				if (l_Component.parseValues()) 
+				if(l_Component.parseValues())
 				{
 					lb_componentIsModified = true;
 				}
 			}
 		}
-		return lb_componentIsModified;		
+		return lb_componentIsModified;
 	}
 
 	final void lastIteration()
 	{
-		if (ib_isVisibleChanged)
+		if(ib_isVisibleChanged)
 		{
 			ib_isVisible = ib_newIsVisible;
 			ib_isVisibleChanged = false;
 		}
-		if (ib_enabledChanged)
+		if(ib_enabledChanged)
 		{
 			ib_enabled = ib_newEnabled;
 			ib_enabledChanged = false;
@@ -371,7 +403,7 @@ public abstract class Component
 		lastComponentIteration();
 
 		Iterator l_Iterator = getChildComponents();
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
@@ -382,13 +414,12 @@ public abstract class Component
 	}
 
 	/**
-	 * To be overridden. This last to be called when 
-	 * Before form execution
+	 * To be overridden. This last to be called when Before form execution
 	 */
 	protected void lastComponentIteration()
 	{
 		Iterator l_Iterator = getChildComponents();
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
@@ -401,7 +432,7 @@ public abstract class Component
 	final void clearState()
 	{
 		Iterator l_Iterator = getChildComponents();
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
@@ -428,8 +459,9 @@ public abstract class Component
 
 	/**
 	 * Tell if data that component contains is ok.
+	 * 
 	 * @return boolean true is no component validator defined or data is ok.
-	 * false if data is not ok.
+	 *         false if data is not ok.
 	 */
 	public final boolean isValid()
 	{
@@ -440,7 +472,8 @@ public abstract class Component
 	/**
 	 * Tells validate status of this component, without child information
 	 * 
-	 * @return true if component is valid if child are not considered false if not
+	 * @return true if component is valid if child are not considered false if
+	 *         not
 	 */
 	public final boolean isValidWithoutChilds()
 	{
@@ -450,7 +483,7 @@ public abstract class Component
 	final void setValid(boolean ab_isValid, Validate a_Validate)
 	{
 		boolean lb_isValid = ib_isValid;
-		if (i_ComponentValidator != null && ab_isValid && a_Validate!=null)
+		if(i_ComponentValidator != null && ab_isValid && a_Validate != null)
 		{
 			lb_isValid = i_ComponentValidator.isValid(a_Validate);
 		}
@@ -458,11 +491,12 @@ public abstract class Component
 		{
 			lb_isValid = ab_isValid;
 		}
-		
-		if(lb_isValid != ib_isValid) 
-		{		
-			// Component valid status has changed so we have to notify parent components
-			if (i_Component_Parent != null)
+
+		if(lb_isValid != ib_isValid)
+		{
+			// Component valid status has changed so we have to notify parent
+			// components
+			if(i_Component_Parent != null)
 			{
 				i_Component_Parent.setChildValid(lb_isValid);
 			}
@@ -495,8 +529,8 @@ public abstract class Component
 		{
 			ii_notValidChildComponentCount++;
 		}
-		
-		if (i_Component_Parent != null)
+
+		if(i_Component_Parent != null)
 		{
 			i_Component_Parent.setChildValid(ib_isValid);
 		}
@@ -507,14 +541,14 @@ public abstract class Component
 	}
 
 	/**
-	 * Forces validation. This is usually done by setting data as it would
-	 * be coming from browser inside components
+	 * Forces validation. This is usually done by setting data as it would be
+	 * coming from browser inside components
 	 */
 	public void validate()
 	{
 		Iterator l_Iterator = getChildComponents();
 
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
@@ -536,8 +570,8 @@ public abstract class Component
 	}
 
 	/**
-	 * Set DataContainer to component. DataContainer
-	 * Makes posiblity create data models.
+	 * Set DataContainer to component. DataContainer Makes posiblity create data
+	 * models.
 	 * 
 	 * @param a_ComponentData
 	 */
@@ -550,10 +584,10 @@ public abstract class Component
 	{
 		return i_ComponentData;
 	}
-	
+
 	/**
-	 * This shares listeners. This is made for Tables, example if table row want to get
-	 * events
+	 * This shares listeners. This is made for Tables, example if table row want
+	 * to get events
 	 * 
 	 * @param a_Component
 	 */
@@ -563,25 +597,32 @@ public abstract class Component
 	}
 
 	/**
-	 * Set data to this Component's {@link com.sohlman.netform.ComponentData ComponentData} object 
-	 * If {@link com.sohlman.netform.ComponentData ComponentData} is not set is ignored
-	 * @param a_Object Object
+	 * Set data to this Component's
+	 * {@link com.sohlman.netform.ComponentData ComponentData}object If
+	 * {@link com.sohlman.netform.ComponentData ComponentData}is not set is
+	 * ignored
+	 * 
+	 * @param a_Object
+	 *            Object
 	 */
 	protected void setData(Object a_Object)
 	{
-		if (i_ComponentData != null)
+		if(i_ComponentData != null)
 		{
 			i_ComponentData.setData(a_Object);
 		}
 	}
 
-	/** gets data from {@link com.sohlman.netform.ComponentData ComponentData}
-	 * @return Object 
-	 * @throws IllegalStateException if component data doesn't exists
+	/**
+	 * gets data from {@link com.sohlman.netform.ComponentData ComponentData}
+	 * 
+	 * @return Object
+	 * @throws IllegalStateException
+	 *             if component data doesn't exists
 	 */
 	protected Object getData()
 	{
-		if (i_ComponentData != null)
+		if(i_ComponentData != null)
 		{
 			return i_ComponentData.getData();
 		}
@@ -591,22 +632,9 @@ public abstract class Component
 		}
 	}
 
-	final public int getCurrentState()
-	{
-		return i_Form.getCurrentState();
-	}
-
-	final protected void checkState(int ai_state, String aS_ErrorMsg)
-	{
-		int li_state = getCurrentState();
-		if ((li_state & ai_state) == 0)
-		{
-			throw new IllegalStateException(aS_ErrorMsg);
-		}
-	}
-
-	/** 
+	/**
 	 * Has component data
+	 * 
 	 * @return true if component has ComponentData object or false if not
 	 */
 	protected boolean hasComponentData()
@@ -620,14 +648,14 @@ public abstract class Component
 	public abstract Component cloneComponent();
 
 	/**
-	 * This cleans the object and all it's child
-	 * Child classes has to remember call super if overriding this.
+	 * This cleans the object and all it's child Child classes has to remember
+	 * call super if overriding this.
 	 */
 	public void dispose()
 	{
 		Iterator l_Iterator = getChildComponents();
 
-		if (l_Iterator != null)
+		if(l_Iterator != null)
 		{
 			while (l_Iterator.hasNext())
 			{
@@ -636,13 +664,13 @@ public abstract class Component
 				l_Component.dispose();
 			}
 		}
-		// If component was not valid then it status has to be reduced from 
+		// If component was not valid then it status has to be reduced from
 		// parent components
 		if(!ib_isValid)
 		{
-			
+
 			Component l_Component = getParent();
-			if(l_Component!=null)
+			if(l_Component != null)
 			{
 				l_Component.setChildValid(true);
 			}
@@ -650,27 +678,31 @@ public abstract class Component
 			{
 				getForm().setChildValid(true);
 			}
-			
+
 		}
 	}
 
 	/**
-	 * <b>JSP</b> Return String if component is valid othervice ""
+	 * <b>JSP </b> Return String if component is valid othervice ""
 	 * 
-	 * @param a_String String to be returned
-	 * @return  String if component is valid othervice ""
+	 * @param a_String
+	 *            String to be returned
+	 * @return String if component is valid othervice ""
 	 */
 	public String getStringIfIsValid(String a_String)
 	{
 		return getStringIfIsValid(a_String, "");
 	}
+
 	/**
-	 * <b>JSP</b> Return String if component is valid othervice ""
+	 * <b>JSP </b> Return String if component is valid othervice ""
 	 * 
-	 * @param aS_Valid String to be returned when component is valid
-	 * @param aS_NotValid String to be returned when component is not valid
-	 * @return  String if component is valid othervice ""
-	 */	
+	 * @param aS_Valid
+	 *            String to be returned when component is valid
+	 * @param aS_NotValid
+	 *            String to be returned when component is not valid
+	 * @return String if component is valid othervice ""
+	 */
 	public String getStringIfIsValid(String aS_Valid, String aS_NotValid)
 	{
 		if(isValid())
@@ -682,22 +714,30 @@ public abstract class Component
 			return aS_NotValid;
 		}
 	}
+
 	/**
-	 * <b>JSP</b> Return String if component is not valid othervice ""
+	 * <b>JSP </b> Return String if component is not valid othervice ""
 	 * 
-	 * @param a_String String to be returned
-	 * @return  String if component is valid othervice ""
+	 * @param a_String
+	 *            String to be returned
+	 * @return String if component is valid othervice ""
 	 */
 	public String getStringIfIsNotValid(String a_String)
 	{
 		return getStringIfIsValid("", a_String);
 	}
-	
+
 	/**
-	 * <b>JSP</b>
-	 * @param aS_Visible String which contains value to be returned if component is visible
-	 * @param aS_NotVisible String which contains value to be returned if component is not visible
-	 * @return aS_Visible if component is visible aS_NotVisible if component is not visible
+	 * <b>JSP </b>
+	 * 
+	 * @param aS_Visible
+	 *            String which contains value to be returned if component is
+	 *            visible
+	 * @param aS_NotVisible
+	 *            String which contains value to be returned if component is not
+	 *            visible
+	 * @return aS_Visible if component is visible aS_NotVisible if component is
+	 *         not visible
 	 */
 	public String getStringIfIsVisible(String aS_Visible, String aS_NotVisible)
 	{
@@ -710,12 +750,18 @@ public abstract class Component
 			return aS_NotVisible;
 		}
 	}
-	
+
 	/**
-	 * <b>JSP</b>
-	 * @param aS_Enabled String which contains value to be returned if component is enabled
-	 * @param aS_NotEnabled String which contains value to be returned if component is not enabled
-	 * @return aS_Enabled if component is enabled aS_NotEnabled if component is not enabled
+	 * <b>JSP </b>
+	 * 
+	 * @param aS_Enabled
+	 *            String which contains value to be returned if component is
+	 *            enabled
+	 * @param aS_NotEnabled
+	 *            String which contains value to be returned if component is not
+	 *            enabled
+	 * @return aS_Enabled if component is enabled aS_NotEnabled if component is
+	 *         not enabled
 	 */
 	public String getStringIfIsEnabled(String aS_Enabled, String aS_NotEnabled)
 	{
@@ -727,18 +773,16 @@ public abstract class Component
 		{
 			return aS_NotEnabled;
 		}
-	}	
-	
+	}
+
 	/**
 	 * This used to syncronize data with ComponentData
 	 */
 	public abstract void syncronizeData();
-	
-	
+
 	/**
-	 * <b>JSP settings</b>
-	 * Set format for component, if component is not supporting formatting
-	 * this has no effect
+	 * <b>JSP settings </b> Set format for component, if component is not
+	 * supporting formatting this has no effect
 	 * 
 	 * @param aS_Format
 	 */
@@ -746,22 +790,23 @@ public abstract class Component
 	{
 		iS_Format = aS_Format;
 	}
-	
+
 	/**
 	 * It reads column format
 	 * <p>
-	 * Format can be set with {@link #setFormat(String) setFormat()} and if 
-	 * it is not set then it tries to read it form parent component and finally
-	 * from Form. This parent search will be done only once. 
+	 * Format can be set with {@link #setFormat(String) setFormat()}and if it
+	 * is not set then it tries to read it form parent component and finally
+	 * from Form. This parent search will be done only once.
 	 * 
-	 * @param a_Class Class which type format should be for
+	 * @param a_Class
+	 *            Class which type format should be for
 	 * @return String containing format information
 	 */
 	final protected String getFormat(Class a_Class)
 	{
-		if(iS_Format==null && ib_isFormatRead == false)
+		if(iS_Format == null && ib_isFormatRead == false)
 		{
-			if( getParent()!=null)
+			if(getParent() != null)
 			{
 				iS_Format = getParent().getFormatFromParent(a_Class, getComponentData());
 				ib_isFormatRead = true;
@@ -773,22 +818,24 @@ public abstract class Component
 				iS_Format = null;
 				ib_isFormatRead = true;
 				return null;// getForm().getFormatFromForm(a_Class);
-			}			
+			}
 		}
 		return iS_Format;
 	}
-	
+
 	/**
 	 * 
-	 * @param a_Class Class which type format should be for
-	 * @param a_ComponentData which may hold information about the which kind of format 
-	 * it should be, example in table it holds column number
-	 * @return String String containing format information for current 
-	 * 	Class or ComponentData, null if nothing found
+	 * @param a_Class
+	 *            Class which type format should be for
+	 * @param a_ComponentData
+	 *            which may hold information about the which kind of format it
+	 *            should be, example in table it holds column number
+	 * @return String String containing format information for current Class or
+	 *         ComponentData, null if nothing found
 	 */
 	protected String getFormatFromParent(Class a_Class, ComponentData a_ComponentData)
 	{
-		if( getParent()!=null)
+		if(getParent() != null)
 		{
 			return getParent().getFormatFromParent(a_Class, getComponentData());
 		}
@@ -797,6 +844,26 @@ public abstract class Component
 			// TODO support form level formatting
 			// getParentFormat (Class a_Class)
 			return null;// getForm().getFormatFromForm(a_Class);
+		}
+	}
+
+	void addToMapCurrentChildComponent(String aS_ParentName, HashMap aHm_ComponentNameByComponent, HashMap aHm_ComponentByComponentName) throws Exception
+	{
+		Field[] i_Fields = getClass().getFields();
+
+		if(i_Fields == null)
+		{
+			for (int li_index = 0; li_index < i_Fields.length; li_index++)
+			{
+				if(i_Fields[li_index].getType().isAssignableFrom(Component.class))
+				{
+					String lS_Name = aS_ParentName + "." + i_Fields[li_index].getName();
+					Object l_Object = i_Fields[li_index].get(this);
+					aHm_ComponentNameByComponent.put(l_Object,  lS_Name);
+					Component l_Component = (Component) l_Object;
+					l_Component.addToMapCurrentChildComponent(lS_Name, aHm_ComponentNameByComponent, aHm_ComponentByComponentName);
+				}
+			}
 		}
 	}
 }

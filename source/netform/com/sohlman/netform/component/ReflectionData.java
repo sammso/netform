@@ -34,7 +34,19 @@ public class ReflectionData extends Object implements ComponentData
 		assignGetMethod(getMethod);
 		assignSetMethod(setMethod);
 	}
-
+	
+	/** 
+	 * @param objectToBeReflected
+	 * @param field
+	 */
+	public ReflectionData(Object objectToBeReflected, String field)
+	{
+		setObjectToBeReflected(objectToBeReflected);
+		String modFieldName= field.substring(0,1).toUpperCase() + field.substring(1);
+		
+		assignGetMethod("set" + modFieldName );
+		assignSetMethod("get" + modFieldName );
+	}
 	/**
 	 * @param objectToBeReflected
 	 */

@@ -350,6 +350,7 @@ public class FormManager implements HttpSessionListener
 		{
 			Form l_Form = (Form) a_Class.newInstance();
 			l_Form.setName(lS_ServletPath);
+			l_Form.mapCurrentComponents();
 			return l_Form;
 		}
 		catch (LinkageError a_LinkageError)
