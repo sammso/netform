@@ -127,6 +127,11 @@ public class InitTag extends MasterTag
 			throw new JspException("Could find Form class \"" + iS_FormClassName + "\"", l_ClassNotFoundException);
 		}
 	}
+	
+	public Form getCurrentForm()
+	{
+		return i_Form;
+	}
 
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#release()

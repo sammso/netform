@@ -128,14 +128,8 @@ public class ButtonTag extends ComponentTag
 	 */
 	public int doStartTag() throws JspException
 	{
-		if(init())
-		{
-			i_Button = (Button) getComponentFormThisTag();
-		}
-		else
-		{
-			// ERROR
-		}
+		init();
+		i_Button = (Button) getComponentFormThisTag();		
 		return SKIP_BODY;
 	}
 

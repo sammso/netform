@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform.taglib;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
@@ -34,12 +37,21 @@ public class InitParameterTag extends MasterTag
 
 	private String iS_Method = null;
 	private String iS_Value = null;
-	
+	/**
+	 * This is for Tag inteface
+	 * 
+	 * @param aS_Method Field name 
+	 */	
 	public void setName(String aS_Method)
 	{
 		iS_Method = aS_Method;
 	}
 	
+	/**
+	 * This is for Tag inteface
+	 * 
+	 * @param aS_Value
+	 */
 	public void setValue(String aS_Value)
 	{
 		iS_Value = aS_Value;
@@ -50,6 +62,25 @@ public class InitParameterTag extends MasterTag
 	 */
 	public int doEndTag() throws JspException
 	{		
+		InitTag i_InitTag = (InitTag)i_Tag;
+		Form l_Form = i_InitTag.getCurrentForm();
+		try
+		{
+			Method l_Method = l_Form.getClass().getMethod("set" + iS_Method, new Class[]{String.class});
+			l_Method.invoke(l_Form, new Object[] {iS_Value});
+		}
+		catch(NoSuchMethodException l_NoSuchMethodException)
+		{
+			throw new JspException("Failed to look set" + iS_Method + "() method from form", l_NoSuchMethodException);
+		}
+		catch(InvocationTargetException l_InvocationTargetException)
+		{
+			throw new JspException("Failed to invoke set" + iS_Method + "() method from form", l_InvocationTargetException);
+		}
+		catch(IllegalAccessException l_IllegalAccessException)
+		{
+			throw new JspException("Failed to access set" + iS_Method + "() method from form", l_IllegalAccessException);
+		}
 		return EVAL_PAGE;
 	}
 
