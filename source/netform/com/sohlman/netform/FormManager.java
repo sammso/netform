@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.sohlman.netform;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.servlet.ServletContext;
@@ -46,6 +47,7 @@ public class FormManager implements HttpSessionListener
 	private Hashtable i_Hashtable = null; 
 	private Hashtable iHs_Portlets = null;
 	private HttpSession i_HttpSession = null;
+	private HashMap iHM_Forms = new HashMap();
 
 	protected FormManager()
 	{

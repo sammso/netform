@@ -321,13 +321,12 @@ public abstract class Form
 				init();
 				initPortlets();
 				preValidateComponents();
-				initSessionOutOfSync();
+				setSessiodIsSync();
 				startService();
 				callPortletStartService();
 			}
 			else
 			{
-				initSessionOutOfSync();
 				startService();
 				callPortletStartService();
 
@@ -697,25 +696,27 @@ public abstract class Form
 		return ib_isSessionOutOfSync;
 	}
 
-	final void setSessionIsSync()
-	{
-		ib_isSessionOutOfSync = false;
-	}
-
 	/**
-	 * initialize ib_isSessionOutOfSync value this is executed on execute()
-	 * method
+	 * For start every execute iteration session is out of sync.
+	 * and when somecomponent get parameters then it is 
+	 * sync again
 	 */
 	private void initSessionOutOfSync()
 	{
-		if(iAL_Components == null || iAL_Components.size() <= 0)
+		if(iAL_Components==null || iAL_Components.size() > 0)
 		{
 			ib_isSessionOutOfSync = false;
 		}
 		else
 		{
+
 			ib_isSessionOutOfSync = true;
 		}
+	}
+	
+	final void setSessiodIsSync()
+	{
+		ib_isSessionOutOfSync = false;
 	}
 
 	/**
