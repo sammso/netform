@@ -49,6 +49,11 @@ public class ButtonTag extends ComponentTag
 	 */
 	public int doEndTag() throws JspException
 	{
+		if(!i_Button.isVisible())
+		{
+			return EVAL_PAGE;
+		}
+		
 		try
 		{
 			i_PageContext.getOut().print("<input");

@@ -27,6 +27,10 @@ public class TableTag extends ComponentTag implements IterationTag
 			{
 				i_Table = (Table) getComponentFormThisTag();
 				ii_row = 1;
+				if(!i_Table.isVisible())
+				{
+					return SKIP_BODY;
+				}
 			}
 			else
 			{
@@ -46,15 +50,7 @@ public class TableTag extends ComponentTag implements IterationTag
 	 */
 	public int doEndTag() throws JspException
 	{
-		try
-		{
-			i_PageContext.getOut().print("</select>");
-			return EVAL_PAGE;
-		}
-		catch (IOException l_IOException)
-		{
-			throw new JspException(l_IOException);
-		}
+		return EVAL_PAGE;
 	}
 
 	/**

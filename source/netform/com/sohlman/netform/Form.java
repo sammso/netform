@@ -44,15 +44,18 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class Form
 {
+	public final static String FORM = "form";
+	// TODO: To be removed start
 	public final static int FORM_STATE_CONSTRUCTOR = 0;
 	public final static int FORM_STATE_INIT = 1;
 	public final static int FORM_STATE_EVENTS = 2;
 	public final static int FORM_STATE_SETTINGS = 3;
 	public final static int FORM_STATE_EXECUTE = 4;
 	public final static int FORM_STATE_TEMPLATING = 5;
-
+	
 	private int ii_currentState = FORM_STATE_CONSTRUCTOR;
-
+	//  To be removed end
+	
 	final static String FORM_CONTAINER = "@FORM_CONTAINER";
 	final static String SESSION_PAGE = "@PAGE";
 	private ArrayList iAL_Components = null;
@@ -70,6 +73,20 @@ public abstract class Form
 	private String iS_Name;
 	private int ii_notValidChildComponentCount = 0; // Component is valid if this is 0
 
+	/**
+	 * Tells if form is initialized.
+	 * With this method is possible to check
+	 * if form is initialized.
+	 * 
+	 * Form is initialized if init() method has been executed
+	 * 
+	 * @return true if initialized false if not
+	 */
+	public final boolean isInitialized()
+	{
+		return ib_isInitialized;
+	}
+	
 	/**
 	 * Internal use
 	 * 

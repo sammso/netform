@@ -23,7 +23,7 @@ public class SelectTag extends ComponentTag implements IterationTag
 	private String iS_NotValidClass = null;
 
 	private String iS_Id = null;
-	
+
 	private int ii_size = 1;
 
 	private int ii_index = 1;
@@ -58,15 +58,18 @@ public class SelectTag extends ComponentTag implements IterationTag
 	 */
 	public int doEndTag() throws JspException
 	{
-		try
+		if(i_Table.isVisible())
 		{
-			i_PageContext.getOut().print("</select>");
-			return EVAL_PAGE;
+			try
+			{
+				i_PageContext.getOut().print("</select>");
+			}
+			catch (IOException l_IOException)
+			{
+				throw new JspException(l_IOException);
+			}
 		}
-		catch (IOException l_IOException)
-		{
-			throw new JspException(l_IOException);
-		}
+		return EVAL_PAGE;
 	}
 
 	/**
@@ -76,8 +79,13 @@ public class SelectTag extends ComponentTag implements IterationTag
 	{
 		if(init())
 		{
+			if(!i_Table.isVisible())
+			{
+				return SKIP_BODY;
+			}
+
 			i_Table = (Table) getComponentFormThisTag();
-			ii_index=1;
+			ii_index = 1;
 			try
 			{
 				i_PageContext.getOut().print("<select");
@@ -151,7 +159,7 @@ public class SelectTag extends ComponentTag implements IterationTag
 		iS_Id = null;
 		ii_size = 1;
 	}
-	
+
 	final int getCurrentRow()
 	{
 		return ii_index;

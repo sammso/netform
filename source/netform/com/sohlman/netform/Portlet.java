@@ -52,10 +52,6 @@ public abstract class Portlet extends Component
 			{
 				iAL_Components = new ArrayList();
 			}
-			if(iAL_Components==null)
-			{
-				iAL_Components = new ArrayList();
-			}
 			
 			iAL_Components.add(a_Component);
 		}

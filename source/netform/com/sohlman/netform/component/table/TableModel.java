@@ -183,7 +183,7 @@ public abstract class TableModel
 	 * Search by column index
 	 * 
 	 * @param a_Object
-	 * @param ai_column
+	 * @param ai_column 
 	 * @return row number which contains search hed item
 	 */
 	public abstract int search(Object a_Object, int ai_column);
