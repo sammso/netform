@@ -1,0 +1,147 @@
+<project name="NetForm" default="CreateDist" basedir=".">
+	<description>
+		NetForm Web Application Framework build.xml
+	</description>
+	<!-- Put here your servlet.jar -->
+	<property name="servlet.jar" value="C:\Java\Tomcat 4.1\common\lib\servlet.jar"/>
+	<!-- Put here your dataset.jar -->
+	<property name="dataset.jar" value="C:\Java\Tomcat 4.1\common\lib\dataset.jar"/>
+	<property name="title" value="NetForm Web Application Library v 0.70 "/>
+	<property name="zipfile" value="NetForm.zip"/>
+	<property name="netformsrc" location="source/netform"/>
+	<property name="datasetsrc" location="source/dataset"/>
+	<property name="examplesrc" location="webapp/WEB-INF/src"/>	
+	<property name="builddir" location="build"/>
+	<property name="distribution"  location="distribution"/>
+	<property name="NetForm.zip"  location="distribution/NetForm"/>
+	<property name="example.war"  location="distribution/WAR"/>	
+	<target name="Init" depends="Clean">
+		<tstamp/>
+		<mkdir dir="${NetForm.zip}"/>
+		<mkdir dir="${NetForm.zip}/libs"/>
+	</target>
+	
+	<target name="CompileNetForm" depends="Init" description="Compile NetForm Source" >
+	<!-- Complile and create jar -->
+		<mkdir dir="${builddir}"/>
+		<javac srcdir="${netformsrc}" destdir="${builddir}" classpath="${servlet.jar}" optimize="true" nowarn="true"/>
+		<jar jarfile="${NetForm.zip}/libs/netform.jar" basedir="${builddir}" compress="true"/>
+		<delete dir="${builddir}" failonerror="false"/>
+	</target>
+
+	<target name="CompileDataSet" depends="CompileNetForm" description="Compile DataSet extension" >
+	<!-- Complile and create jar -->
+		<mkdir dir="${builddir}"/>
+		<javac srcdir="${datasetsrc}" destdir="${builddir}" optimize="true" nowarn="true">
+			<classpath>
+				<pathelement location="${servlet.jar}"/>
+				<pathelement location="${dataset.jar}"/>
+				<pathelement location="${NetForm.zip}/libs/netform.jar"/>				
+			</classpath>
+		</javac>
+		<jar jarfile="${NetForm.zip}/libs/dataset-netform.jar" basedir="${builddir}" compress="true"/>
+		<delete dir="${builddir}" failonerror="false"/>
+	</target>
+	
+	<target name="CreateTestAppWar" depends="CompileDataSet" description="Create Test application war" >
+	<!-- Create temp dir for war file creation -->
+		<mkdir dir="${example.war}"/>
+		<mkdir dir="${example.war}/WEB-INF/lib"/>
+		<mkdir dir="${example.war}/WEB-INF/classes"/>		
+		
+	<!-- Complile and create example application jar -->
+		<mkdir dir="${builddir}"/>
+		<javac srcdir="${examplesrc}" destdir="${builddir}" optimize="true" nowarn="true">
+			<classpath>
+				<pathelement location="${servlet.jar}"/>
+				<pathelement location="${dataset.jar}"/>
+				<pathelement location="${NetForm.zip}/libs/netform.jar"/>
+				<pathelement location="${NetForm.zip}/libs/dataset-netform.jar"/>				
+			</classpath>		
+		</javac>
+		<jar jarfile="${example.war}/WEB-INF/libs" basedir="${builddir}" compress="true"/>
+		<delete dir="${builddir}" failonerror="false"/>
+		
+	<!-- Copy libs to war -->
+
+		<copy todir="${example.war}/WEB-INF/lib">
+			<fileset dir="${NetForm.zip}/libs">
+			</fileset>
+		</copy>
+		
+		<copy file="${dataset.jar}" todir="${example.war}/WEB-INF/lib"/>
+		
+		
+	<!-- Copy source to war -->
+		
+		<copy todir="${example.war}/WEB-INF/src">
+			<fileset dir="${examplesrc}">
+			</fileset>
+		</copy>		
+		
+	<!-- Copy JSP files to JAR -->
+		<copy todir="${example.war}">
+			<fileset dir="webapp">
+				<include name="**/*.jsp"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.tld"/>				
+			</fileset>
+		</copy>
+		<jar jarfile="netform.war" basedir="${example.war}" compress="true"/>
+		<delete dir="${example.war}" failonerror="false"/>
+	</target>	
+
+	<target name="CreateDist" depends="CreateTestAppWar" description="Create Distribution Package" >
+		<!-- Main -->
+		
+		<copy todir="${NetForm.zip}/source">
+			<fileset dir="source">
+			</fileset>
+		</copy>
+		
+		<copy file="build.xml"  todir="${NetForm.zip}"/>
+		<copy file="README.TXT"  todir="${NetForm.zip}"/>		
+		
+		<!-- Copy Webapp source to .zip -->
+		<copy todir="${NetForm.zip}/webapp">
+			<fileset dir="webapp">
+				<include name="**/*.jsp"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.tld"/>				
+			</fileset>
+		</copy>		
+		
+		<copy todir="${NetForm.zip}/webapp/WEB-INF/src">
+			<fileset dir="${examplesrc}">
+			</fileset>
+		</copy>			
+		<!-- JavaDoc -->		
+		
+		<mkdir dir="${NetForm.zip}/javadocs/"/>
+		
+		<javadoc 
+			destdir="${NetForm.zip}/javadocs/"
+			author="true"
+			version="true"
+			use="true"
+			windowtitle="${title}"
+			>
+			<packageset dir="${netformsrc}" defaultexcludes="yes"/>
+			<packageset dir="${datasetsrc}" defaultexcludes="yes"/>			
+			<doctitle><![CDATA[<h1>${title}</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Sampsa Sohlman 2001-2003</i>]]></bottom>
+			<group title="NetForm Core" packages="com.sohlman.netform"/>
+			<group title="DataSet NetForm Connector" packages="com.sohlman.dataset.netform"/>
+		</javadoc>		
+		
+		<zip zipfile="${zipfile}" basedir="${distribution}" compress="true"/>
+		<delete dir="${distribution}"/>
+	</target>
+	
+	<target name="Clean" description="Clean Up" >
+		<delete file="${zipfile}"/>
+		<delete file="netform.war"/>
+		<delete dir="${distribution}"/>
+		<delete dir="${builddir}"/>
+	</target>
+</project>

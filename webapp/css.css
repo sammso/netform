@@ -1,0 +1,407 @@
+.string
+{
+ color: #2A00FF;
+ font-family: Courier, Monospace;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+}
+
+.comment
+{
+ color: #3F7F5F;
+ font-family: Courier, Monospace;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+}
+
+.common
+{
+ color: #7F0055;
+ font-family: Courier, Monospace;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+}
+
+A:link 
+{
+ color: #333333;
+}
+
+A:visited 
+{
+ color: #336666;
+}
+
+A:hover 
+{
+ color: #336666;
+}
+
+A.pagetitle:link 
+{
+ color: #333333;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ FONT-SIZE: 20px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none; 
+}
+
+A.pagetitle:visited 
+{
+ color: #336666;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ FONT-SIZE: 20px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;  
+}
+
+A.pagetitle:hover 
+{
+ color: #336666;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ FONT-SIZE: 20px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;  
+}
+
+
+A.menuitem:link 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ FONT-SIZE: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+ A.menuitem:visited 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+ A.menuitem:hover 
+{
+ color: #336666;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+
+ A.title:link 
+{
+ color: #336666;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: underline;
+ 
+}
+ A.title:visited 
+{
+ color: #336666;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: underline;
+ 
+}
+ A.title:hover 
+{
+ color: #336666;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: underline;
+ 
+}
+
+TD.menutitle1 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+ 
+}
+TD.menutitle2 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+ 
+}
+ TD.shortcut 
+{
+ color: #666666;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ BACKGROUND-color: #C1D1D1;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+ 
+}
+
+TD.pagetitle 
+{
+ color: #333333;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ FONT-SIZE: 20px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+ 
+}
+
+TD.doctitle 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 17px; 
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;  
+ text-decoration: underline;
+ text-align: left;
+}
+
+ TD.1sttitle 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 15px; 
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;  
+ text-decoration: underline;
+ text-align: left;
+ 
+}
+ TD.2sttitle 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 13px; 
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;  
+ text-decoration: underline;
+ text-align: left;
+}
+
+TD.3sttitle 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 13px; 
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;  
+ text-decoration: underline;
+ text-align: left;
+}
+
+TD.4sttitle 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: bold;
+ text-decoration: none;
+}
+
+TD.text
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+P.text 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+
+LI.text 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+
+}
+
+
+ TD.bottomtext 
+{
+ color: #333333;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+}
+ INPUT 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+ SELECT 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+ UL LI 
+{
+ list-style-image: url(/pics/layout/list.gif) 
+}
+
+TD.tabletitle 
+{
+ color: #000000	;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: underline;
+}
+
+TD.listtitle 
+{
+ color: #000000	;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: underline;
+}
+
+TD.tableheader
+{
+ color: #666666;
+ background-color: #EBEBC2;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;
+ text-decoration: none;
+}
+
+TD.codetitle 
+{
+ color: #000000	;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: underline;
+}
+
+
+TD.code
+{
+ color: #000000;
+ font-family: Courier, Monospace;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+}
+
+P.code
+{
+ color: #000000;
+ font-family: Courier, monospace;
+ font-size: 12px;
+ FONT-STYLE: normal;
+ LINE-HEIGHT: normal;
+ FONT-WEIGHT: normal;
+ text-decoration: none;
+}
+
+A.code
+{
+ color: #666666;
+ font-family: Courier, monospace;
+ font-size: 12px;
+ FONT-STYLE: normal;
+ LINE-HEIGHT: normal;
+ FONT-WEIGHT: normal;
+ text-decoration: none;
+}
+
+
