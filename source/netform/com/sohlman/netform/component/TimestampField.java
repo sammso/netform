@@ -521,7 +521,7 @@ public class TimestampField extends TextField
 		if(aTs_Time!=null)
 		{
 			l_Calendar.setTime(aTs_Time);
-			li_hour = l_Calendar.get(Calendar.HOUR);
+			li_hour = l_Calendar.get(Calendar.HOUR_OF_DAY);
 			li_minute = l_Calendar.get(Calendar.MINUTE);
 			li_second = l_Calendar.get(Calendar.SECOND);
 			li_millisecond = l_Calendar.get(Calendar.MILLISECOND);
