@@ -173,7 +173,7 @@ public abstract class ComponentTag extends MasterTag
 	{
 		Method l_Method = getComponentMethod(a_Class, aS_Component);
 
-		if(l_Method == null)
+		if(l_Method != null)
 		{
 			try
 			{
