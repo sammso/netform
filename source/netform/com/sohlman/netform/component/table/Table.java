@@ -499,6 +499,8 @@ public class Table extends Component
 		if (!i_IntArray_Selection.equals(ai_indexes))
 		{
 			i_IntArray_Selection.setArray(ai_indexes);
+			
+			validate(new TableValidate(this, ai_indexes));
 
 			if (hasComponentData() && isValidWithoutChilds() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
 			{
@@ -1016,6 +1018,117 @@ public class Table extends Component
 	{
 		return getText(ai_row, i_TableModel.getIndexByName(aS_ColumnName));
 	}
+
+	/** 
+	 * JSP Evaluates returns true or false depending of following rules.
+	 * <p>
+	 * If it is null then it is always <b>false</b>
+	 * <p>
+	 * <u>It is true if in following cases.</u>
+	 * </p>
+	 * <table>
+	 * <tr>
+	 * 	<td>Supported class/interface</td><td>How it is evaluated</td>
+	 * </tr> 
+	 * <tr>
+	 * 	<td>Boolean</td><td>Boolean.booleanValue()</td>
+	 * </tr> 
+	 * <tr>
+	 * 	<td>Number</td><td>Number.longValue() != 0</td>
+	 * </tr>
+	 * <tr>
+	 * 	<td>String</td><td>String.trim().equals("")</td>
+	 * </tr> 
+	 * </table>
+	 * <p>
+	 * and all other cases it is false
+	 *
+	 * @param ai_row row number
+	 * @param ai_column column number
+	 * @return true or false
+	 */
+	public boolean getBoolean(int ai_row, int ai_column)
+	{
+		Object l_Object = i_TableModel.getValueAt(ai_row, ai_column);
+		
+		if(l_Object==null)
+		{
+			return false;
+		}
+		
+		if(Boolean.class == l_Object.getClass())
+		{
+			return ((Boolean)l_Object).booleanValue();
+		}
+		if(Number.class.isAssignableFrom(l_Object.getClass()))
+		{
+			return((Number)l_Object).longValue() != 0;			
+		}
+		if(String.class == l_Object.getClass())
+		{
+			return ((String)l_Object).trim().equals("");
+		}
+		return false;
+	}
+	
+	/** 
+	 * JSP Evaluates according to some rules.
+	 * 
+	 * @see Table#getBoolean(int, int)
+	 *
+	 * @param ai_row row number
+	 * @param aS_ColumnName Column name
+	 * @return true or false see the table
+	 */	
+	public boolean getBoolean(int ai_row, String aS_ColumnName)
+	{
+		return getBoolean(ai_row, i_TableModel.getIndexByName(aS_ColumnName));
+	}
+	
+	/**
+	 * <b>JSP</b>
+	 * <p>
+	 * It is based on {@link Table#getBoolean(int, int) getBoolean()} method.
+	 *
+	 * @param ai_row row number
+	 * @param ai_column column number
+	 * @param aS_True String to be returned if it is evaluated as true
+	 * @param aS_False String to be returned if it is evaluated as false
+	 * @return String 
+	 */
+	public String getStringFromBoolean(int ai_row, int ai_column, String aS_True, String aS_False)
+	{
+		if (getBoolean(ai_row, ai_column))
+		{
+			return aS_True;
+		}
+		else
+		{
+			return aS_False;
+		}		
+	}
+	/**
+	 * <b>JSP</b>
+	 * <p>
+	 * It is based on {@link Table#getBoolean(int, int) getBoolean()} method.
+	 *
+	 * @param ai_row row number
+	 * @param ai_column String containing column name
+	 * @param aS_True String to be returned if it is evaluated as true
+	 * @param aS_False String to be returned if it is evaluated as false
+	 * @return String 
+	 */	
+	public String getStringFromBoolean(int ai_row, String aS_ColumnName, String aS_True, String aS_False)
+	{
+		if (getBoolean(ai_row, aS_ColumnName))
+		{
+			return aS_True;
+		}
+		else
+		{
+			return aS_False;
+		}		
+	}	
 
 	/**
 	 * For JSP use
