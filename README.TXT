@@ -12,8 +12,8 @@
      <form method="POST" action="<%=form.getRequestURI() %>">
    - Fix on Table.insertRowBeforeFirstSelection()
    - Fixes on table
-   - New Component FloatField
-   - New Component DoubleField
+   - Components
+     + New Components FloatField, DoubleField
    - New validation system, which is doing more that it should
    - ListModel, this is abstract class to model Lists. Can be used with J2EE
      applications. I'm using it with JBoss.
