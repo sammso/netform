@@ -5,6 +5,9 @@ import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.component.Button;
 import com.sohlman.netform.component.ReflectionData;
 import com.sohlman.netform.component.TextField;
+import com.sohlman.netform.component.table.AddRowButton;
+import com.sohlman.netform.component.table.DeleteRowButton;
+import com.sohlman.netform.component.table.InsertRowButton;
 import com.sohlman.netform.component.table.ObjectCollectionTableModel;
 import com.sohlman.netform.component.table.Table;
 import com.sohlman.webapp.netform.MasterForm;
@@ -17,51 +20,14 @@ public class PersonForm extends MasterForm
 	public TextField firstNameTextField = new TextField(this,true,true,true);
 	public TextField lastNameTextField = new TextField(this,true,true,true);
 	public Table propertiesTable = new Table(this);
-	public Button addButton = new Button(this);
-	public Button removeButton = new Button(this);
-
-	
-	public ComponentListener i_ComponentListener = new ComponentListener()
-	{
-		/**
-		 * @see com.sohlman.netform.ComponentListener#eventAction(com.sohlman.netform.Component)
-		 */
-		public void eventAction(Component a_Component)
-		{
-			if(a_Component==addButton)
-			{
-				if(propertiesTable.getTableModel().getRowCount() < 10)
-				{
-					propertiesTable.addRow();
-					if(propertiesTable.getTableModel().getRowCount() >= 10)
-					{
-						addButton.setEnabled(false);
-					}
-					removeButton.setEnabled(true);
-				}
-			}
-			else if(a_Component==removeButton)
-			{
-				if(propertiesTable.getTableModel().getRowCount() > 0)
-				{
-					propertiesTable.deleteSelectedRows();
-					if(propertiesTable.getTableModel().getRowCount() >= 10)
-					{
-						removeButton.setEnabled(false);
-					}
-					addButton.setEnabled(true);
-				}				
-			}
-		}
-	};
-	
+	public Button addButton = new AddRowButton(this, propertiesTable, 10);
+	public Button insertButton = new InsertRowButton(this, propertiesTable, 10);
+	public Button removeButton = new DeleteRowButton(this, propertiesTable, 1);
 	
 	public PersonForm()
 	{
 		propertiesTable.setTableModelComponent(new TextField(propertiesTable), 1);
 		propertiesTable.setTableModelComponent(new TextField(propertiesTable), 2);
-		addButton.addComponentListener(i_ComponentListener);
-		removeButton.addComponentListener(i_ComponentListener);	
 	}
 	
 	/**

@@ -30,18 +30,17 @@ import com.sohlman.netform.component.Button;
  * 	public class MyForm ..
  * 	{
  * 		public Table table = new Table(this);
- * 		public DeletRowButton deleteRowButton = new DeletRowButton(this, table, 0);
+ * 		public AddButton addButton = new AddRowButton(this, table, AddRowButton.NOLIMIT);
  * 	} 
  * </code>
  * 
  * @author Sampsa Sohlman
  */
-public class AddRowButton extends Button implements ComponentListener, TableModelListener 
-{	
-	public final static int NOLIMIT = -1;
+public class DeleteRowButton extends Button implements ComponentListener, TableModelListener 
+{
 	private Table i_Table;
 	private TableModel i_TableModel;
-	private int ii_maxRows;
+	private int ii_minRows = 0;
 	
 	/**
 	 * @param a_Form Form object
@@ -49,12 +48,18 @@ public class AddRowButton extends Button implements ComponentListener, TableMode
 	 * @param ai_maxRows maximum number of rows. If maximum number of rows
 	 * is reached then component goes disabled.
 	 */
-	public AddRowButton(Form a_Form, Table a_Table, int ai_maxRows)
+	public DeleteRowButton(Form a_Form, Table a_Table, int ai_minRows)
 	{
 		super(a_Form);
 		addComponentListener(this);
 		i_Table = a_Table;
-		ii_maxRows = ai_maxRows;
+		
+		if(ai_minRows < 1)
+		{
+			ai_minRows = 1;
+		}
+		
+		ii_minRows = ai_minRows;
 	}
 	
 	
@@ -63,12 +68,15 @@ public class AddRowButton extends Button implements ComponentListener, TableMode
 	 */
 	public void eventAction(Component a_Component)
 	{
-		int li_count = i_Table.getTableModel().getRowCount();
+		int li_rowCount = i_Table.getTableModel().getRowCount();
 		if(a_Component==this)
 		{
-			if(li_count < ii_maxRows || ii_maxRows == NOLIMIT)
+			int li_selectedCount = i_Table.getSelectedCount();
+			
+			
+			if((li_rowCount - li_selectedCount) < ii_minRows )
 			{
-				i_Table.addRow();
+				i_Table.deleteSelectedRows();
 			}
 		}
 	}
@@ -78,11 +86,11 @@ public class AddRowButton extends Button implements ComponentListener, TableMode
 	 */
 	public void tableModelChanged(int ai_row, int ai_column, int ai_action)
 	{
-		if(ai_action == TableModelListener.INSERTROW && i_TableModel != null)
+		if(ai_action == TableModelListener.DELETEROW && i_TableModel != null)
 		{
 			// Cache rowcount. Should be fast, but never know
 			int li_rowCount = i_TableModel.getRowCount(); 
-			if( ii_maxRows != NOLIMIT && ii_maxRows > li_rowCount )
+			if( ii_minRows >= li_rowCount )
 			{
 				this.setEnabled(false);
 			}

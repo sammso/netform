@@ -37,9 +37,7 @@ import com.sohlman.netform.FormManager;
 public class InitTag extends MasterTag
 {
 	private Form i_Form = null;
-
 	private String iS_FormClassName = null;
-
 	private String iS_LoginPage = null;
 
 	private boolean ib_pageHasBeenRedirected = false;
