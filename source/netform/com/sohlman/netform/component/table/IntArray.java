@@ -39,7 +39,7 @@ public class IntArray
 
 	/**
 	 * @param ai_index
-	 * @return
+	 * @return int value from index
 	 */
 	public int getValue(int ai_index)
 	{
@@ -48,7 +48,7 @@ public class IntArray
 
 	/**
 	 * @param ai_value
-	 * @return
+	 * @return if value exist
 	 */
 	public boolean hasValue(int ai_value)
 	{

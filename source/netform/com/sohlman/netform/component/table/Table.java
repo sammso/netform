@@ -1,5 +1,7 @@
 package com.sohlman.netform.component.table;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sohlman.netform.Component;
+import com.sohlman.netform.ComponentData;
 import com.sohlman.netform.Form;
 import com.sohlman.netform.NetFormException;
 import com.sohlman.netform.Utils;
@@ -44,26 +47,73 @@ public class Table extends Component
 
 	private int ii_visibleRows = 0; // 0 all rows are visible
 
+
+	/**
+	 * @param a_Component_Parent
+	 * @param ai_dataColumn to where parent component can optain data
+	 */
+	public Table(Component a_Component_Parent, int ai_dataColumn)
+	{
+		super(a_Component_Parent);
+		setDataColumn(ai_dataColumn);
+	}
+	/**
+	 * @param a_Form
+	 */	
+	public Table(Form a_Form)
+	{
+		super(a_Form);
+	}	
+
+	/**
+	 * @param a_Component_Parent
+	 * @param a_TableModel
+	 */
 	public Table(Component a_Component_Parent, TableModel a_TableModel)
 	{
 		super(a_Component_Parent);
 		i_TableModel = a_TableModel;
 		i_TableModel.setTable(this);
 	}
-	
+
+	/**
+	 * @param a_Component_Parent
+	 * @param a_TableModel
+	 * @param ai_dataColumn
+	 */
 	public Table(Component a_Component_Parent, TableModel a_TableModel, int ai_dataColumn)
 	{
 		super(a_Component_Parent);
-		i_TableModel = a_TableModel;
-		i_TableModel.setTable(this);
+		setTableModel(a_TableModel);
 		setDataColumn(ai_dataColumn);
-	}	
+	}
 
+	/**
+	 * @param a_Form
+	 * @param a_TableModel
+	 */
 	public Table(Form a_Form, TableModel a_TableModel)
 	{
 		super(a_Form);
+		setTableModel(a_TableModel);
+	}
+	
+	/**
+	 * Adds {@link TableModel TableModel} to Table
+	 * <p>
+	 * NOTE this is only allowed call once per Table 
+	 * 
+	 * @param a_TableModel TableModel
+	 */
+	public void setTableModel(TableModel a_TableModel)
+	{
+		if(i_TableModel!=null)
+		{
+			throw new IllegalStateException("Table model already defined. It is not allowed to reset table model");
+		}
+		
 		i_TableModel = a_TableModel;
-		i_TableModel.setTable(this);
+		i_TableModel.setTable(this);		
 	}
 
 	/**
@@ -148,7 +198,7 @@ public class Table extends Component
 	}
 	/**
 	 * Wrapper for
-	 * @see com.sohlman.netform.TableModel#insert()
+	 * @see com.sohlman.netform.component.table.TableModel#insert(int)
 	 */
 	public int insertRow(int ai_before)
 	{
@@ -157,7 +207,7 @@ public class Table extends Component
 
 	/**
 	 * Wrapper for
-	 * @see com.sohlman.netform.TableModel#add()
+	 * @see com.sohlman.netform.component.table.TableModel#add()
 	 */
 	public int addRow()
 	{
@@ -166,7 +216,7 @@ public class Table extends Component
 
 	/**
 	 * Wrapper for
-	 * @see com.sohlman.netform.TableModel#delete(int)
+	 * @see com.sohlman.netform.component.table.TableModel#delete(int)
 	 */
 	public int deleteRow(int ai_index)
 	{
@@ -212,8 +262,6 @@ public class Table extends Component
 
 	/**
 	 * @param ai_index page index to be changed
-	 * if page index is larger than {@link #pageCount() pageCount()} then
-	 * last page is selected
 	 * <b>Form State TEMPLATING</b>
 	 */
 	public void setPage(int ai_index)
@@ -366,7 +414,7 @@ public class Table extends Component
 		// Following execution order is important. Do not change it.
 		// Change may cause fault on setData method
 
-		boolean lb_newValuesComponents = super.checkIfNewValues();// checkIfNewValuesComponents();
+		boolean lb_newValuesComponents = super.checkIfNewValues(); // checkIfNewValuesComponents();
 		boolean lb_newValuesSelection = checkNewValuesSelection();
 
 		// Do not these rows to together to one OR clause
@@ -375,26 +423,26 @@ public class Table extends Component
 		return lb_newValuesComponents || lb_newValuesSelection;
 	}
 
-//	private boolean checkIfNewValuesComponents()
-//	{
-//		// Put all values to child components
-//		boolean lb_componentIsModified = false;
-//
-//		Iterator l_Iterator = getChildComponents();
-//
-//		if (l_Iterator != null)
-//		{
-//			while (l_Iterator.hasNext())
-//			{
-//				Component l_Component = (Component) l_Iterator.next();
-//				if (l_Component.parseValues()) 
-//				{
-//					lb_componentIsModified = true;
-//				}
-//			}
-//		}
-//		return lb_componentIsModified;
-//	}
+	//	private boolean checkIfNewValuesComponents()
+	//	{
+	//		// Put all values to child components
+	//		boolean lb_componentIsModified = false;
+	//
+	//		Iterator l_Iterator = getChildComponents();
+	//
+	//		if (l_Iterator != null)
+	//		{
+	//			while (l_Iterator.hasNext())
+	//			{
+	//				Component l_Component = (Component) l_Iterator.next();
+	//				if (l_Component.parseValues()) 
+	//				{
+	//					lb_componentIsModified = true;
+	//				}
+	//			}
+	//		}
+	//		return lb_componentIsModified;
+	//	}
 
 	private boolean checkNewValuesSelection()
 	{
@@ -452,7 +500,7 @@ public class Table extends Component
 		{
 			i_IntArray_Selection.setArray(ai_indexes);
 
-			if (hasComponentData() && isValid() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
+			if (hasComponentData() && isValidWithoutChilds() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
 			{
 				if (i_IntArray_Selection.isEmpty())
 				{
@@ -469,44 +517,6 @@ public class Table extends Component
 		{
 			return false;
 		}
-
-		/*
-				if (ii_currentSelection == null || !ib_multiSelection || !ib_multiPageSelection)
-				{
-					ii_currentSelection = ai_indexes;
-				}
-				else
-				{
-					int[] li_selection = new int[ii_currentSelection.length + ai_indexes.length];
-		
-					int li_sIndex = (getPage() - 1) * getPageSize();
-					int li_eIndex = (getPage() * getPageSize()) - 1;
-		
-					int li_s = 0; // Counter for result selection
-					for (int li_c = 0; li_c < ii_currentSelection.length; li_c++)
-					{
-						if (ii_oldSelection[li_c] < li_sIndex || ii_oldSelection[li_c] > li_eIndex)
-						{
-							li_selection[li_s] = ii_oldSelection[li_c];
-							li_s++;
-						}
-					}
-		
-					for (int li_c = 0; li_c < ai_indexes.length; li_c++)
-					{
-						if (ai_indexes[li_c] >= li_sIndex && ai_indexes[li_c] <= li_eIndex)
-						{
-							li_selection[li_s] = ai_indexes[li_c];
-							li_s++;
-						}
-					}
-		
-					ii_currentSelection = new int[li_s];
-					System.arraycopy(li_selection, 0, ii_currentSelection, 0, li_s);
-					Arrays.sort(ii_currentSelection);
-				}
-		*/
-
 	}
 
 	/**
@@ -531,33 +541,6 @@ public class Table extends Component
 	public void setMultiPageSelection(boolean ab_isMultiPageSelection)
 	{
 		ib_multiPageSelection = ab_isMultiPageSelection;
-	}
-
-	/**
-	 * @see com.sohlman.netform.Component#isValid()
-	 */
-	public boolean isValid()
-	{
-		boolean lb_isValid = super.isValid();
-		if (lb_isValid)
-		{
-			// Change state to old_value
-
-			Iterator l_Iterator = getChildComponents();
-			if (l_Iterator != null)
-			{
-
-				while (l_Iterator.hasNext())
-				{
-					Component l_Component = (Component) l_Iterator.next();
-					if (!l_Component.isValid())
-					{
-						return false;
-					}
-				}
-			}
-		}
-		return lb_isValid;
 	}
 
 	private ArrayList iAL_TableComponentsInRow = null;
@@ -600,6 +583,12 @@ public class Table extends Component
 		ii_smallesInsertedOrRemovedRow = NO_ROWS_INSERTED_OR_REMOVED;
 	}
 
+	/**
+	 * Add table model component, this component is base for row level component on Table
+	 * 
+	 * @param a_Component
+	 * @param ai_column
+	 */
 	public void setTableModelComponent(Component a_Component, int ai_column)
 	{
 		if (a_Component == null)
@@ -622,11 +611,6 @@ public class Table extends Component
 		if (a_Component.getParent() != this)
 		{
 			throw new IllegalStateException("Parent component of child of table must be this table.");
-		}
-
-		if (i_TableModel == null)
-		{
-			throw new IllegalStateException("TableModel has to be defined before TableModel Components");
 		}
 
 		//a_Component.setTableModel(i_TableModel);
@@ -658,6 +642,42 @@ public class Table extends Component
 
 		ib_componentsHasBeenChanged = true;
 	}
+	
+	/**
+	 * <b>JSP use before{@link Form#execute() Form.execute()}</b>
+	 * 
+	 * @param ai_column
+	 * @return Component
+	 */
+	public Component getTableModelComponent(int ai_column)
+	{
+		// TODO: Finish getTableModelComponent
+		if(i_Component_RowModels==null)
+		{
+			throw new ArrayIndexOutOfBoundsException("No component at index " + ai_column);
+		}
+		
+		return i_Component_RowModels[ai_column - 1];	
+	}
+	
+	/**
+	 * <b>JSP use before{@link Form#execute() Form.execute()}</b>
+	 * <p>
+	 * Same as {@link #getTableModelComponent(int) getTableModelComponent()} but returns child Table
+	 * 
+	 * @param ai_column
+	 * @return Table
+	 */
+	public Table getTableModelTable(int ai_column)
+	{
+		// TODO: Finish getTableModelTable
+		if(i_Component_RowModels==null)
+		{
+			throw new ArrayIndexOutOfBoundsException("No component at index " + ai_column);
+		}
+		
+		return (Table)i_Component_RowModels[ai_column - 1];	
+	}	
 
 	int insertComponentRow(int ai_before)
 	{
@@ -892,7 +912,7 @@ public class Table extends Component
 		}
 	}
 	/**
-	 * @see com.sohlman.netform.Component#addComponent(java.lang.String, com.sohlman.netform.Component)
+	 * @see com.sohlman.netform.Component#addComponent(Component)
 	 */
 	protected void addComponent(Component a_Component)
 	{
@@ -918,8 +938,11 @@ public class Table extends Component
 		return ii_displayStart + ai_row - 1;
 	}
 
+	private SimpleDateFormat i_SimpleDateFormat = null;
+	private DecimalFormat i_DecimalFormat = null;
+
 	/**
-	 * For JSP use
+	 * <b>For JSP use</b>
 	 * 
 	 * Returns value of page
 	 * @param ai_row
@@ -936,10 +959,50 @@ public class Table extends Component
 		}
 		else
 		{
+			String l_String = "";
+			String lS_Format = getColumnFormat(ai_column, l_Object.getClass());
+		
+			if (lS_Format != null)
+			{
+				if (java.util.Date.class.isAssignableFrom(l_Object.getClass()))
+				{
+					try
+					{
+						if (i_SimpleDateFormat == null)
+						{
+							i_SimpleDateFormat = new SimpleDateFormat(lS_Format);
+						}
+						l_String = i_SimpleDateFormat.format(l_Object);
+					}
+					catch(Exception l_Exception)		
+					{
+						l_String = l_Object.toString();
+					}
+				}
+				else if(Number.class.isAssignableFrom(l_Object.getClass()))
+				{
+					try
+					{
+						if(i_DecimalFormat==null)
+						{
+							i_DecimalFormat = new DecimalFormat(lS_Format);
+						}
+						l_String = i_DecimalFormat.format(((Number)l_Object).doubleValue());
+					}
+					catch(Exception l_Exception)		
+					{
+						l_String = l_Object.toString();
+					}
+				}
+			}
+			else
+			{
+				l_String = l_Object.toString();
+			}
 			return Utils.stringToHTML(l_Object.toString());
 		}
 	}
-	
+
 	/**
 	 * For JSP use
 	 * 
@@ -952,8 +1015,8 @@ public class Table extends Component
 	public String getText(int ai_row, String aS_ColumnName)
 	{
 		return getText(ai_row, i_TableModel.getIndexByName(aS_ColumnName));
-	}	
-	
+	}
+
 	/**
 	 * For JSP use
 	 * 
@@ -973,7 +1036,7 @@ public class Table extends Component
 		else
 		{
 			return Utils.stringToHTML(l_Object.toString());
-		}		
+		}
 	}
 
 	/**
@@ -981,7 +1044,7 @@ public class Table extends Component
 	 * 
 	 * @param ai_displayRow
 	 * @param ai_column
-	 * @return
+	 * @return Component
 	 */
 	public Component getComponentAt(int ai_displayRow, int ai_column)
 	{
@@ -1019,22 +1082,23 @@ public class Table extends Component
 	 * @return Table
 	 * @throws NullPointerException component is not assigned to this column
 	 * @throws ClassCastException if Component is not Table 
-	 */	
+	 */
 	public Table getTableAt(int ai_displayRow, int ai_column)
 	{
 		Component l_Component = getComponentAt(ai_displayRow, ai_column);
-		
-		if(l_Component==null)
+
+		if (l_Component == null)
 		{
-			throw new NullPointerException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning null instead of Table");			
+			throw new NullPointerException("Table.getTableAt row=" + ai_displayRow + ", column=" + ai_column + " is returning null instead of Table");
 		}
-		else if(l_Component.getClass().isAssignableFrom(Table.class))
+		else if (l_Component.getClass().isAssignableFrom(Table.class))
 		{
-			return (Table)l_Component;
+			return (Table) l_Component;
 		}
 		else
 		{
-			throw new ClassCastException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning " + l_Component.getClass().getName() + " instead of Table" );
+			throw new ClassCastException(
+				"Table.getTableAt row=" + ai_displayRow + ", column=" + ai_column + " is returning " + l_Component.getClass().getName() + " instead of Table");
 		}
 	}
 	/**
@@ -1047,7 +1111,7 @@ public class Table extends Component
 	 * @return Table
 	 * @throws NullPointerException component is not assigned to this column
 	 * @throws ClassCastException if Component is not Table 
-	 */	
+	 */
 	public Table getTableAt(int ai_displayRow, String aS_ColumnName)
 	{
 		return getTableAt(ai_displayRow, i_TableModel.getIndexByName(aS_ColumnName));
@@ -1067,21 +1131,28 @@ public class Table extends Component
 	public TextField getTextFieldAt(int ai_displayRow, int ai_column)
 	{
 		Component l_Component = getComponentAt(ai_displayRow, ai_column);
-		
-		if(l_Component==null)
+
+		if (l_Component == null)
 		{
-			throw new NullPointerException("Table.getTextFieldAt row=" + ai_displayRow + ", column=" +ai_column + " is returning null instead of TextField");			
+			throw new NullPointerException("Table.getTextFieldAt row=" + ai_displayRow + ", column=" + ai_column + " is returning null instead of TextField");
 		}
-		else if(TextField.class.isAssignableFrom(l_Component.getClass()))
+		else if (TextField.class.isAssignableFrom(l_Component.getClass()))
 		{
-			return (TextField)l_Component;
+			return (TextField) l_Component;
 		}
 		else
 		{
-			throw new ClassCastException("Table.getTextFieldAt row=" + ai_displayRow + ", column=" +ai_column + " is returning " + l_Component.getClass().getName() + " instead of TextField" );
-		}		
+			throw new ClassCastException(
+				"Table.getTextFieldAt row="
+					+ ai_displayRow
+					+ ", column="
+					+ ai_column
+					+ " is returning "
+					+ l_Component.getClass().getName()
+					+ " instead of TextField");
+		}
 	}
-	
+
 	/**
 	 * <b>JSP</p>
 	 * <p>
@@ -1092,7 +1163,7 @@ public class Table extends Component
 	 * @return TextField
 	 * @throws NullPointerException component is not assigned to this column
 	 * @throws ClassCastException if Component is not TextField 
-	 */	
+	 */
 	public TextField getTextFieldAt(int ai_displayRow, String aS_ColumnName)
 	{
 		return getTextFieldAt(ai_displayRow, i_TableModel.getIndexByName(aS_ColumnName));
@@ -1109,7 +1180,7 @@ public class Table extends Component
 	 */
 	public String getStringIfRowSelected(int ai_row, String a_String)
 	{
-		if(isRowSelected(ai_row))
+		if (isRowSelected(ai_row))
 		{
 			return a_String;
 		}
@@ -1130,7 +1201,7 @@ public class Table extends Component
 	 */
 	public boolean hasSelectedRows()
 	{
-		return getSelectedCount()>0;
+		return getSelectedCount() > 0;
 	}
 
 	/**
@@ -1138,7 +1209,7 @@ public class Table extends Component
 	 * 
 	 * @param ai_row
 	 * @param ai_column
-	 * @return
+	 * @return boolean Is there component at this position
 	 */
 	public boolean hasComponent(int ai_row, int ai_column)
 	{
@@ -1174,12 +1245,13 @@ public class Table extends Component
 	 */
 	public Component cloneComponent()
 	{
-		// On developement
+		// TODO: Table.cloneComponent() is on developement
 
 		Table l_Table = new Table(getParent(), getTableModel());
 
 		l_Table.ii_dataColumn = ii_dataColumn;
 		l_Table.ib_multiSelection = ib_multiSelection;
+		l_Table.iAL_ColumnFormats = iAL_ColumnFormats;
 
 		return l_Table;
 	}
@@ -1241,7 +1313,7 @@ public class Table extends Component
 	{
 		if (hasComponentData())
 		{
-			if(ii_dataColumn==-1)
+			if (ii_dataColumn == -1)
 			{
 				throw new NetFormException("Table.setDataColumn() is not set");
 			}
@@ -1253,14 +1325,81 @@ public class Table extends Component
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#validate()
 	 */
 	public void validate()
 	{
-		
+
+	}
+
+	private ArrayList iAL_ColumnFormats = null;
+
+	/**
+	 * <b>JSP</b>
+	 * <p>
+	 * Set column format for column
+	 * 
+	 * @param ai_column
+	 * @param aS_Format
+	 */
+	public void setColumnFormat(int ai_column, String aS_Format)
+	{
+		if (iAL_ColumnFormats == null)
+		{
+			iAL_ColumnFormats = new ArrayList();
+		}
+		if (iAL_ColumnFormats.size() < ai_column)
+		{
+			int li_index = iAL_ColumnFormats.size();
+			for( ; li_index < ai_column ; li_index++ )
+			{
+				iAL_ColumnFormats.add(null);
+			}
+			
+		}
+		iAL_ColumnFormats.set(ai_column - 1, aS_Format);
+	}
+
+	/**
+	 * Get column format for current column
+	 * 
+	 * @param ai_column colum index
+	 * @return String containing column format
+	 */
+	protected String getColumnFormat(int ai_column, Class a_Class)
+	{
+		if (iAL_ColumnFormats == null || ai_column > iAL_ColumnFormats.size())
+		{
+			if (a_Class == null)
+			{
+				return null;
+			}
+			else
+			{
+				return super.getFormatFromParent(a_Class, null);
+			}
+		}
+		else
+		{
+			return (String) iAL_ColumnFormats.get(ai_column - 1);
+		}
+	}
+
+	/**
+	 * @see com.sohlman.netform.Component#getFormatFromParent(java.lang.Class, com.sohlman.netform.ComponentData)
+	 */
+	protected String getFormatFromParent(Class a_Class, ComponentData a_ComponentData)
+	{
+		if (a_ComponentData == null)
+		{
+			return super.getFormatFromParent(a_Class, null);
+		}
+		else
+		{
+			return getColumnFormat(((TableComponentData) a_ComponentData).getColumn(), a_Class);
+		}
 	}
 
 }

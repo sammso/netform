@@ -38,7 +38,7 @@ public abstract class ListTableModel extends TableModel
 	}
 	
 	/**
-	 * @see com.sohlman.netform.TableModel#add()
+	 * @see com.sohlman.netform.component.table.TableModel#add()
 	 */
 	public int add()
 	{
@@ -46,7 +46,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#insert(int)
+	 * @see com.sohlman.netform.component.table.TableModel#insert(int)
 	 */
 	public int insert(int ai_before)
 	{
@@ -82,7 +82,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#delete(int)
+	 * @see com.sohlman.netform.component.table.TableModel#delete(int)
 	 */
 	public int delete(int ai_row)
 	{
@@ -96,7 +96,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#getRowCount()
+	 * @see com.sohlman.netform.component.table.TableModel#getRowCount()
 	 */
 	public int getRowCount()
 	{
@@ -111,7 +111,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#getColumnCount()
+	 * @see com.sohlman.netform.component.table.TableModel#getColumnCount()
 	 */
 	public int getColumnCount()
 	{
@@ -119,7 +119,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#getValueAt(int, int)
+	 * @see com.sohlman.netform.component.table.TableModel#getValueAt(int, int)
 	 */
 	public Object getValueAt(int ai_row, int ai_column)
 	{
@@ -144,7 +144,7 @@ public abstract class ListTableModel extends TableModel
 	protected abstract Object mapObjectFromRow(Object aO_Row, int ai_columnIndex);
 
 	/**
-	 * @see com.sohlman.netform.TableModel#setValueAt(java.lang.Object, int, int)
+	 * @see com.sohlman.netform.component.table.TableModel#setValueAt(java.lang.Object, int, int)
 	 */
 	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
 	{
@@ -179,7 +179,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#getColumnName(int)
+	 * @see com.sohlman.netform.component.table.TableModel#getColumnName(int)
 	 */
 	public String getColumnName(int ai_index)
 	{
@@ -191,7 +191,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#search(java.lang.Object, int)
+	 * @see com.sohlman.netform.component.table.TableModel#search(java.lang.Object, int)
 	 */
 	public int search(Object a_Object, int ai_column)
 	{
@@ -214,7 +214,7 @@ public abstract class ListTableModel extends TableModel
 	}
 
 	/**
-	 * @see com.sohlman.netform.TableModel#getIndexByName(java.lang.String)
+	 * @see com.sohlman.netform.component.table.TableModel#getIndexByName(java.lang.String)
 	 */
 	public int getIndexByName(String aS_Name)
 	{

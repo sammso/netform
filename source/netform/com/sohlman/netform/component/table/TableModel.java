@@ -40,17 +40,39 @@ public abstract class TableModel
 	 * @return deleted row number
 	 */
 	public abstract int delete(int ai_row);
-	/**
-	 * row count
-	 * 
-	 * @return
+	/** 
+	 * @return row count of table model
 	 */
 	public abstract int getRowCount();
+	/** 
+	 * @return column count of table model
+	 */
 	public abstract int getColumnCount();
+	
+	/**
+	 * @param ai_row row number, row numbers starts from 1
+	 * @param ai_column column nubmer, column numbers starts from 1
+	 * @return Object value of this position
+	 */
 	public abstract Object getValueAt(int ai_row, int ai_column);
+	/**
+	 * @param a_Object Object value to be set.
+	 * @param ai_row row number, row numbers starts from 1
+	 * @param ai_column column nubmer, column numbers starts from 1
+	 * @return true if succeed false if not (this depends also class which is implementing it)
+	 */
 	public abstract boolean setValueAt(Object a_Object, int ai_row, int ai_column);
+	/**
+	 * Should return column name
+	 * 
+	 * @param ai_index
+	 * @return String contaiging column name if it set
+	 */
 	public abstract String getColumnName(int ai_index);
 
+	/**
+	 * @param ai_before row inserted before this row
+	 */
 	public void fireInsert(int ai_before)
 	{
 		if (iHS_Tables != null)
@@ -65,6 +87,9 @@ public abstract class TableModel
 		}
 	}
 
+	/**
+	 * @param ai_index Index for row which is deleted
+	 */
 	public void fireDelete(int ai_index)
 	{
 		if (iHS_Tables != null)
@@ -79,6 +104,9 @@ public abstract class TableModel
 		}
 	}
 
+	/**
+	 * Update all components on all connected tables
+	 */
 	public void fireUpdateAll()
 	{
 		if (iHS_Tables != null)
@@ -93,21 +121,11 @@ public abstract class TableModel
 		}
 	}
 
-	public void fireUpdate()
-	{
-		if (iHS_Tables != null)
-		{
 
-			Iterator l_Iterator = iHS_Tables.iterator();
-
-			while (l_Iterator.hasNext())
-			{
-				Table l_Table = (Table) l_Iterator.next();
-				l_Table.updateAllComponents();
-			}
-		}
-	}
-
+	/**
+	 * @param ai_row Row index which is changed
+	 * @param ai_column Column index which is changed
+	 */
 	public void fireColumnChanged(int ai_row, int ai_column)
 	{
 		if (iHS_Tables != null)
@@ -123,6 +141,11 @@ public abstract class TableModel
 		}
 	}
 
+	/**
+	 * Set table to TableModel
+	 * 
+	 * @param a_Table Table to be set
+	 */
 	public void setTable(Table a_Table)
 	{
 		if (iHS_Tables == null)
@@ -166,6 +189,10 @@ public abstract class TableModel
 	 */
 	public abstract int getIndexByName(String aS_Name);
 
+	/**
+	 * Remove Table from Table model
+	 * @param a_Table Table to be removed
+	 */
 	public void removeTable(Table a_Table)
 	{
 		if(iHS_Tables!=null)
@@ -176,6 +203,8 @@ public abstract class TableModel
 
 	/**
 	 * Default behavior is to return always false
+	 * 
+	 * This should be implement on child class
 	 * 
 	 * @param ai_index
 	 * @return false

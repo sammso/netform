@@ -16,19 +16,39 @@ import com.sohlman.netform.component.table.Table;
  */
 public class Table2Form extends MasterForm
 {
-	public Button addRowButton = new Button(this);
-	public Button insertRowButton = new Button(this);
-	public Button deleteRowButton = new Button(this);
-	public Button addTextButton = new Button(this);
-	public Button insertTextButton = new Button(this);
-	public Button removeTextButton = new Button(this);
+	public Button addRowButton;
+	public Button insertRowButton;
+	public Button deleteRowButton;
+	public Button addTextButton;
+	public Button insertTextButton;
+	public Button removeTextButton;
 
-	public TextField textField = new TextField(this);
-	public Table tableList;
+	public TextField textField;
+	public Table tableList; 
 	public Table tableSelect;
 
 	private DataSet i_DataSet;
 	private SimpleTableModel i_SimpleTableModel;
+	
+	public Table2Form()
+	{
+		// Here we create c
+				
+		addRowButton = new Button(this);
+		insertRowButton = new Button(this);
+		deleteRowButton = new Button(this);
+		addTextButton = new Button(this);
+		insertTextButton = new Button(this);
+		removeTextButton = new Button(this);		
+		
+		textField = new TextField(this);
+		
+		tableSelect = new Table(this);
+
+		tableList = new Table(this);
+		tableList.setTableModelComponent(new Table(tableList, 1), 1);
+		tableList.setMultiSelection(true);
+	}
 
 	private ComponentListener i_ComponentListener = new ComponentListener()
 	{
@@ -146,16 +166,14 @@ public class Table2Form extends MasterForm
 		i_DataSet.setRowInfo(new RowInfo(l_ColumnInfos));
 
 		// Connect DataSet through DataSetTableModel to Table
-
-		tableList = new Table(this, new DataSetTableModel(i_DataSet));
-		tableList.setMultiSelection(true);
+		tableList.setTableModel(new DataSetTableModel(i_DataSet));
 
 		// Make choise list
 		// Table list is using i_SimpleTableModel as
 		// data container  
 
-		Table l_Table = new Table(tableList, i_SimpleTableModel);
-		l_Table.setDataColumn(1);
+		Table l_Table = tableList.getTableModelTable(1);
+		l_Table.setTableModel(i_SimpleTableModel);
 
 		// And connect that to first column of Table
 
@@ -171,7 +189,7 @@ public class Table2Form extends MasterForm
 		// Choise List. This is made so that they are
 		// using same data container 
 
-		tableSelect = new Table(this, i_SimpleTableModel);
+		tableSelect.setTableModel(i_SimpleTableModel);
 		tableSelect.setMultiSelection(false);
 
 		// Fill choise list 

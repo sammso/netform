@@ -14,12 +14,19 @@
    - Fixes on table
    - Components
      + New Components FloatField, DoubleField
-   - New validation system, which is doing more that it should
+   - New validation system
+     + New Validate transfer class
+     + When child is not valid then parent is not valid either.
    - ListModel, this is abstract class to model Lists. Can be used with J2EE
      applications. I'm using it with JBoss.
    - Package strucuture has changed. If you are using Eclipse. CTRL-SHIFT-O
      helps, remember also your JSP pages
-   
+   - New column format system.
+     + Components can read their format from parent.
+       example in table level is possible set column formats or
+       it can read global
+     + Future default formats can be set on web.xml
+     
    What is new on 0.62
    -------------------------------------------------------------
    - Table can be used inside Table as Component

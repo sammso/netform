@@ -28,7 +28,7 @@ public class Table1Form extends MasterForm
 	public Button addRowButton = new Button(this);
 	public Button insertRowButton = new Button(this);
 	public Button deleteRowButton = new Button(this);
-	public Table table;
+	public Table table = new Table(this);
 
 	private int ii_counter = 1;
 	private DataSet i_DataSet;  
@@ -103,7 +103,8 @@ public class Table1Form extends MasterForm
 			{ new ColumnInfo("Person id", Integer.class), new ColumnInfo("First Name", String.class), new ColumnInfo("Last Name", String.class), new ColumnInfo("Birthday", Timestamp.class)};
 
 		i_DataSet.setRowInfo(new RowInfo(l_ColumnInfos));
-		table = new Table(this,new DataSetTableModel(i_DataSet));
+		
+		table.setTableModel(new DataSetTableModel(i_DataSet));
 		table.setMultiSelection(true);
 
 		IntegerField l_IntegerField = new IntegerField(table);
