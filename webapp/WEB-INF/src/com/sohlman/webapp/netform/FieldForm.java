@@ -47,7 +47,6 @@ public class FieldForm extends MasterForm
 				if (integerField.isValid())
 				{ 
 					integerField.setInt(integerField.getInt() + 1);
-					;
 				}
  
 			}
@@ -111,7 +110,8 @@ public class FieldForm extends MasterForm
 				if (integerField.isValid())
 				{
 					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
-					l_SimpleTableModel.addValue(integerField.getText());
+					String lS_Text = integerField.getText();
+					l_SimpleTableModel.addValue(lS_Text);
 				}
 			}
 			else if (a_Component == timestampToTableButton)

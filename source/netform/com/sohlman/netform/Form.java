@@ -442,4 +442,22 @@ public abstract class Form
 	{
 		return i_HttpServletRequest.getContextPath();
 	}
+	
+	protected final Integer getParameterInteger(String aS_Name)
+	{
+		String l_String = getParameter(aS_Name);
+		
+		if(l_String!=null)
+		{
+			return Integer.valueOf(l_String);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	protected final String getParameter(String aS_Name)
+	{
+		return i_HttpServletRequest.getParameter(aS_Name);
+	}	
 }

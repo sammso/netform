@@ -46,7 +46,7 @@
 		<td colspan="2">	
 			<select name="<%=form.table.getResponseName() %>" size="10" ><%
 	
-	for(int li_y = 1 ; li_y < form.table.getDisplayRowCount() ; li_y++)
+	for(int li_y = 1 ; li_y <= form.table.getDisplayRowCount() ; li_y++)
 	{	
 		if(form.table.isSelected(li_y))
 		{

@@ -126,5 +126,16 @@ public class DataSetTableModel extends TableModel
 			return li_row;	
 		}
 	}
+	
+	
+
+	/**
+	 * This is overriden
+	 * returns if row is new.
+	 */
+	public boolean isNew(int ai_index)
+	{
+		return i_DataSet.isNew(ai_index);
+	}
 
 }

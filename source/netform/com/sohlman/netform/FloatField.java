@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author  Sampsa Sohlman
  * @version 2004-01-15
  */
-public class IntegerField extends Component
+public class FloatField extends Component
 {
 	private String iS_Text;
 	
@@ -41,7 +41,7 @@ public class IntegerField extends Component
 			try
 			{
 				// parse succeed then it is valid
-				Integer.parseInt(iS_Text);
+				Float.parseFloat(iS_Text);
 				if(i_ComponentValidator!=null)
 				{
 					return i_ComponentValidator.isValid(a_Component);
@@ -58,7 +58,7 @@ public class IntegerField extends Component
 		}
 	};
 
-	public IntegerField(Component a_Component_Parent)
+	public FloatField(Component a_Component_Parent)
 	{
 		super(a_Component_Parent);
 		i_DecimalFormat = new DecimalFormat();
@@ -66,7 +66,7 @@ public class IntegerField extends Component
 		super.setComponentValidator(i_ComponentValidator_Number);
 	}
 
-	public IntegerField(Form a_Form)
+	public FloatField(Form a_Form)
 	{
 		super(a_Form);
 		i_DecimalFormat = new DecimalFormat();
@@ -178,12 +178,12 @@ public class IntegerField extends Component
 		}
 	}
 	
-	public Integer getInteger()
+	public Float getFloat()
 	{
 		if(hasComponentData() && isValid())
 		{
-			Integer l_Integer = (Integer)getData();
-			return l_Integer;
+			Float l_Float = (Float)getData();
+			return l_Float;
 		}
 		else
 		{
@@ -195,7 +195,7 @@ public class IntegerField extends Component
 			{
 				try
 				{
-					return new Integer(iS_Text);
+					return new Float(iS_Text);
 				}
 				catch(NumberFormatException l_NumberFormatException)
 				{
@@ -206,17 +206,17 @@ public class IntegerField extends Component
 		}
 	}
 	
-	public int getInt()
+	public float getFloatValue()
 	{
-		Integer l_Integer = getInteger();
+		Float l_Float = getFloat();
 		
-		if(l_Integer==null)
+		if(l_Float==null)
 		{
 			return 0; 
 		}
 		else
 		{
-			return l_Integer.intValue();
+			return l_Float.floatValue();
 		}
 	}
 	
@@ -227,11 +227,11 @@ public class IntegerField extends Component
 
 	public Component cloneComponent()
 	{
-		IntegerField l_IntegerField = new IntegerField(getParent());
-		l_IntegerField.setVisible(isVisible());
-		l_IntegerField.setEnabled(isEnabled());
-		l_IntegerField.setNullIsAllowed(isNullAllowed());
-		return l_IntegerField;
+		FloatField l_FloatField = new FloatField(getParent());
+		l_FloatField.setVisible(isVisible());
+		l_FloatField.setEnabled(isEnabled());
+		l_FloatField.setNullIsAllowed(isNullAllowed());
+		return l_FloatField;
 	}
 	
 	/**
@@ -283,7 +283,7 @@ public class IntegerField extends Component
 	{
 		if(hasComponentData())
 		{
-			// To be implemented  
+			
 		}
 	}	
 }

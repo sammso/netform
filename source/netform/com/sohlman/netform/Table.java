@@ -44,6 +44,14 @@ public class Table extends Component
 		i_TableModel = a_TableModel;
 		i_TableModel.setTable(this);
 	}
+	
+	public Table(Component a_Component_Parent, TableModel a_TableModel, int ai_dataColumn)
+	{
+		super(a_Component_Parent);
+		i_TableModel = a_TableModel;
+		i_TableModel.setTable(this);
+		setDataColumn(ai_dataColumn);
+	}	
 
 	public Table(Form a_Form, TableModel a_TableModel)
 	{
@@ -723,51 +731,60 @@ public class Table extends Component
 		}
 	}
 
-	void updateAllComponents()
+	/**
+	 * This updates components so that rows and columns and component types
+	 * are sync. It is needed to call this if you want to use component interfaces
+	 * directly.
+	 */
+	public void updateAllComponents()
 	{
-		if (i_Component_RowModels == null)
+		if (ib_componentsHasBeenChanged)
 		{
-			return;
-		}
 
-		int li_tableModelCount = i_TableModel.getRowCount();
-
-		if (iAL_TableComponentsInRow == null)
-		{
-			iAL_TableComponentsInRow = new ArrayList();
-		}
-
-		int li_componenRowCount = iAL_TableComponentsInRow.size();
-
-		// Add or remove rows
-
-		if (li_componenRowCount > li_tableModelCount)
-		{
-			int li_count = li_componenRowCount - li_tableModelCount;
-
-			// Remove from last .. faster
-			for (int li_r = 0; li_r < li_count; li_r++)
+			if (i_Component_RowModels == null)
 			{
-				removeComponentRow(li_componenRowCount - li_r);
+				return;
 			}
-		}
-		else if (li_componenRowCount < li_tableModelCount)
-		{
-			int li_count = li_tableModelCount - li_componenRowCount;
-			for (int li_r = 0; li_r < li_count; li_r++)
+
+			int li_tableModelCount = i_TableModel.getRowCount();
+
+			if (iAL_TableComponentsInRow == null)
 			{
-				addComponentRow();
+				iAL_TableComponentsInRow = new ArrayList();
 			}
+
+			int li_componenRowCount = iAL_TableComponentsInRow.size();
+
+			// Add or remove rows
+
+			if (li_componenRowCount > li_tableModelCount)
+			{
+				int li_count = li_componenRowCount - li_tableModelCount;
+
+				// Remove from last .. faster
+				for (int li_r = 0; li_r < li_count; li_r++)
+				{
+					removeComponentRow(li_componenRowCount - li_r);
+				}
+			}
+			else if (li_componenRowCount < li_tableModelCount)
+			{
+				int li_count = li_tableModelCount - li_componenRowCount;
+				for (int li_r = 0; li_r < li_count; li_r++)
+				{
+					addComponentRow();
+				}
+			}
+
+			// Update all rows
+
+			for (int li_index = 1; li_index <= li_tableModelCount; li_index++)
+			{
+				updateComponentRow(li_index);
+			}
+
+			ib_componentsHasBeenChanged = false;
 		}
-
-		// Update all rows
-
-		for (int li_index = 1; li_index <= li_tableModelCount; li_index++)
-		{
-			updateComponentRow(li_index);
-		}
-
-		ib_componentsHasBeenChanged = false;
 	}
 
 	public void updateComponent(int ai_row, int ai_column)
@@ -809,13 +826,13 @@ public class Table extends Component
 
 					}
 				}
-				iAL_TableComponentsInRow.set(ai_index - 1, l_Components);						
+				iAL_TableComponentsInRow.set(ai_index - 1, l_Components);
 			}
 			else
 			{
 				for (int li_i = 0; li_i < ii_tableComponent_ModelsSize; li_i++)
 				{
-					if(l_Components[li_i] == null && i_Component_RowModels[li_i] == null)
+					if (l_Components[li_i] == null && i_Component_RowModels[li_i] == null)
 					{
 						// Do nothing
 					}
@@ -917,6 +934,28 @@ public class Table extends Component
 			return Utils.stringToHTML(l_Object.toString());
 		}
 	}
+	
+	/**
+	 * For JSP use
+	 * 
+	 * Returns first text of selected row.
+	 * 
+	 * @param ai_column column that want to be shown
+	 * @return Text empty text if nothing selected or value is null in TableModel
+	 */
+	public String getSelectedText(int ai_column)
+	{
+		int li_row = getSelectedRow();
+		Object l_Object = i_TableModel.getValueAt(li_row, ai_column);
+		if (l_Object == null)
+		{
+			return "";
+		}
+		else
+		{
+			return Utils.stringToHTML(l_Object.toString());
+		}		
+	}
 
 	/**
 	 * JSP use
@@ -956,6 +995,22 @@ public class Table extends Component
 		return isSelected(translateDisplayRowToRealRow(ai_row));
 	}
 
+	/**
+	 * JSP usage
+	 * @return if rows has been selected 
+	 */
+	public boolean hasSelectedRows()
+	{
+		return getSelectedCount()>0;
+	}
+
+	/**
+	 * Is there component at this position
+	 * 
+	 * @param ai_row
+	 * @param ai_column
+	 * @return
+	 */
 	public boolean hasComponent(int ai_row, int ai_column)
 	{
 		return getComponentAt(ai_row, ai_column) != null;
@@ -1057,6 +1112,10 @@ public class Table extends Component
 	{
 		if (hasComponentData())
 		{
+			if(ii_dataColumn==-1)
+			{
+				throw new NetFormException("Table.setDataColumn() is not set");
+			}
 			Object l_Object = getData();
 			int li_row = i_TableModel.search(l_Object, ii_dataColumn);
 			if (li_row > 0 && li_row <= i_TableModel.getRowCount())

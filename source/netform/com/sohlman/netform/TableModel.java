@@ -127,4 +127,15 @@ public abstract class TableModel
 	{
 		iHS_Tables.remove(a_Table);
 	}
+	
+	/**
+	 * Default behavior is to return always false
+	 * 
+	 * @param ai_index
+	 * @return false
+	 */
+	public boolean isNew(int ai_index)
+	{
+		return false;
+	}
 }

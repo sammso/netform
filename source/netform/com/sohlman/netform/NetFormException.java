@@ -8,7 +8,7 @@ public class NetFormException extends java.lang.Error
 {
 	/** Source exception. If other exception is cause for throwing this it is stored here.
 	 */
-	private Exception i_Exception_Source;
+	private Exception i_Exception_Source = null;
 	/** Possible source object.
 	 */
 	private Object i_Object_Source;
@@ -139,4 +139,25 @@ public class NetFormException extends java.lang.Error
 	{
 		return iS_UrlString!=null;		
 	}
+	
+	
+	/**
+	 * @see java.lang.Throwable#printStackTrace()
+	 */
+	public void printStackTrace()
+	{
+		System.out.println("===================================================================");
+		super.printStackTrace();
+		System.out.println("===================================================================");
+		Exception l_Exception = getSourceException();
+		int li_count = 5;
+		while(l_Exception!=null && li_count > 0)
+		{
+			l_Exception.printStackTrace();
+			System.out.println("===================================================================");
+			l_Exception = getSourceException();
+			li_count--;
+		}
+	}
+
 }

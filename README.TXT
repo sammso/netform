@@ -4,18 +4,16 @@
 
    What is new on 0.63
    ------------------------------------------------------------ 
+   - Form.execute() optimazation caused Form.startService()
+     was called only once.
+   - BugFix on example app on table2.jsp/Table2Form.java
    - Form new methods getContextPath(), Form.getRequestURI()
      which also effects how to make JSP
      <form method="POST" action="<%=form.getRequestURI() %>">
    - Fix on Table.insertRowBeforeFirstSelection()
    - Fixes on table
+   - New Component FloatField
    
-   What is new on 0.62
-   ------------------------------------------------------------ 
-   - Form.execute() optimazation caused Form.startService()
-     was called only once.
-   - BugFix on example app on table2.jsp/Table2Form.java
-
    What is new on 0.62
    -------------------------------------------------------------
    - Table can be used inside Table as Component
