@@ -667,6 +667,42 @@ public abstract class Component
 	public String getStringIfIsNotValid(String a_String)
 	{
 		return getStringIfIsValid("", a_String);
+	}
+	
+	/**
+	 * <b>JSP</b>
+	 * @param aS_Visible String which contains value to be returned if component is visible
+	 * @param aS_NotVisible String which contains value to be returned if component is not visible
+	 * @return aS_Visible if component is visible aS_NotVisible if component is not visible
+	 */
+	public String getStringIfIsVisible(String aS_Visible, String aS_NotVisible)
+	{
+		if(isVisible())
+		{
+			return aS_Visible;
+		}
+		else
+		{
+			return aS_NotVisible;
+		}
+	}
+	
+	/**
+	 * <b>JSP</b>
+	 * @param aS_Enabled String which contains value to be returned if component is enabled
+	 * @param aS_NotEnabled String which contains value to be returned if component is not enabled
+	 * @return aS_Enabled if component is enabled aS_NotEnabled if component is not enabled
+	 */
+	public String getStringIfIsEnabled(String aS_Enabled, String aS_NotEnabled)
+	{
+		if(isEnabled())
+		{
+			return aS_Enabled;
+		}
+		else
+		{
+			return aS_NotEnabled;
+		}
 	}	
 	
 	/**
