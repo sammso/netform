@@ -6,6 +6,7 @@ import java.util.Calendar;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.ComponentValidator;
+import com.sohlman.netform.Validate;
 import com.sohlman.netform.component.Button;
 import com.sohlman.netform.component.DoubleField;
 import com.sohlman.netform.component.FloatField;
@@ -15,7 +16,6 @@ import com.sohlman.netform.component.LongFieldValidate;
 import com.sohlman.netform.component.TextField;
 import com.sohlman.netform.component.TextFieldValidate;
 import com.sohlman.netform.component.TimestampField;
-import com.sohlman.netform.component.Validate;
 import com.sohlman.netform.component.table.SimpleTableModel;
 import com.sohlman.netform.component.table.Table;
 

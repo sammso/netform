@@ -232,6 +232,11 @@ public abstract class Form
 			nextValueForComponentResponnsePrefix();
 			ii_currentState = FORM_STATE_TEMPLATING;
 		}
+		catch(Error l_Error)
+		{
+			l_Error.printStackTrace();
+			throw l_Error;
+		}
 		finally
 		{
 			finallyCleanUp(); 

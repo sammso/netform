@@ -22,17 +22,17 @@
 			<input type="checkbox" name="<%=form.table.getResponseName() %>"  value="<%=form.table.getRowId(li_y) %>"<%=form.table.getStringIfRowSelected(li_y, " checked") %>>
 		</td>
 		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,1).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,1).getText() %>" <% if(!form.table.getComponentAt(li_y,1).isValid()) { %>class="notvalid" <% } %> >
-		</td>		
-		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,2).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,2).getText() %>" <% if(!form.table.getComponentAt(li_y,2).isValid()) { %>class="notvalid" <% } %>>
+			<%=form.table.getComponentAt(li_y, 1).getStringIfIsNotValid(" class=\"notvalid\"* ") %><input type="text" name="<%=form.table.getComponentAt(li_y,1).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,1).getText() %>">
 		</td>
 		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,3).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,3).getText() %>" <% if(!form.table.getComponentAt(li_y,3).isValid()) { %>class="notvalid" <% } %>>
+			<%=form.table.getComponentAt(li_y, 2).getStringIfIsNotValid(" class=\"notvalid\"* ") %><input type="text" name="<%=form.table.getComponentAt(li_y,2).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,2).getText() %>">
 		</td>
 		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,4).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,4).getText() %>" <% if(!form.table.getComponentAt(li_y,4).isValid()) { %>class="notvalid" <% } %>>
-		</td>		
+			<%=form.table.getComponentAt(li_y, 3).getStringIfIsNotValid(" class=\"notvalid\"* ") %><input type="text" name="<%=form.table.getComponentAt(li_y,3).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,3).getText() %>">
+		</td>
+		<td>
+			<%=form.table.getComponentAt(li_y, 4).getStringIfIsNotValid(" class=\"notvalid\"* ") %><input type="text" name="<%=form.table.getComponentAt(li_y,4).getResponseName() %>" value="<%=form.table.getTextFieldAt(li_y,4).getText() %>">
+		</td>
 	</tr><%
 			} 
 	%></table>

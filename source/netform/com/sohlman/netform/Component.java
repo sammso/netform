@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.sohlman.netform.component.Validate;
 
 /**
  * @author Sampsa Sohlman
@@ -412,6 +411,11 @@ public abstract class Component
 		}
 	}
 
+	/**
+	 * set Component valid status
+	 * 
+	 * @param ab_isValid
+	 */
 	public final void setValid(boolean ab_isValid)
 	{
 		setValid(ab_isValid, null);
@@ -577,15 +581,36 @@ public abstract class Component
 	 */
 	public String getStringIfIsValid(String a_String)
 	{
+		return getStringIfIsValid(a_String, "");
+	}
+	/**
+	 * <b>JSP</b> Return String if component is valid othervice ""
+	 * 
+	 * @param aS_Valid String to be returned when component is valid
+	 * @param aS_NotValid String to be returned when component is not valid
+	 * @return  String if component is valid othervice ""
+	 */	
+	public String getStringIfIsValid(String aS_Valid, String aS_NotValid)
+	{
 		if(isValid())
 		{
-			return a_String;
+			return aS_Valid;
 		}
 		else
 		{
-			return "";
+			return aS_NotValid;
 		}
 	}
+	/**
+	 * <b>JSP</b> Return String if component is not valid othervice ""
+	 * 
+	 * @param a_String String to be returned
+	 * @return  String if component is valid othervice ""
+	 */
+	public String getStringIfIsNotValid(String a_String)
+	{
+		return getStringIfIsValid("", a_String);
+	}	
 	
 	/**
 	 * This used to syncronize data with ComponentData

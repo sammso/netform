@@ -1072,7 +1072,7 @@ public class Table extends Component
 		{
 			throw new NullPointerException("Table.getTextFieldAt row=" + ai_displayRow + ", column=" +ai_column + " is returning null instead of TextField");			
 		}
-		else if(l_Component.getClass().isAssignableFrom(TextField.class))
+		else if(TextField.class.isAssignableFrom(l_Component.getClass()))
 		{
 			return (TextField)l_Component;
 		}

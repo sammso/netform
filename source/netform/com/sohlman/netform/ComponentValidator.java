@@ -1,6 +1,5 @@
 package com.sohlman.netform;
 
-import com.sohlman.netform.component.Validate;
 
 /**
  *
