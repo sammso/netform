@@ -138,13 +138,25 @@ public abstract class TableModel
 	}
 
 	/**
-	 * Search
+	 * Search by column index
 	 * 
 	 * @param a_Object
 	 * @param ai_column
-	 * @return
+	 * @return row number which contains search hed item
 	 */
 	public abstract int search(Object a_Object, int ai_column);
+
+	/**
+	 * Search by column name
+	 * 
+	 * @param a_Object
+	 * @param aS_ColumnName 
+	 * @return row number which contains search hed item
+	 */
+	public int search(Object a_Object, String aS_ColumName)
+	{
+		return search(a_Object, getIndexByName(aS_ColumName));
+	}
 
 	/**
 	 * get index by name, if not supported 
