@@ -266,9 +266,9 @@ public class FormManager implements HttpSessionListener
 
 			if (l_Form_Old != null)
 			{	
-				String lS_ServletPath = a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath();
+				String lS_CurrentFormName = getNameFromHttpServletRequest(a_HttpServletRequest);
 
-				if ((!l_Form_Old.getClass().equals(a_Class_Form)) || (lS_ServletPath != null && !lS_ServletPath.equals(l_Form_Old.getName())))
+				if ((!l_Form_Old.getClass().equals(a_Class_Form)) || (lS_CurrentFormName != null && !lS_CurrentFormName.equals(l_Form_Old.getName())))
 				{
 					if (l_Form_Old.allowFormChange())
 					{
@@ -326,9 +326,22 @@ public class FormManager implements HttpSessionListener
 		return i_Form;
 	}
 
+	private static String getNameFromHttpServletRequest(HttpServletRequest a_HttpServletRequest)
+	{
+		String lS_QueryString = a_HttpServletRequest.getQueryString();
+		if(lS_QueryString != null )
+		{
+			return a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath() + "?" + lS_QueryString;
+		}
+		else
+		{
+			return a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath();
+		}
+	}
+
 	private static Form createForm(HttpServletRequest a_HttpServletRequest, Class a_Class) throws NetFormException
 	{
-		String lS_ServletPath = a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath();
+		String lS_ServletPath = getNameFromHttpServletRequest(a_HttpServletRequest);
 
 		try
 		{
