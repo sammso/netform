@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class DoubleField extends Component
 {
 	private String iS_Text;
-	
+
 	boolean ib_emptyIsValid = true;
 	boolean ib_nullAllowed = true;
 	String iS_Format;
@@ -27,8 +27,8 @@ public class DoubleField extends Component
 		public boolean isValid(Component a_Component)
 		{
 			String lS_Text = iS_Text;
-			
-			if (lS_Text!=null&&lS_Text.equals(""))
+
+			if (lS_Text != null && lS_Text.equals(""))
 			{
 				lS_Text = null;
 			}
@@ -37,12 +37,12 @@ public class DoubleField extends Component
 			{
 				return true;
 			}
-			
+
 			try
 			{
 				// parse succeed then it is valid
 				Double.parseDouble(iS_Text);
-				if(i_ComponentValidator!=null)
+				if (i_ComponentValidator != null)
 				{
 					return i_ComponentValidator.isValid(a_Component);
 				}
@@ -51,7 +51,7 @@ public class DoubleField extends Component
 					return true;
 				}
 			}
-			catch(NumberFormatException l_NumberFormatException)
+			catch (NumberFormatException l_NumberFormatException)
 			{
 				return false;
 			}
@@ -68,8 +68,8 @@ public class DoubleField extends Component
 	public DoubleField(Form a_Form)
 	{
 		super(a_Form);
-		
-		super.setComponentValidator(i_ComponentValidator);		
+
+		super.setComponentValidator(i_ComponentValidator);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class DoubleField extends Component
 	{
 		setFormat(new DecimalFormat(aS_Format));
 	}
-	
+
 	public void setFormat(DecimalFormat a_DecimalFormat)
 	{
 		i_DecimalFormat = a_DecimalFormat;
@@ -104,7 +104,7 @@ public class DoubleField extends Component
 
 	public void setDouble(Double a_Double)
 	{
-		if(i_DecimalFormat==null)
+		if (i_DecimalFormat == null)
 		{
 			iS_Text = String.valueOf(a_Double);
 		}
@@ -114,17 +114,17 @@ public class DoubleField extends Component
 			i_DecimalFormat.format(a_Double.doubleValue(), l_StringBuffer, new FieldPosition(0));
 			iS_Text = l_StringBuffer.toString();
 		}
-		
-		if(hasComponentData())
+
+		if (hasComponentData())
 		{
 			setData(a_Double);
-		}		
+		}
 	}
 
 	public void setDouble(double a_double)
 	{
-		
-		if(i_DecimalFormat==null)
+
+		if (i_DecimalFormat == null)
 		{
 			iS_Text = String.valueOf(a_double);
 		}
@@ -134,11 +134,8 @@ public class DoubleField extends Component
 			i_DecimalFormat.format(a_double, l_StringBuffer, new FieldPosition(0));
 			iS_Text = l_StringBuffer.toString();
 		}
-		
-		
-		
-		
-		if(hasComponentData())
+
+		if (hasComponentData())
 		{
 			setData(new Double(a_double));
 		}
@@ -146,47 +143,53 @@ public class DoubleField extends Component
 
 	private void setText(String aS_Text)
 	{
-		if(aS_Text.trim().equals(""))
+		if (aS_Text.trim().equals(""))
 		{
 			aS_Text = null;
 		}
-		
+
 		iS_Text = aS_Text;
 		validate();
-		
-		if(hasComponentData() && isValid())
+
+		if (hasComponentData() && isValid())
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				setData(null);
 			}
 			else
 			{
-				setData(new Integer(aS_Text));
+				setData(new Double(aS_Text));
 			}
-		}		
+		}
 	}
-	
+
 	public String getText()
 	{
-		if(hasComponentData() && isValid())
+		if (hasComponentData() && isValid())
 		{
-			Integer l_Integer = (Integer)getData();
-			if(l_Integer==null)
+			Double l_Double = (Double) getData();
+			if (l_Double == null)
 			{
 				return "";
 			}
 			else
 			{
-				StringBuffer l_StringBuffer = new StringBuffer();
-				i_DecimalFormat.format(l_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
-		
-				return  Utils.stringToHTML(l_StringBuffer.toString());				
+				if (i_DecimalFormat != null)
+				{
+					StringBuffer l_StringBuffer = new StringBuffer();
+					i_DecimalFormat.format(l_Double.doubleValue(), l_StringBuffer, new FieldPosition(0));
+					return Utils.stringToHTML(l_StringBuffer.toString());
+				}
+				else
+				{
+					return Utils.stringToHTML(String.valueOf(l_Double));
+				}
 			}
 		}
 		else
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				return "";
 			}
@@ -196,17 +199,17 @@ public class DoubleField extends Component
 			}
 		}
 	}
-	
+
 	public Double getDouble()
 	{
-		if(hasComponentData() && isValid())
+		if (hasComponentData() && isValid())
 		{
-			Double l_Double = (Double)getData();
+			Double l_Double = (Double) getData();
 			return l_Double;
 		}
 		else
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
 				return null;
 			}
@@ -216,29 +219,29 @@ public class DoubleField extends Component
 				{
 					return new Double(iS_Text);
 				}
-				catch(NumberFormatException l_NumberFormatException)
+				catch (NumberFormatException l_NumberFormatException)
 				{
 					return null;
 				}
-				
+
 			}
 		}
 	}
-	
+
 	public float getDoubleValue()
 	{
 		Double l_Double = getDouble();
-		
-		if(l_Double==null)
+
+		if (l_Double == null)
 		{
-			return 0; 
+			return 0;
 		}
 		else
 		{
 			return l_Double.floatValue();
 		}
 	}
-	
+
 	public boolean emptyIsValid()
 	{
 		return ib_emptyIsValid;
@@ -252,7 +255,7 @@ public class DoubleField extends Component
 		l_DoubleField.setNullIsAllowed(isNullAllowed());
 		return l_DoubleField;
 	}
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#checkIfNewValues()
 	 */
@@ -293,16 +296,16 @@ public class DoubleField extends Component
 	protected void addComponent(Component a_Component)
 	{
 		throw new NoSuchMethodError("Child components are not supported on TimestampField");
-	}	
-	
+	}
+
 	/**
 	 * @see com.sohlman.netform.Component#syncronizeData()
 	 */
 	public void syncronizeData()
 	{
-		if(hasComponentData())
+		if (hasComponentData())
 		{
-			
+
 		}
-	}	
+	}
 }

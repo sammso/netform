@@ -104,31 +104,42 @@ public class FloatField extends Component
 		return ib_nullAllowed;
 	}
 
-	public void setInteger(Integer a_Integer)
+	public void setFloat(Float a_Float)
 	{
-		
-		StringBuffer l_StringBuffer = new StringBuffer();
-		i_DecimalFormat.format(a_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
-		
-		iS_Text = l_StringBuffer.toString();
-		
+		if(i_DecimalFormat!=null)
+		{
+			StringBuffer l_StringBuffer = new StringBuffer();
+			i_DecimalFormat.format(a_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
+			
+			iS_Text = l_StringBuffer.toString();
+		}
+		else
+		{
+			iS_Text = String.valueOf(a_Float);		
+		}
 		if(hasComponentData())
 		{
-			setData(a_Integer);
+			setData(a_Float);
 		}		
 	}
 
-	public void setInt(int ai_int)
+	public void setFloat(float a_float)
 	{
-		StringBuffer l_StringBuffer = new StringBuffer();
-		i_DecimalFormat.format(ai_int, l_StringBuffer, new FieldPosition(0));
-		
-		iS_Text = l_StringBuffer.toString();
-		
+		if(i_DecimalFormat!=null)
+		{
+			StringBuffer l_StringBuffer = new StringBuffer();
+			i_DecimalFormat.format(a_float, l_StringBuffer, new FieldPosition(0));
+			
+			iS_Text = l_StringBuffer.toString();
+		}
+		else
+		{
+			iS_Text = String.valueOf(a_float);		
+		}
 		if(hasComponentData())
 		{
-			setData(new Integer(ai_int));
-		}
+			setData(new Float(a_float));
+		}	
 	}
 
 	private void setText(String aS_Text)
@@ -149,7 +160,7 @@ public class FloatField extends Component
 			}
 			else
 			{
-				setData(new Integer(aS_Text));
+				setData(new Float(aS_Text));
 			}
 		}		
 	}
@@ -158,17 +169,23 @@ public class FloatField extends Component
 	{
 		if(hasComponentData() && isValid())
 		{
-			Integer l_Integer = (Integer)getData();
-			if(l_Integer==null)
+			Float l_Float = (Float)getData();
+			if(l_Float==null)
 			{
 				return "";
 			}
 			else
 			{
-				StringBuffer l_StringBuffer = new StringBuffer();
-				i_DecimalFormat.format(l_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
-		
-				return  Utils.stringToHTML(l_StringBuffer.toString());				
+				if(i_DecimalFormat!=null)
+				{
+					StringBuffer l_StringBuffer = new StringBuffer();
+					i_DecimalFormat.format(l_Float.intValue(), l_StringBuffer, new FieldPosition(0));			
+					return  Utils.stringToHTML(l_StringBuffer.toString());
+				}
+				else
+				{
+					return String.valueOf(l_Float);
+				}
 			}
 		}
 		else
@@ -287,9 +304,6 @@ public class FloatField extends Component
 	 */
 	public void syncronizeData()
 	{
-		if(hasComponentData())
-		{
-			
-		}
+		
 	}	
 }
