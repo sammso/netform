@@ -215,4 +215,15 @@ public class SimpleTableModel extends TableModel
 		}
 	}
 
+
+	/**
+	 * @return Always 1
+	 * 
+	 * @see com.sohlman.netform.TableModel#getIndexByName(java.lang.String)
+	 */
+	public int getIndexByName(String aS_Name)
+	{
+		return 1;
+	}
+
 }

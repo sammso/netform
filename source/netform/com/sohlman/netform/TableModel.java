@@ -121,8 +121,23 @@ public abstract class TableModel
 		}
 	}
 
+	/**
+	 * Search
+	 * 
+	 * @param a_Object
+	 * @param ai_column
+	 * @return
+	 */
 	public abstract int search(Object a_Object, int ai_column);
 	
+	/**
+	 * get index by name, if not supported 
+	 * 
+	 * @param aS_Name
+	 * @return index for name
+	 */
+	public abstract int getIndexByName(String aS_Name);
+		
 	public void removeTable(Table a_Table)
 	{
 		iHS_Tables.remove(a_Table);

@@ -2,9 +2,16 @@ package com.sohlman.dataset.netform;
 
 import com.sohlman.dataset.DataSet;
 import com.sohlman.dataset.DataSetEvent;
+import com.sohlman.dataset.DataSetException;
 import com.sohlman.dataset.DataSetListener;
+import com.sohlman.netform.NetFormException;
 import com.sohlman.netform.TableModel;
 
+/**
+ * @author Sampsa Sohlman
+ * 
+ * @version Feb 23, 2004
+ */
 /**
  * @author Sampsa Sohlman
 /*
@@ -126,8 +133,6 @@ public class DataSetTableModel extends TableModel
 			return li_row;	
 		}
 	}
-	
-	
 
 	/**
 	 * This is overriden
@@ -136,6 +141,22 @@ public class DataSetTableModel extends TableModel
 	public boolean isNew(int ai_index)
 	{
 		return i_DataSet.isNew(ai_index);
+	}
+
+
+	/**
+	 * @see com.sohlman.netform.TableModel#getIndexByName(java.lang.String)
+	 */
+	public int getIndexByName(String aS_Name)
+	{
+		try
+		{
+			return i_DataSet.getRowInfo().getIndexByColumnName(aS_Name);
+		}
+		catch(DataSetException l_DataSetException)
+		{
+			throw new NetFormException(aS_Name + " not found"s);
+		}
 	}
 
 }

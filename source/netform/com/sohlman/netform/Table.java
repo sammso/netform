@@ -938,6 +938,20 @@ public class Table extends Component
 	/**
 	 * For JSP use
 	 * 
+	 * It is better use getText(int ai_row, int ai_column), because it is faster
+	 * 
+	 * @param ai_row
+	 * @param ai_column
+	 * @return String (never null)
+	 */
+	public String getText(int ai_row, String aS_ColumnName)
+	{
+		return getText(ai_row, i_TableModel.getIndexByName(aS_ColumnName));
+	}	
+	
+	/**
+	 * For JSP use
+	 * 
 	 * Returns first text of selected row.
 	 * 
 	 * @param ai_column column that want to be shown
