@@ -1,7 +1,7 @@
 /*
 NetForm Library
 ---------------
-Copyright (C) 2001-2004 - Sampsa Sohlman, Teemu Sohlman
+Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ package com.sohlman.netform.taglib;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;

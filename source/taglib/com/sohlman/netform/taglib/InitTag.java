@@ -1,22 +1,22 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2004 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform.taglib;
 
 import java.io.IOException;
@@ -39,7 +39,6 @@ public class InitTag extends MasterTag
 	private Form i_Form = null;
 	private String iS_FormClassName = null;
 	private String iS_LoginPage = null;
-
 	private boolean ib_pageHasBeenRedirected = false;
 
 	public void setForm(String aS_FormClassName)
@@ -62,9 +61,6 @@ public class InitTag extends MasterTag
 			try
 			{
 				i_Form.execute();
-				
-				i_PageContext.getRequest().setAttribute(Form.FORM, i_Form);
-						
 				return EVAL_PAGE;
 			}
 			catch (DoRedirectException l_DoRedirectException)
@@ -94,12 +90,16 @@ public class InitTag extends MasterTag
 	{
 		try
 		{
-			Class l_Class = Class.forName(iS_FormClassName);
+			i_Form = (Form) i_PageContext.getRequest().getAttribute(Form.FORM);
 
-			i_Form = FormManager.getForm((HttpServletRequest) i_PageContext.getRequest(),
-					(HttpServletResponse) this.i_PageContext.getResponse(), i_PageContext.getServletContext(), l_Class,
-					iS_LoginPage);
-
+			if(i_Form == null)
+			{
+				Class l_Class = Class.forName(iS_FormClassName);
+				i_Form = FormManager.getForm((HttpServletRequest) i_PageContext.getRequest(),
+						(HttpServletResponse) this.i_PageContext.getResponse(), i_PageContext.getServletContext(),
+						l_Class, iS_LoginPage);
+				i_PageContext.getRequest().setAttribute(Form.FORM, i_Form);
+			}
 			if(i_Form.isInitialized())
 			{
 				return SKIP_BODY;

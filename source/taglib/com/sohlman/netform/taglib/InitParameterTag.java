@@ -1,7 +1,7 @@
 /*
 NetForm Library
 ---------------
-Copyright (C) 2001-2004 - Sampsa Sohlman, Teemu Sohlman
+Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -49,7 +49,7 @@ public class InitParameterTag extends MasterTag
 	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
 	 */
 	public int doEndTag() throws JspException
-	{
+	{		
 		return EVAL_PAGE;
 	}
 
@@ -66,8 +66,8 @@ public class InitParameterTag extends MasterTag
 	 */
 	public void release()
 	{
-		// TODO Auto-generated method stub
-
+		iS_Method = null;
+		iS_Value = null;
 	}
 
 	/**
