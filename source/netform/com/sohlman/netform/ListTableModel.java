@@ -198,7 +198,7 @@ public abstract class ListTableModel extends TableModel
 			for(int li_index = 1 ; li_index <= i_List.size() ; li_index++)
 			{
 				Object l_Object = getValueAt(li_index, ai_column);
-				if(( l_Object == a_Object ) || (l_Object!=null && a_Object!=null && a_Object.equals(a_Object)))
+				if(( l_Object == a_Object ) || (l_Object!=null && a_Object!=null && a_Object.equals(l_Object)))
 				{
 					return li_index;
 				}
