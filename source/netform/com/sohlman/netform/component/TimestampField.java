@@ -22,6 +22,7 @@ package com.sohlman.netform.component;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.sohlman.netform.Component;
@@ -194,6 +195,137 @@ public class TimestampField extends TextField
 			}
 		}
 	}
+	
+	/**
+	 * <b>JSP</b>
+	 * <p>
+	 * Returns value by specific format
+	 * 
+	 * @param aS_Format Specific format to be used
+	 * @return Timestamp formated by this specific value
+	 */
+	public String getTextByFormat(String aS_Format)
+	{
+		if (hasComponentData() && isValidWithoutChilds())
+		{
+			i_Timestamp = (Timestamp) getData();
+			if (i_Timestamp == null)
+			{
+				return "";
+			}
+			else
+			{
+				try
+				{
+					SimpleDateFormat l_SimpleDateFormat = new SimpleDateFormat(aS_Format);
+					return l_SimpleDateFormat.format(i_Timestamp);
+				}
+				catch(Exception l_Exception)
+				{
+					return "";
+				}
+				
+			}
+		}
+		else
+		{
+			if (iS_Text == null)
+			{
+				return "";
+			}
+			else
+			{
+				return Utils.stringToHTML(iS_Text);
+			}
+		}		
+	}
+	
+	/**
+	 * @return Hour of day 0-23, 0 if Timestamp is null
+	 */
+	public int getHourOfDay()
+	{
+		return getTimestampPart(Calendar.HOUR_OF_DAY);
+	}
+	/**
+	 * @return Minute of hour 0-59, 0 if Timestamp is null
+	 */
+	public int getMinute()
+	{
+		return getTimestampPart(Calendar.MINUTE);
+	}
+
+	/**
+	 * @return Second of minute 0-59, 0 if Timestamp is null
+	 */
+	public int getSecond()
+	{
+		return getTimestampPart(Calendar.SECOND);
+	}
+
+	/**
+	 * @return Millisecond, 0 if Timestamp is null
+	 */	
+	public int getMilliSecond()
+	{
+		return getTimestampPart(Calendar.MILLISECOND);
+	}
+	
+	/**
+	 * @return Day of month 1 - 31, 0 if Timestamp is null
+	 */		
+	public int getDayOfMonth()
+	{
+		return getTimestampPart(Calendar.DAY_OF_MONTH);
+	}
+
+	/**
+	 * @return Month 1 - 12, 0 if Timestamp is null
+	 */
+	public int getMonth()
+	{
+		return getTimestampPart(Calendar.MONTH);
+	}
+
+	/**
+	 * @return Year with full width, 0 if Timestamp is null
+	 */	
+	public int getYear()
+	{
+		return getTimestampPart(Calendar.YEAR);
+	}
+	
+	/**
+	 * @return GMZ offset value, 0 if Timestamp is null
+	 */		
+	public int getZoneOffSet()
+	{
+		return getTimestampPart(Calendar.ZONE_OFFSET);
+	}
+
+	/**
+	 * @return Week of year 1 - 53, 0 if Timestamp is null
+	 */
+	public int getWeekOfYear()
+	{
+		return getTimestampPart(Calendar.WEEK_OF_YEAR);
+	}
+	
+	private int getTimestampPart(int ai_type)
+	{
+		Timestamp l_Timestamp = getTimestamp();
+		if(l_Timestamp==null)
+		{
+			return 0;
+		}
+		else
+		{
+			Calendar l_Calendar = Calendar.getInstance();
+			l_Calendar.setTime(l_Timestamp);
+			return l_Calendar.get(ai_type);
+		}		
+	}
+	
 	
 	/**
 	 * @see com.sohlman.netform.Component#cloneComponent()
