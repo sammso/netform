@@ -7,7 +7,9 @@
    - Developement on
      - Login handling
      - Browsers back button handling
-     - Form objects can be use also ServletContext
+     - Form objects can use also ServletContext
+     - Table handling (Not satisfied how it is done) also
+       0.51 had serious bug inside.
    
    What is new on 0.51
    -------------------------------------------------------------

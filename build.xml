@@ -43,6 +43,14 @@
 		<delete dir="${builddir}" failonerror="false"/>
 	</target>
 	
+	<target name="OnlyJars" depends="CompileNetForm, CompileDataSet" description="Compile DataSet extension">
+		<copy todir=".">
+			<fileset dir="${NetForm.zip}/libs/">
+			</fileset>
+		</copy>	
+		<delete dir="${distribution}"/>		
+	</target>
+	
 	<target name="CreateTestAppWar" depends="CompileDataSet" description="Create Test application war" >
 	<!-- Create temp dir for war file creation -->
 		<mkdir dir="${example.war}"/>
