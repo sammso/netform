@@ -46,10 +46,29 @@ public class DataSetTableModel extends TableModel
 	
 	public DataSetTableModel(DataSet a_DataSet)
 	{
-		i_DataSet = a_DataSet;
-		i_DataSet.addListener(i_DataSetListener);
+		setDataSet(a_DataSet);
 	}
 
+	public void setDataSet(DataSet a_DataSet)
+	{
+		if(a_DataSet==null)
+		{
+			throw new NullPointerException("setDataSet() null parameter is not accepted");
+		}
+		
+		if(i_DataSet==a_DataSet) // do nothing if tried to set same
+		{
+			return;
+		}
+		
+		if(i_DataSet!=null)
+		{
+			i_DataSet.removeListener(i_DataSetListener);
+		}
+		i_DataSet = a_DataSet;
+		i_DataSet.addListener(i_DataSetListener);
+		fireUpdateAll();
+	}
 
 	/**
 	 * @see com.sohlman.netform.component.table.TableModel#add()
