@@ -72,4 +72,11 @@ public class Button extends Component
 	{
 		throw new NoSuchMethodError("At moment clone component is not supported");
 	}	
+	/**
+	 * @see com.sohlman.netform.Component#syncronizeData()
+	 */
+	public void syncronizeData()
+	{
+		// Here nothing tobe syncronized 
+	}
 }

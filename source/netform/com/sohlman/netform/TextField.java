@@ -125,7 +125,7 @@ public class TextField extends Component
 			else
 			{
 				iS_Text = l_Object.toString();
-				return iS_Text;
+				return Utils.escapeHTML(iS_Text);
 			}
 		}
 		else
@@ -136,7 +136,7 @@ public class TextField extends Component
 			}
 			else
 			{
-				return iS_Text;
+				return Utils.escapeHTML(iS_Text);
 			}
 		}
 	}
@@ -155,7 +155,7 @@ public class TextField extends Component
 			// this is made because 
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
-			String lS_NewText = Statics.replace(lS_Parameters[0], new String(lc_10), "");
+			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
 			if (!lS_NewText.equals(iS_Text))
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);
@@ -193,5 +193,15 @@ public class TextField extends Component
 		l_Textfield.setEnabled(isEnabled());
 		l_Textfield.setComponentValidator(getComponentValidator());
 		return l_Textfield;
+	}
+	/**
+	 * @see com.sohlman.netform.Component#syncronizeData()
+	 */
+	public void syncronizeData()
+	{
+		if(hasComponentData())
+		{
+			iS_Text = (String)getData();
+		}
 	}
 }

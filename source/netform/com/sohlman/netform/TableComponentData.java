@@ -11,10 +11,16 @@ public class TableComponentData implements ComponentData
 	private int ii_row;
 	private TableModel i_TableModel;
 	
+	//
+	// Component which is handling data
+	//
+	private Component i_Component;
+	
 	public TableComponentData(TableModel a_TableModel)
 	{
 		i_TableModel = a_TableModel;
 	}
+	
 	
 	/**
 	 * @see com.sohlman.netform.ComponentData#setData(java.lang.Object)

@@ -1,7 +1,5 @@
 package com.sohlman.webapp.netform;
 
-import java.sql.Timestamp;
-
 import com.sohlman.dataset.ColumnInfo;
 import com.sohlman.dataset.DataSet;
 import com.sohlman.dataset.RowInfo;
@@ -10,24 +8,30 @@ import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.ComponentValidator;
-import com.sohlman.netform.IntegerField;
-import com.sohlman.netform.Statics;
+import com.sohlman.netform.SimpleTableModel;
 import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
-import com.sohlman.netform.TimestampField;
 
 /**
  * @author Sampsa Sohlman
  */
-public class TableForm extends MasterForm
+public class Table2Form extends MasterForm
 {
 	public Button reloadButton = new Button(this);
 	public Button addRowButton = new Button(this);
 	public Button deleteRowButton = new Button(this);
-	public Table table;
+	public Button addButton = new Button(this);
+	public Button removeButton = new Button(this);	
+	
+	public TextField textField = new TextField(this);
+	public Table tableList;
+	public Table tableSelect;
+	
+	
 
 	private int ii_counter = 1;
-	private DataSet i_DataSet;  
+	private DataSet i_DataSet;
+	private SimpleTableModel i_SimpleTableModel;
 	
 	private ComponentListener i_ComponentListener = new ComponentListener()
 	{
@@ -39,7 +43,7 @@ public class TableForm extends MasterForm
 			}
 			else if( a_Component == deleteRowButton )
 			{
-				table.deleteSelectedRows();
+				tableList.deleteSelectedRows();
 			}
 		}
 	};
@@ -70,43 +74,43 @@ public class TableForm extends MasterForm
 		reloadButton.addComponentListener(i_ComponentListener);
 		addRowButton.addComponentListener(i_ComponentListener);
 		deleteRowButton.addComponentListener(i_ComponentListener);
-
+		
+		i_SimpleTableModel = new SimpleTableModel();
+	
 		i_DataSet = new DataSet();
 		ColumnInfo[] l_ColumnInfos =
-			{ new ColumnInfo("Person id", Integer.class), new ColumnInfo("First Name", String.class), new ColumnInfo("Last Name", String.class), new ColumnInfo("Birthday", Timestamp.class)};
+			{ new ColumnInfo("Choise", String.class), new ColumnInfo("Text", String.class)};
 
 		i_DataSet.setRowInfo(new RowInfo(l_ColumnInfos));
-		table = new Table(this,new DataSetTableModel(i_DataSet));
-		table.setMultiSelection(true);
-
-		IntegerField l_IntegerField = new IntegerField(table);
+		tableList = new Table(this,new DataSetTableModel(i_DataSet));
+		tableList.setMultiSelection(true);
+		
+		
 		// l_IntegerField.setEmptyIsNull(true);
-		l_IntegerField.setFormat("0000");
-		table.setTableModelComponent(l_IntegerField,1);
+		// Let's make selection list 
 		
-		TextField l_Textfield_FirstName = new TextField(table);
-		l_Textfield_FirstName.setEmptyIsNull(true);
-		table.setTableModelComponent(l_Textfield_FirstName,2);
+		Table l_Table = new Table(tableList, i_SimpleTableModel);
+		tableList.setTableModelComponent(l_Table, 1);
 		
-		TextField l_Textfield_LastName = new TextField(table);
-		table.setTableModelComponent(l_Textfield_LastName,3);
+		TextField l_Textfield = new TextField(tableList);
+		l_Textfield.setEmptyIsNull(true);
+		tableList.setTableModelComponent(l_Textfield,2);
 		
-		TimestampField l_TimestampField = new TimestampField(table);
-		l_TimestampField.setFormat("yyyy-MM-dd");
-		table.setTableModelComponent(l_TimestampField,4);
+		
+		String lS_First = "First";
+		String lS_Second = "Second";
+		
+		i_SimpleTableModel.addValue(lS_First);
+		i_SimpleTableModel.addValue(lS_Second);			
 
 		int li_row = i_DataSet.addRow();
 
-		i_DataSet.setValueAt(new Integer(1), li_row, 1);
-		i_DataSet.setValueAt("Sampsa", li_row, 2);
-		i_DataSet.setValueAt("Sohlman", li_row, 3);
-		i_DataSet.setValueAt(Statics.stringToTimestamp("1973-05-22","yyyy-MM-dd"), li_row, 4);
-
+		i_DataSet.setValueAt(lS_First, li_row, 1);
+		i_DataSet.setValueAt("Some Text", li_row, 2);
+		
 		li_row = i_DataSet.addRow();
 		
-		i_DataSet.setValueAt(new Integer(2), li_row, 1);
-		i_DataSet.setValueAt("Gabriela", li_row, 2);
-		i_DataSet.setValueAt("Ortiz Piña", li_row, 3);
-		i_DataSet.setValueAt(Statics.stringToTimestamp("1979-01-25","yyyy-MM-dd"), li_row, 4);
+		i_DataSet.setValueAt(lS_First, li_row, 1);
+		i_DataSet.setValueAt("More text", li_row, 2);
 	}
 }

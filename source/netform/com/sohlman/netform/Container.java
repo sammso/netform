@@ -42,5 +42,13 @@ public class Container extends Component
 	public Component cloneComponent()
 	{
 		throw new IllegalAccessError("At moment clone component is not supported");
-	}	
+	}
+		
+	/**
+	 * @see com.sohlman.netform.Component#syncronizeData()
+	 */
+	public void syncronizeData()
+	{
+		// Here nothing tobe syncronized 
+	}
 }

@@ -23,7 +23,6 @@ public class TimestampField extends Component
 
 	private ComponentValidator i_ComponentValidator;
 
-
 	private ComponentValidator i_ComponentValidator_Value = new ComponentValidator()
 	{
 		public boolean isValid(Component a_Component)
@@ -32,7 +31,7 @@ public class TimestampField extends Component
 			{
 				return true;
 			}
-			else if (Statics.isTimestamp(iS_Text, iS_DateTimeFormat))
+			else if (Utils.isTimestamp(iS_Text, iS_DateTimeFormat))
 			{
 				if(i_ComponentValidator==null)
 				{
@@ -48,6 +47,12 @@ public class TimestampField extends Component
 		}
 	};
 
+	/**
+	 * Set's component validator. Validator is not called if value inside component is not
+	 * valid Timestamp
+	 * 
+	 * @see com.sohlman.netform.Component#setComponentValidator(com.sohlman.netform.ComponentValidator)
+	 */
 	public void setComponentValidator(ComponentValidator a_ComponentValidator)
 	{
 		i_ComponentValidator = a_ComponentValidator;	
@@ -75,7 +80,7 @@ public class TimestampField extends Component
 		i_Timestamp = a_Timestamp;
 		if (iS_DateTimeFormat != null)
 		{
-			iS_Text = Statics.timestampToString(a_Timestamp, iS_DateTimeFormat);
+			iS_Text = Utils.timestampToString(a_Timestamp, iS_DateTimeFormat);
 		}
 		if (hasComponentData())
 		{
@@ -85,9 +90,9 @@ public class TimestampField extends Component
 
 	private Timestamp stringToTimestamp(String aS_Timestamp)
 	{
-		if (Statics.isTimestamp(aS_Timestamp, iS_DateTimeFormat))
+		if (Utils.isTimestamp(aS_Timestamp, iS_DateTimeFormat))
 		{
-			return Statics.stringToTimestamp(aS_Timestamp, iS_DateTimeFormat);
+			return Utils.stringToTimestamp(aS_Timestamp, iS_DateTimeFormat);
 		}
 		else
 		{
@@ -120,8 +125,8 @@ public class TimestampField extends Component
 			}
 			else
 			{
-				iS_Text = Statics.timestampToString(l_Timestamp, iS_DateTimeFormat);
-				return iS_Text;
+				iS_Text = Utils.timestampToString(l_Timestamp, iS_DateTimeFormat);
+				return Utils.escapeHTML(iS_Text);
 			}			
 		}
 		else
@@ -132,7 +137,7 @@ public class TimestampField extends Component
 			}
 			else
 			{
-				return iS_Text;
+				return Utils.escapeHTML(iS_Text);
 			}
 		}
 	}
@@ -167,7 +172,7 @@ public class TimestampField extends Component
 			// this is made because 
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
-			String lS_NewText = Statics.replace(lS_Parameters[0], new String(lc_10), "");
+			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
 			if (!lS_NewText.equals(iS_Text))
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);
@@ -225,4 +230,15 @@ public class TimestampField extends Component
 	{
 		return ib_emptyIsNull;
 	}
+	
+	/**
+	 * @see com.sohlman.netform.Component#syncronizeData()
+	 */
+	public void syncronizeData()
+	{
+		if(hasComponentData())
+		{
+			
+		}
+	}	
 }

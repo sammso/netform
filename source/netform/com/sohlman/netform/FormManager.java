@@ -156,6 +156,17 @@ public class FormManager implements HttpSessionListener
 		}
 	}
 
+	/**
+	 * <b>JSP use</b>
+	 * 
+	 * @param a_HttpServletRequest current HttpServletRequest
+	 * @param a_HttpServletResponse current HttpServletResponse
+	 * @param a_ServletContext current ServletContext
+	 * @param a_Class_Form Class which is implementing {@link Form Form}
+	 * @return Form corresponding {@link Form Form}
+	 * @throws NetFormException
+	 * @throws DoRedirectException
+	 */
 	public static Form getForm(
 		HttpServletRequest a_HttpServletRequest,
 		HttpServletResponse a_HttpServletResponse,
@@ -166,11 +177,30 @@ public class FormManager implements HttpSessionListener
 		return getForm(a_HttpServletRequest, a_HttpServletResponse, a_ServletContext, a_Class_Form, null);
 	}
 
+	/**
+	 * @return String containing next page after login. This is defined in 
+	 * {@link LoginForm.setDefaultPageAfterLogin(String)  LoginForm.setDefaultPageAfterLogin} or {@link #createForm createForm}
+	 */
 	public String getNextPageAfterLogin()
 	{
 		return iS_NextPageAfterLogin;
 	}
 
+	/**
+	 * JSP use
+	 * <p>Create form.
+	 * 
+	 * 
+	 * 
+	 * @param a_HttpServletRequest current HttpServletRequest
+	 * @param a_HttpServletResponse current HttpServletResponse
+	 * @param a_ServletContext current ServletContext
+	 * @param a_Class_Form Class which is implementing {@link Form Form}
+	 * @param aS_LoginPage Put null, if login is not required. If login is required, here link to login page.s
+	 * @return Form corresponding {@link Form Form}
+	 * @throws NetFormException
+	 * @throws DoRedirectException
+	 */
 	public static Form getForm(
 		HttpServletRequest a_HttpServletRequest,
 		HttpServletResponse a_HttpServletResponse,
@@ -314,7 +344,7 @@ public class FormManager implements HttpSessionListener
 	}
 
 	/**
-	 * If you override this you have to call super.
+	 * If you override this you have to call super.sessionCreated(a_HttpSessionEvent)
 	 * 
 	 * @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
 	 */
@@ -336,6 +366,11 @@ public class FormManager implements HttpSessionListener
 		endSession();
 	}
 
+	/**
+	 * Set object to be assosiated to login.
+	 * 
+	 * @param aO_LoginInfo
+	 */
 	public void setLoginInfo(Object aO_LoginInfo)
 	{
 		iO_LoginInfo = aO_LoginInfo;
@@ -346,11 +381,21 @@ public class FormManager implements HttpSessionListener
 		iO_LoginInfo = null;
 	}
 
+	/**
+	 * Returns object which is associated to login.
+	 * 
+	 * @return Object which is associated to login.
+	 */
 	public Object getLoginInfo()
 	{
 		return iO_LoginInfo;
 	}
 
+	/**
+	 * <b>JSP also</b>
+	 * 
+	 * @return true if user is logged in false if not
+	 */
 	public boolean isLoggedIn()
 	{
 		if(iO_LoginInfo==null)

@@ -1,10 +1,10 @@
 <%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*" %>
 <% 
-	TableForm form = null; 
+	Table1Form form = null; 
 	ServletContext l_ServletContext = getServletContext();	
 	try 
 	{
-		form = (TableForm)FormManager.getForm(request, response, l_ServletContext, TableForm.class, "login.jsp");
+		form = (Table1Form)FormManager.getForm(request, response, l_ServletContext, Table1Form.class, "login.jsp");
 		form.execute(); 
 %>
 <jsp:include page="header.jsp" />
@@ -17,7 +17,7 @@
 	</tr><%
 			for(int li_y = 1 ; li_y <= form.table.getDisplayRowCount()  ; li_y++)
 			{ 
-			if(form.table.isSelected(li_y))
+			if(form.table.isRowSelected(li_y))
 			{
 			%>
 	<tr>

@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
  * <li>Event handling services with {@link ComponentListener ComponentListener}</li>
  * <li>Data validation services with {@link ComponentValidator ComponentValidator}</li>
  * </ul>
+ * <p>Component can be created any time, but when it is destroyed or removed 
+ *    {@link #dispose() Component.dispose()} method has to be called. If component
+ *    is inherited then this method has to considered also.
  * 
  * @author  Sampsa Sohlman
  * @version 2003-11-20
@@ -26,13 +29,13 @@ public abstract class Component
 	private boolean ib_enabledChanged = false;
 	private boolean ib_componentIsModified = false;
 	private long il_count = 0;
-	
+
 	// For Storing component data
 	// Component is also allowed to store it's
 	// data by it self.
 	// Component data makes posible to create
 	// external Datamodels
-	
+
 	private ComponentData i_ComponentData;
 
 	// For validation
@@ -293,9 +296,9 @@ public abstract class Component
 			ib_enabledChanged = false;
 		}
 		// Change state to old_value
-		
+
 		lastComponentIteration();
-		
+
 		Iterator l_Iterator = getChildComponents();
 		if (l_Iterator != null)
 		{
@@ -306,14 +309,22 @@ public abstract class Component
 			}
 		}
 	}
-	
+
 	/**
 	 * To be overridden. This last to be called when 
 	 * Before form execution
 	 */
 	protected void lastComponentIteration()
 	{
-		// To be override
+		Iterator l_Iterator = getChildComponents();
+		if (l_Iterator != null)
+		{
+			while (l_Iterator.hasNext())
+			{
+				Component l_Component = (Component) l_Iterator.next();
+				l_Component.lastIteration();
+			}
+		}
 	}
 
 	final void clearState()
@@ -420,7 +431,7 @@ public abstract class Component
 	{
 		return null;
 	}
-	
+
 	/**
 	 * Set DataContainer to component. DataContainer
 	 * Makes posiblity create data models.
@@ -431,12 +442,12 @@ public abstract class Component
 	{
 		i_ComponentData = a_ComponentData;
 	}
-	
+
 	public ComponentData getComponentData()
 	{
 		return i_ComponentData;
 	}
-	
+
 	/**
 	 * Set data to this Component's {@link com.sohlman.netform.ComponentData ComponentData} object 
 	 * If {@link com.sohlman.netform.ComponentData ComponentData} is not set is ignored
@@ -444,19 +455,19 @@ public abstract class Component
 	 */
 	protected void setData(Object a_Object)
 	{
-		if(i_ComponentData!=null)
+		if (i_ComponentData != null)
 		{
 			i_ComponentData.setData(a_Object);
 		}
 	}
-	
+
 	/** gets data from {@link com.sohlman.netform.ComponentData ComponentData}
 	 * @return Object 
 	 * @throws IllegalStateException if component data doesn't exists
 	 */
 	protected Object getData()
 	{
-		if(i_ComponentData!=null)
+		if (i_ComponentData != null)
 		{
 			return i_ComponentData.getData();
 		}
@@ -465,32 +476,53 @@ public abstract class Component
 			throw new IllegalStateException("Component object is not defined");
 		}
 	}
-	
+
 	final public int getCurrentState()
 	{
 		return i_Form.getCurrentState();
 	}
-	
+
 	final protected void checkState(int ai_state, String aS_ErrorMsg)
 	{
 		int li_state = getCurrentState();
-		if((li_state & ai_state) == 0)
+		if ((li_state & ai_state) == 0)
 		{
 			throw new IllegalStateException(aS_ErrorMsg);
 		}
 	}
-	
-	
-	/** Has component data
+
+	/** 
+	 * Has component data
 	 * @return
 	 */
 	protected boolean hasComponentData()
 	{
 		return i_ComponentData != null;
 	}
-	
+
 	/**
 	 * This should clone component, with same 
 	 */
-	public abstract Component cloneComponent();	
+	public abstract Component cloneComponent();
+
+	/**
+	 * This cleans the object and all it's child
+	 * Child classes has to remember call super if overriding this.
+	 */
+	public void dispose()
+	{
+		Iterator l_Iterator = getChildComponents();
+
+		if (l_Iterator != null)
+		{
+			while (l_Iterator.hasNext())
+			{
+
+				Component l_Component = (Component) l_Iterator.next();
+				l_Component.dispose();
+			}
+		}
+	}
+	
+	public abstract void syncronizeData();
 }

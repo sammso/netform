@@ -24,6 +24,9 @@ public class DataSetTableModel extends TableModel
 				case DataSetEvent.ROW_INSERTED:
 					fireInsert(a_DataSetEvent.getRow());
 					break;
+				case DataSetEvent.COLUMN_CHANGED:
+					fireColumnChanged(a_DataSetEvent.getRow(), a_DataSetEvent.getColumn());
+					break;
 				case DataSetEvent.ROW_REMOVED :
 					fireDelete(a_DataSetEvent.getRow());
 					break;
@@ -103,6 +106,16 @@ public class DataSetTableModel extends TableModel
 	public String getColumnName(int ai_index)
 	{
 		return i_DataSet.getRowInfo().getColumnName(ai_index);
+	}
+	
+	
+
+	/**
+	 * @see com.sohlman.netform.TableModel#search(java.lang.Object, int)
+	 */
+	public int search(Object a_Object, int ai_column)
+	{
+		return i_DataSet.search(a_Object, ai_column);
 	}
 
 }

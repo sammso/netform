@@ -1,7 +1,12 @@
 
-   NetForm Web Application Framework for Java V 0.61
+   NetForm Web Application Framework for Java V 0.62
    =================================================
 
+   What is new on 0.62
+   -------------------------------------------------------------
+   - Developing Table so that it is also cloneable
+    + TableModel can be connected to multible tables.
+   
    What is new on 0.61
    -------------------------------------------------------------
    - Table programming interface is changed (easier, better)
@@ -12,19 +17,18 @@
    - Component's are based on new ComponentData data handling.
      - It is optional
      - It is done because Table. Every component now has option
-       to store it's data to 
+       to store and retrieve data through ComponentData
    - Stared to developing STATE machine to control usage of methods.
      - This methods that some functionality is generating Exception
        when called on wrong state. Some methods are designed to 
-       work only example on templating side.
-        + Form.FORM_STATE_..
-      see more on JavaDoc on Form and Components section
+       work only example on templating side. So mechanism is 
+       needed to prevent programmers to use methods on wrong place.
    - Component is isValid by default.
-   - Components removed
+   - Removed components
      - NumberField, Replaced bye IntegerField etc.
      - ToggleField, to be replace by BooleanField
    - New Components, IntegerField, LongField
- 
+   - HTML escape implemented
    
    What is new on 0.60
    -------------------------------------------------------------

@@ -316,12 +316,23 @@ public abstract class Form
 	
 	/**
 	 * This method is called when session is expired or 
-	 * user is going on other page. Do necessary actions.
+	 * user is going on other page. Do necessary actions
+	 * 
+	 * It also generate dispose event for all objects.
 	 * 
 	 */
 	public void formDestroyed()
 	{
-		
+		if (iAL_Components != null)
+		{
+			Iterator l_Iterator = iAL_Components.iterator();
+
+			while (l_Iterator.hasNext())
+			{
+				Component l_Component = (Component) l_Iterator.next();
+				l_Component.dispose();
+			}
+		}			
 	}
 	
 	/**

@@ -26,7 +26,11 @@
 									<tr>
 										<td width="8%"></td>
 										<td width="92%"><a href="table1.jsp" class="menuitem">1. Table example</a></td>
-									</tr>									
+									</tr>
+									<tr>
+										<td width="8%"></td>
+										<td width="92%"><a href="table2.jsp" class="menuitem">2. Table example</a></td>
+									</tr>																		
 									<tr>
 										<td width="100%" colspan="2" class="menutitle1">Project</td>
 									</tr>

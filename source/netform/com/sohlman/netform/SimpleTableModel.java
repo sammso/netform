@@ -149,6 +149,8 @@ public class SimpleTableModel extends TableModel
 			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of column range. Column range is always 1");
 		}
 		iAL_ArrayList.set(ai_row - 1, a_Object);
+		
+		fireColumnChanged(ai_row, ai_column);
 		return true;
 	}
 	
@@ -189,6 +191,29 @@ public class SimpleTableModel extends TableModel
 			throw new ArrayIndexOutOfBoundsException("Tried to getColumnName to out of column range. Column range is always 1");
 		}		
 		return "";
+	}
+
+	/**
+	 * @see com.sohlman.netform.TableModel#search(java.lang.Object, int)
+	 */
+	public int search(Object a_Object, int ai_column)
+	{
+		if(iAL_ArrayList!=null)
+		{
+			int li_row = iAL_ArrayList.indexOf(a_Object);
+			if(li_row>=0)
+			{
+				return li_row + 1;
+			}
+			else
+			{
+				return -1;
+			}
+		}
+		else
+		{
+			return -1;
+		}
 	}
 
 }

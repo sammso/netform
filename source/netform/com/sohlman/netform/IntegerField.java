@@ -162,7 +162,7 @@ public class IntegerField extends Component
 				StringBuffer l_StringBuffer = new StringBuffer();
 				i_DecimalFormat.format(l_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
 		
-				return  l_StringBuffer.toString();				
+				return  Utils.escapeHTML(l_StringBuffer.toString());				
 			}
 		}
 		else
@@ -173,7 +173,7 @@ public class IntegerField extends Component
 			}
 			else
 			{
-				return iS_Text;
+				return Utils.escapeHTML(iS_Text);
 			}
 		}
 	}
@@ -248,7 +248,7 @@ public class IntegerField extends Component
 			// this is made because 
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
-			String lS_NewText = Statics.replace(lS_Parameters[0], new String(lc_10), "");
+			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
 			if (!lS_NewText.equals(iS_Text))
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);
@@ -273,5 +273,16 @@ public class IntegerField extends Component
 	protected void addComponent(Component a_Component)
 	{
 		throw new NoSuchMethodError("Child components are not supported on TimestampField");
+	}	
+	
+	/**
+	 * @see com.sohlman.netform.Component#syncronizeData()
+	 */
+	public void syncronizeData()
+	{
+		if(hasComponentData())
+		{
+			
+		}
 	}	
 }
