@@ -999,7 +999,7 @@ public class Table extends Component
 			{
 				l_String = l_Object.toString();
 			}
-			return Utils.stringToHTML(l_Object.toString());
+			return Utils.stringToHTML(l_String.toString());
 		}
 	}
 
