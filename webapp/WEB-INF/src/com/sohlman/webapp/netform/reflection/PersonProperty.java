@@ -29,13 +29,13 @@ public class PersonProperty
 	 */
 	public void setName(String aS_Name)
 	{
-		if(aS_Name!=null && aS_Name.length() > 5 )
+		if(aS_Name!=null && aS_Name.length() > 5  && aS_Name.length() < 20 )
 		{
 			iS_Name = aS_Name;
 		}
 		else
 		{
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("Size should be 6 - 19");
 		}		
 	}
 	/**
@@ -50,13 +50,13 @@ public class PersonProperty
 	 */
 	public void setValue(String aS_Value)
 	{
-		if(aS_Value!=null && aS_Value.length() > 5 )
+		if(aS_Value!=null && aS_Value.length() > 5  && aS_Value.length() < 20 )
 		{
 			iS_Value = aS_Value;
 		}
 		else
 		{
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("Size should be 6 - 19");
 		}
 	}
 	

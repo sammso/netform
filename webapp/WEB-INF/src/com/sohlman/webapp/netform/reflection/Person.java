@@ -3,8 +3,6 @@ package com.sohlman.webapp.netform.reflection;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.sohlman.netform.NetFormException;
-
 /**
  * @author Sampsa Sohlman
  */
@@ -47,7 +45,7 @@ public class Person
 	 */
 	public void setFirstName(String aS_FirstName)
 	{
-		if(aS_FirstName!=null && aS_FirstName.length() > 0 && aS_FirstName.length() <= 10)
+		if(aS_FirstName!=null && aS_FirstName.length() > 0 && aS_FirstName.length() <= 20)
 		{
 			iS_FirstName = aS_FirstName;
 		}
@@ -61,7 +59,15 @@ public class Person
 	 */
 	public void setLastName(String aS_LastName)
 	{
-		iS_LastName = aS_LastName;
+		
+		if(aS_LastName!=null && aS_LastName.length() > 0 && aS_LastName.length() <= 20)
+		{
+			iS_LastName = aS_LastName;
+		}
+		else
+		{
+			throw new IllegalArgumentException("Wrong last name");
+		}		
 	}
 	
 	public PersonProperty addPersonProperty()

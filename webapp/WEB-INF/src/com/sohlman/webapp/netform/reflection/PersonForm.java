@@ -2,6 +2,7 @@ package com.sohlman.webapp.netform.reflection;
 
 import com.sohlman.netform.component.Button;
 import com.sohlman.netform.component.ReflectionData;
+import com.sohlman.netform.component.ReflectionValidate;
 import com.sohlman.netform.component.TextField;
 import com.sohlman.netform.component.table.AddRowButton;
 import com.sohlman.netform.component.table.DeleteRowButton;
@@ -24,8 +25,12 @@ public class PersonForm extends MasterForm
 	
 	public PersonForm()
 	{
-		propertiesTable.setTableModelComponent(new TextField(propertiesTable, false, true, true, true), 1);
-		propertiesTable.setTableModelComponent(new TextField(propertiesTable, false, true, true, true), 2);
+		TextField l_TextField = new TextField(propertiesTable, false, true, true, true);
+		l_TextField.setComponentValidator(new ReflectionValidate());
+		propertiesTable.setTableModelComponent(l_TextField, 1);
+		l_TextField = new TextField(propertiesTable, false, true, true, true);
+		l_TextField.setComponentValidator(new ReflectionValidate());
+		propertiesTable.setTableModelComponent(l_TextField, 2);
 	}
 	
 	/**
@@ -42,7 +47,11 @@ public class PersonForm extends MasterForm
 		// Components to Person fields
 		//
 		firstNameTextField.setComponentData(new ReflectionData(l_Person, "getFirstName", "setFirstName"));
+		firstNameTextField.setComponentValidator(new ReflectionValidate());
+		
 		lastNameTextField.setComponentData(new ReflectionData(l_Person, "getLastName", "setLastName"));
+		lastNameTextField.setComponentValidator(new ReflectionValidate());
+		
 		ObjectCollectionTableModel l_ObjectCollectionTableModel = new ObjectCollectionTableModel();
 		l_ObjectCollectionTableModel.setCollection(l_Person.getPersonProperties());
 		l_ObjectCollectionTableModel.setColummnCount(2);
@@ -63,8 +72,6 @@ public class PersonForm extends MasterForm
 			l_Person = new Person();
 			l_Person.addPersonProperty();
 			getHttpSession().setAttribute(this.getClass().getName(), l_Person);
-			firstNameTextField.setValid(false);
-			lastNameTextField.setValid(false);
 		}		
 		return l_Person;
 	}
