@@ -18,60 +18,29 @@ public class FormManager implements HttpSessionListener
 {
 	private final static String FORM_MANAGER = "NetForm form Manager";
 	private Form i_Form;
-
+	private Object iO_LoginInfo = null;
+	
 	private FormManager(Form a_Form)
 	{
 		i_Form = a_Form;
 	}
-
-	public static Form getFormOld(HttpServletRequest a_HttpServletRequest, Class a_Class_Form) throws NetFormException
+	
+	public static boolean isLoggedIn(HttpServletRequest a_HttpServletRequest, HttpServletResponse a_HttpServletResponse, Class a_Class_Form) 
 	{
-		Form l_Form = null;
-		HttpSession l_HttpSession;
-
-		l_HttpSession = a_HttpServletRequest.getSession(false);
-
-		if (l_HttpSession != null)
+		HttpSession l_HttpSession = a_HttpServletRequest.getSession(false);
+		
+		if(l_HttpSession==null)
 		{
-			l_Form = (Form) l_HttpSession.getAttribute(Form.FORM_CONTAINER);
-			String lS_Name = a_HttpServletRequest.getServletPath();
-			if (l_Form != null && lS_Name != null)
-			{
-				lS_Name = lS_Name.substring(1);
-				if (!lS_Name.equals(l_Form.getName()))
-				{
-					l_Form = null;
-				}
-			}
-			else
-			{
-				l_Form = null;
-			}
+			return false;
 		}
-
-		if (l_Form == null)
-		{
-			l_Form = createForm(a_HttpServletRequest, a_Class_Form);
-			if (l_Form != null)
-			{
-				l_HttpSession = a_HttpServletRequest.getSession(true);
-				l_HttpSession.setAttribute(Form.FORM_CONTAINER, l_Form);
-				l_HttpSession.setAttribute(Form.SESSION_PAGE, l_Form.getName());
-				l_Form.setHttpServletRequest(a_HttpServletRequest);
-			}
-			else
-			{
-				throw new NetFormException("Couldn't create form");
-			}
-		}
-		else
-		{
-			l_Form.setHttpServletRequest(a_HttpServletRequest);
-			//l_Form.setServletConfig(getServletConfig());
-		}
-		return l_Form;
+		
+		FormManager l_FormManager = (FormManager) l_HttpSession.getAttribute(FormManager.FORM_MANAGER);
+		
+		Form l_Form = l_FormManager.getForm();
+		
+		return l_Form.isLoginRequired();
 	}
-
+	
 	public static Form getForm(HttpServletRequest a_HttpServletRequest, HttpServletResponse a_HttpServletResponse, Class a_Class_Form) throws NetFormException
 	{
 		FormManager l_FormManager = null;
@@ -135,6 +104,9 @@ public class FormManager implements HttpSessionListener
 		{
 			l_Form.setHttpServletRequest(a_HttpServletRequest);
 		}
+		
+		l_Form.setFormManager(l_FormManager);
+		
 		return l_Form;
 	}
 
@@ -180,7 +152,9 @@ public class FormManager implements HttpSessionListener
 		}
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * If you override this you have to call super.
+	 * 
 	 * @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
 	 */
 	public void sessionCreated(HttpSessionEvent a_HttpSessionEvent)
@@ -188,7 +162,8 @@ public class FormManager implements HttpSessionListener
 
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * If you override this you have to call super.sessionDestroyed(a_HttpSessionEvent);
 	 * @see javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)
 	 */
 	public void sessionDestroyed(HttpSessionEvent a_HttpSessionEvent)
@@ -197,5 +172,20 @@ public class FormManager implements HttpSessionListener
 		{
 			i_Form.formDestroyed();
 		}
+	}
+	
+	public void setLoginInfo(Object aO_LoginInfo)
+	{
+		iO_LoginInfo = aO_LoginInfo;
+	}
+	
+	public void logOut()
+	{
+		iO_LoginInfo = null;
+	}
+	
+	public Object getLoginInfo()
+	{
+		return iO_LoginInfo;
 	}
 }

@@ -27,6 +27,7 @@ public abstract class Form
 	private HttpServletRequest i_HttpServletRequest;
 	private boolean ib_isInitialized = false;
 	private boolean ib_isValid = true;
+	private FormManager i_FormManager;
 
 	private String iS_Name;
 
@@ -245,6 +246,26 @@ public abstract class Form
 	}
 	
 	public boolean allowFormChange()
+	{
+		return true;
+	}
+	
+	final void setFormManager(FormManager a_FormManager)
+	{
+		i_FormManager = a_FormManager;
+	}
+	
+	final protected FormManager getFormManager()
+	{
+		return i_FormManager;
+	}
+	
+	/**
+	 * This tells if user has to be logged in to system
+	 * 
+	 * @return true if login this form requires login
+	 */
+	public boolean isLoginRequired()
 	{
 		return true;
 	}
