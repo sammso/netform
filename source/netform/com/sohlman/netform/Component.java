@@ -501,7 +501,7 @@ public abstract class Component
 		}
 	}
 
-	protected final void validate(Validate a_Validate)
+	protected void validate(Validate a_Validate)
 	{
 		setValid(true, a_Validate);
 	}

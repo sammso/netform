@@ -272,7 +272,14 @@ public class Table extends Component
 	 */
 	public int getPage()
 	{
-		return ((ii_displayStart - 1) / ii_displayCount) + 1;
+		if(ii_displayCount<=0)
+		{
+			return 1;
+		}
+		else
+		{
+			return ((ii_displayStart - 1) / ii_displayCount) + 1;
+		}
 	}
 
 	/**
@@ -678,7 +685,6 @@ public class Table extends Component
 	 */
 	public Component getTableModelComponent(int ai_column)
 	{
-		// TODO: Finish getTableModelComponent
 		if (i_Component_RowModels == null)
 		{
 			throw new ArrayIndexOutOfBoundsException("No component at index " + ai_column);
@@ -743,9 +749,17 @@ public class Table extends Component
 		// Increase values for all which value
 
 		i_IntArray_Selection.addOneToValuesThatAreBiggerThan(ai_before);
-
+		
+		
+		// TODO: Needs optimization. So validation can be done only once.
+		// not effective to validate rows every insert
+		
+		validate(new TableValidate(this, getSelectedItems()));
+		
 		return ai_before;
 	}
+
+
 
 	int addComponentRow()
 	{
@@ -781,6 +795,7 @@ public class Table extends Component
 				ii_smallesInsertedOrRemovedRow = ai_index;
 			}
 		}
+		validate(new TableValidate(this, getSelectedItems()));
 	}
 
 	/**
@@ -1382,8 +1397,6 @@ public class Table extends Component
 	 */
 	public Component cloneComponent()
 	{
-		// TODO: Table.cloneComponent() is on developement
-
 		Table l_Table = new Table(getParent(), getTableModel());
 
 		l_Table.ii_dataColumn = ii_dataColumn;
@@ -1415,6 +1428,7 @@ public class Table extends Component
 		synchRowNumbers();
 
 		// Handle status of page buttons.
+		validate(new TableValidate(this, getSelectedItems()));
 
 		if (ii_pageSize != PAGESIZE_NOT_DEFINED)
 		{
@@ -1473,10 +1487,11 @@ public class Table extends Component
 	/**
 	 * @see com.sohlman.netform.Component#validate()
 	 */
-	public void validate()
-	{
-
-	}
+// TODO: Check if this overridden is necessary
+//	public void validate()
+//	{
+//
+//	}
 
 	private ArrayList iAL_ColumnFormats = null;
 
@@ -1545,5 +1560,4 @@ public class Table extends Component
 			return getColumnFormat(((TableComponentData) a_ComponentData).getColumn(), a_Class);
 		}
 	}
-
 }
