@@ -989,6 +989,24 @@ public class Table extends Component
 			return null;
 		}
 	}
+	
+	public Table getTableAt(int ai_displayRow, int ai_column)
+	{
+		Component l_Component = getComponentAt(ai_displayRow, ai_column);
+		
+		if(l_Component==null)
+		{
+			throw new NetFormException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning null instead of Table");			
+		}
+		else if(l_Component.getClass().isAssignableFrom(Table.class))
+		{
+			return (Table)l_Component;
+		}
+		else
+		{
+			throw new NetFormException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning " + l_Component.getClass().getName() + " instead of Table" );
+		}
+	}
 
 	public boolean isRowSelected(int ai_row)
 	{

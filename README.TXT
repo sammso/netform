@@ -13,6 +13,7 @@
    - Fix on Table.insertRowBeforeFirstSelection()
    - Fixes on table
    - New Component FloatField
+   - New Component DoubleField
    
    What is new on 0.62
    -------------------------------------------------------------

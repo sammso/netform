@@ -170,6 +170,11 @@ public class Utils
 
 	public static String timestampToString(java.sql.Timestamp a_Timestamp, String aS_Format)
 	{
+		if(aS_Format==null)
+		{
+			aS_Format = "yyyy-MM-dd hh:mm:ss";
+		}
+		
 		if (a_Timestamp == null)
 			return "";
 

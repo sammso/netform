@@ -6,19 +6,19 @@ import java.text.FieldPosition;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Numberfield for number handling
+ * DoubleField for number handling
  *
  * @author  Sampsa Sohlman
- * @version 2004-01-15
+ * @version 2004-02-19
  */
-public class IntegerField extends Component
+public class DoubleField extends Component
 {
 	private String iS_Text;
 	
 	boolean ib_emptyIsValid = true;
 	boolean ib_nullAllowed = true;
 	String iS_Format;
-	DecimalFormat i_DecimalFormat;
+	DecimalFormat i_DecimalFormat = null;
 
 	private ComponentValidator i_ComponentValidator;
 
@@ -41,7 +41,7 @@ public class IntegerField extends Component
 			try
 			{
 				// parse succeed then it is valid
-				Integer.parseInt(iS_Text);
+				Double.parseDouble(iS_Text);
 				if(i_ComponentValidator!=null)
 				{
 					return i_ComponentValidator.isValid(a_Component);
@@ -58,18 +58,16 @@ public class IntegerField extends Component
 		}
 	};
 
-	public IntegerField(Component a_Component_Parent)
+	public DoubleField(Component a_Component_Parent)
 	{
 		super(a_Component_Parent);
-		i_DecimalFormat = new DecimalFormat();
 
 		super.setComponentValidator(i_ComponentValidator_Number);
 	}
 
-	public IntegerField(Form a_Form)
+	public DoubleField(Form a_Form)
 	{
 		super(a_Form);
-		i_DecimalFormat = new DecimalFormat();
 		
 		super.setComponentValidator(i_ComponentValidator);		
 	}
@@ -104,42 +102,46 @@ public class IntegerField extends Component
 		return ib_nullAllowed;
 	}
 
-	public void setInteger(Integer a_Integer)
+	public void setDouble(Double a_Double)
 	{
 		if(i_DecimalFormat==null)
 		{
-			iS_Text = String.valueOf(a_Integer);
+			iS_Text = String.valueOf(a_Double);
 		}
 		else
 		{
 			StringBuffer l_StringBuffer = new StringBuffer();
-			i_DecimalFormat.format(a_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
+			i_DecimalFormat.format(a_Double.doubleValue(), l_StringBuffer, new FieldPosition(0));
 			iS_Text = l_StringBuffer.toString();
 		}
 		
 		if(hasComponentData())
 		{
-			setData(a_Integer);
-		}			
+			setData(a_Double);
+		}		
 	}
 
-	public void setInt(int ai_int)
-	{	
+	public void setDouble(double a_double)
+	{
+		
 		if(i_DecimalFormat==null)
 		{
-			iS_Text = String.valueOf(ai_int);
+			iS_Text = String.valueOf(a_double);
 		}
 		else
 		{
 			StringBuffer l_StringBuffer = new StringBuffer();
-			i_DecimalFormat.format(ai_int, l_StringBuffer, new FieldPosition(0));
+			i_DecimalFormat.format(a_double, l_StringBuffer, new FieldPosition(0));
 			iS_Text = l_StringBuffer.toString();
 		}
 		
+		
+		
+		
 		if(hasComponentData())
 		{
-			setData(new Integer(ai_int));
-		}			
+			setData(new Double(a_double));
+		}
 	}
 
 	private void setText(String aS_Text)
@@ -195,12 +197,12 @@ public class IntegerField extends Component
 		}
 	}
 	
-	public Integer getInteger()
+	public Double getDouble()
 	{
 		if(hasComponentData() && isValid())
 		{
-			Integer l_Integer = (Integer)getData();
-			return l_Integer;
+			Double l_Double = (Double)getData();
+			return l_Double;
 		}
 		else
 		{
@@ -212,7 +214,7 @@ public class IntegerField extends Component
 			{
 				try
 				{
-					return new Integer(iS_Text);
+					return new Double(iS_Text);
 				}
 				catch(NumberFormatException l_NumberFormatException)
 				{
@@ -223,17 +225,17 @@ public class IntegerField extends Component
 		}
 	}
 	
-	public int getInt()
+	public float getDoubleValue()
 	{
-		Integer l_Integer = getInteger();
+		Double l_Double = getDouble();
 		
-		if(l_Integer==null)
+		if(l_Double==null)
 		{
 			return 0; 
 		}
 		else
 		{
-			return l_Integer.intValue();
+			return l_Double.floatValue();
 		}
 	}
 	
@@ -244,11 +246,11 @@ public class IntegerField extends Component
 
 	public Component cloneComponent()
 	{
-		IntegerField l_IntegerField = new IntegerField(getParent());
-		l_IntegerField.setVisible(isVisible());
-		l_IntegerField.setEnabled(isEnabled());
-		l_IntegerField.setNullIsAllowed(isNullAllowed());
-		return l_IntegerField;
+		DoubleField l_DoubleField = new DoubleField(getParent());
+		l_DoubleField.setVisible(isVisible());
+		l_DoubleField.setEnabled(isEnabled());
+		l_DoubleField.setNullIsAllowed(isNullAllowed());
+		return l_DoubleField;
 	}
 	
 	/**
@@ -300,7 +302,7 @@ public class IntegerField extends Component
 	{
 		if(hasComponentData())
 		{
-			// To be implemented  
+			
 		}
 	}	
 }

@@ -6,10 +6,10 @@ import java.text.FieldPosition;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Numberfield for number handling
+ * FloatField for number handling
  *
  * @author  Sampsa Sohlman
- * @version 2004-01-15
+ * @version 2004-02-15
  */
 public class FloatField extends Component
 {
@@ -86,7 +86,12 @@ public class FloatField extends Component
 
 	public void setFormat(String aS_Format)
 	{
-		i_DecimalFormat = new DecimalFormat(aS_Format);
+		setFormat(new DecimalFormat(aS_Format));
+	}
+	
+	public void setFormat(DecimalFormat a_DecimalFormat)
+	{
+		i_DecimalFormat = a_DecimalFormat;
 	}
 
 	public void setNullIsAllowed(boolean ab_nullAllowed)
@@ -101,6 +106,7 @@ public class FloatField extends Component
 
 	public void setInteger(Integer a_Integer)
 	{
+		
 		StringBuffer l_StringBuffer = new StringBuffer();
 		i_DecimalFormat.format(a_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
 		
