@@ -11,7 +11,7 @@
 <h1>2. Table Example</h1>
 <h2>Purpose</h2>
 <p>Purpose of this example is to be test case how to use Table inside Table.</p>
-<form method="POST" action="table2.jsp">
+<form method="POST" action="<%=form.getRequestURI() %>">
 <table cellpadding="1" cellspacing="1" border="1" >
 <tr>
 	<td>Table</td><td>Edit - Choise List in Table</td>

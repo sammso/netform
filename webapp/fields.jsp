@@ -14,7 +14,7 @@
 	%>(form is not valid)<%
 }
 %></h1> 
-<form method="POST" action="fields.jsp">
+<form method="POST" action="<%=form.getRequestURI() %>">
 <table>
 	<tr>
 		<td class="text">TextField<br>component<br><i>Write anything</i></td>

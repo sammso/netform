@@ -10,7 +10,7 @@
 <jsp:include page="header.jsp" />
 <h1>1. Table Example</h1>
 <p>This is using <a href="http://dataset.sohlman.com">DataSet</a> as internal datastore</p>
-<form method="POST" action="table1.jsp">
+<form method="POST" action="<%=form.getRequestURI() %>">
 <table>
 	<tr>
 		<td>Selected</td><td>Number<td>First name</td><td>Last name</td><td>Birthdate</td>
@@ -34,16 +34,16 @@
 			}
 		%>
 		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,1).getResponseName() %>" value="<%=((IntegerField)form.table.getComponentAt(li_y,1)).getText() %>">
+			<input type="text" name="<%=form.table.getComponentAt(li_y,1).getResponseName() %>" value="<%=((IntegerField)form.table.getComponentAt(li_y,1)).getText() %>" <% if(!form.table.getComponentAt(li_y,1).isValid()) { %>class="notvalid" <% } %> >
 		</td>		
 		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,2).getResponseName() %>" value="<%=((TextField)form.table.getComponentAt(li_y,2)).getText() %>">
+			<input type="text" name="<%=form.table.getComponentAt(li_y,2).getResponseName() %>" value="<%=((TextField)form.table.getComponentAt(li_y,2)).getText() %>" <% if(!form.table.getComponentAt(li_y,2).isValid()) { %>class="notvalid" <% } %>>
 		</td>
 		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,3).getResponseName() %>" value="<%=((TextField)form.table.getComponentAt(li_y,3)).getText() %>">
+			<input type="text" name="<%=form.table.getComponentAt(li_y,3).getResponseName() %>" value="<%=((TextField)form.table.getComponentAt(li_y,3)).getText() %>" <% if(!form.table.getComponentAt(li_y,3).isValid()) { %>class="notvalid" <% } %>>
 		</td>
 		<td>
-			<input type="text" name="<%=form.table.getComponentAt(li_y,4).getResponseName() %>" value="<%=((TimestampField)form.table.getComponentAt(li_y,4)).getText() %>">
+			<input type="text" name="<%=form.table.getComponentAt(li_y,4).getResponseName() %>" value="<%=((TimestampField)form.table.getComponentAt(li_y,4)).getText() %>" <% if(!form.table.getComponentAt(li_y,4).isValid()) { %>class="notvalid" <% } %>>
 		</td>		
 	</tr><%
 			} 

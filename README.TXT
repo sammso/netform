@@ -1,10 +1,24 @@
 
-   NetForm Web Application Framework for Java V 0.62
+   NetForm Web Application Framework for Java V 0.63
    =================================================
+
+   What is new on 0.63
+   ------------------------------------------------------------ 
+   - Form new methods getContextPath(), Form.getRequestURI()
+     which also effects how to make JSP
+   - Fix on Table.insertRowBeforeFirstSelection()
+   
+   What is new on 0.62
+   ------------------------------------------------------------ 
+   - Form.execute() optimazation caused Form.startService()
+     was called only once.
+   - BugFix on example app on table2.jsp/Table2Form.java
 
    What is new on 0.62
    -------------------------------------------------------------
    - Table can be used inside Table as Component
+     + This is exiting feature. See the example table2.jsp
+   - Bug fixes on Table
    - TableModel can be connected to multible tables.
    - HTML escape improvements
    - SimpleTableModel.add() adds row to last as it should

@@ -37,11 +37,19 @@ public class Table1Form extends MasterForm
 		{
 			if( a_Component == addRowButton )
 			{
-				table.addRow();
+				// Application is on internet so lets limit the 
+
+				if(i_DataSet.getRowCount() <= 50)
+				{
+					table.addRow();
+				}
 			}
 			else if( a_Component == insertRowButton )
 			{
-				table.insertRowBeforeFirstSelection();
+				if(i_DataSet.getRowCount() <= 50)
+				{				
+					table.insertRowBeforeFirstSelection();
+				}
 			}			
 			else if( a_Component == deleteRowButton )
 			{

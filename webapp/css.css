@@ -388,7 +388,19 @@ LI.text
  font-weight: normal;
  text-decoration: none;
 }
- SELECT 
+
+ INPUT.notvalid 
+{
+ color: #FF0000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 11px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+}
+
+SELECT 
 {
  color: #000000;
  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -396,8 +408,7 @@ LI.text
  font-style: normal;
  line-height: normal;
  font-weight: normal;
- text-decoration: none;
- 
+ text-decoration: none; 
 }
 
 TD.tabletitle 

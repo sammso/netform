@@ -172,8 +172,12 @@ public abstract class Form
 		}
 		else
 		{
+			startService();
+			
 			// We generate events only second run.
 			// Faster :D
+			
+			
 			if (iAL_Components != null)
 			{
 				Iterator l_Iterator = iAL_Components.iterator();
@@ -400,5 +404,25 @@ public abstract class Form
 	public int getCurrentState()
 	{
 		return ii_currentState;
+	}
+	
+	/**
+	 * Same as HttpServletRequest.getRequestURI();
+	 * 
+	 * @return a String containing the part of the URL from the protocol name up to the query string
+	 */
+	public String getRequestURI()
+	{
+		return i_HttpServletRequest.getRequestURI();
+	}
+	
+	/**
+	 * Same as HttpServletRequest.getContextPath()
+	 * 
+	 * @return a String specifying the portion of the request URI that indicates the context of the request
+	 */
+	public String getContextPath()
+	{
+		return i_HttpServletRequest.getContextPath();
 	}
 }

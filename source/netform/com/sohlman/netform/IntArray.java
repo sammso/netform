@@ -308,7 +308,6 @@ public class IntArray
 	{
 		if (ib_isSorted)
 		{
-			ai_value++;
 			int li_start = getIndexOf(ai_value);
 			if (li_start >= 0)
 			{
@@ -323,7 +322,7 @@ public class IntArray
 		{
 			for (int li_index = 0; li_index < ii_size; li_index++)
 			{
-				if (ii_array[li_index] > ai_value)
+				if (ii_array[li_index] >= ai_value)
 				{
 					ii_array[li_index]++;
 				}

@@ -118,14 +118,18 @@ public class Table extends Component
 	}
 
 	/**
-	 * Adds new row after 
+	 * Insert row before first selected row. If no row selected no rows inserted.
 	 * @return inserted row number
 	 */
 	public int insertRowBeforeFirstSelection()
 	{
 		int li_row = getSelectedRow(0);
-
-		return i_TableModel.insert(li_row);
+		if(li_row > 0)
+		{
+			return i_TableModel.insert(li_row);
+		}
+		return -1;
+		
 	}
 	/**
 	 * Wrapper for
