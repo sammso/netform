@@ -74,8 +74,6 @@ public class Utils
 	 * Converts string to java.sql.Timestamp using format string
 	 * @param aS_Timestamp String containing timestamp
 	 * @param aS_Format String containing timestamp format
-	 * @param aTs_ValidStart After this period Timestamp is valid
-	 * @param aTs_ValidEnd Before this period Timestamp is valid
 	 * @return java.sql.Timestamp object if ok, else null
 	 * @see java.text.SimpleDateFormat for format options
 	 */

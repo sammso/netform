@@ -1,6 +1,11 @@
 
-   NetForm Web Application Framework for Java V 0.63
+   NetForm Web Application Framework for Java V 0.64
    =================================================
+
+   What is new on 0.64
+   ------------------------------------------------------------ 
+   - 937703 Bug on Table.getText() doesn't notformat correctly fixed
+
 
    What is new on 0.63
    ------------------------------------------------------------ 
@@ -19,7 +24,7 @@
      + When child is not valid then parent is not valid either.
    - ListModel, this is abstract class to model Lists. Can be used with J2EE
      applications. I'm using it with JBoss.
-   - Package strucuture has changed. If you are using Eclipse. CTRL-SHIFT-O
+   - Package structure has changed. If you are using Eclipse. CTRL-SHIFT-O
      helps, remember also your JSP pages
    - New column format system.
      + Components can read their format from parent.
