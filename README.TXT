@@ -1,5 +1,5 @@
 
-   NetForm Web Application Framework for Java V 0.61s
+   NetForm Web Application Framework for Java V 0.61
    =================================================
 
    What is new on 0.61
@@ -13,16 +13,17 @@
      - It is optional
      - It is done because Table. Every component now has option
        to store it's data to 
-   - Stared to developing STATE machine to control usage of method.
+   - Stared to developing STATE machine to control usage of methods.
      - This methods that some functionality is generating Exception
-       when called on wrong state
+       when called on wrong state. Some methods are designed to 
+       work only example on templating side.
         + Form.FORM_STATE_..
       see more on JavaDoc on Form and Components section
    - Component is isValid by default.
    - Components removed
      - NumberField, Replaced bye IntegerField etc.
      - ToggleField, to be replace by BooleanField
-   - New Components, IntegerField, LongField, 
+   - New Components, IntegerField, LongField
  
    
    What is new on 0.60
