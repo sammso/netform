@@ -456,6 +456,12 @@ public abstract class Form
 		return i_HttpServletRequest.getContextPath();
 	}
 	
+	public String getPostAction()
+	{	
+		return getName();
+	}
+	
+	
 	protected final Integer getParameterInteger(String aS_Name)
 	{
 		String l_String = getParameter(aS_Name);
