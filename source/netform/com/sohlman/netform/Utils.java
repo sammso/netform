@@ -16,7 +16,7 @@ public class Utils
 	{
 		// Cannot created
 	}
-	
+
 	/**
 	 * Converts boolean to String<br>
 	 * <i>Also null are handled correctly. All String parameters can have nulls.</i>
@@ -289,18 +289,17 @@ public class Utils
 		}
 	}
 
-
 	/**
-	 * escapeHTML
+	 * stringToHTML
 	 *
 	 * @param aS_Text
 	 * @return
 	 */
-	public static final String escapeHTML(String aS_Text)
+	public static final String stringToHTML(String aS_Text)
 	{
 		// Thanks from this method to 
 		// http://www.rgagnon.com/javadetails/java-0306.html
-		
+
 		StringBuffer l_StringBuffer = new StringBuffer();
 		int li_length = aS_Text.length();
 		for (int li_index = 0; li_index < li_length; li_index++)
@@ -320,154 +319,211 @@ public class Utils
 				case '"' :
 					l_StringBuffer.append("&quot;");
 					break;
-				case 'à' :
-					l_StringBuffer.append("&agrave;");
-					break;
-				case 'À' :
-					l_StringBuffer.append("&Agrave;");
-					break;
-				case 'â' :
-					l_StringBuffer.append("&acirc;");
-					break;
-				case 'Â' :
-					l_StringBuffer.append("&Acirc;");
-					break;
-				case 'ä' :
-					l_StringBuffer.append("&auml;");
-					break;
-				case 'Ä' :
-					l_StringBuffer.append("&Auml;");
-					break;
-				case 'å' :
-					l_StringBuffer.append("&aring;");
-					break;
-				case 'Å' :
-					l_StringBuffer.append("&Aring;");
-					break;
-				case 'æ' :
-					l_StringBuffer.append("&aelig;");
-					break;
-				case 'Æ' :
-					l_StringBuffer.append("&AElig;");
-					break;
-				case 'ç' :
-					l_StringBuffer.append("&ccedil;");
-					break;
-				case 'Ç' :
-					l_StringBuffer.append("&Ccedil;");
-					break;
-				case 'é' :
-					l_StringBuffer.append("&eacute;");
-					break;
-				case 'É' :
-					l_StringBuffer.append("&Eacute;");
-					break;
-				case 'è' :
-					l_StringBuffer.append("&egrave;");
-					break;
-				case 'È' :
-					l_StringBuffer.append("&Egrave;");
-					break;
-				case 'ê' :
-					l_StringBuffer.append("&ecirc;");
-					break;
-				case 'Ê' :
-					l_StringBuffer.append("&Ecirc;");
-					break;
-				case 'ë' :
-					l_StringBuffer.append("&euml;");
-					break;
-				case 'Ë' :
-					l_StringBuffer.append("&Euml;");
-					break;
-				case 'ï' :
-					l_StringBuffer.append("&iuml;");
-					break;
-				case 'Ï' :
-					l_StringBuffer.append("&Iuml;");
-					break;
-				case 'ô' :
-					l_StringBuffer.append("&ocirc;");
-					break;
-				case 'Ô' :
-					l_StringBuffer.append("&Ocirc;");
-					break;
-				case 'ö' :
-					l_StringBuffer.append("&ouml;");
-					break;
-				case 'Ö' :
-					l_StringBuffer.append("&Ouml;");
-					break;
-				case 'ø' :
-					l_StringBuffer.append("&oslash;");
-					break;
-				case 'Ø' :
-					l_StringBuffer.append("&Oslash;");
-					break;
-				case 'ß' :
-					l_StringBuffer.append("&szlig;");
-					break;
-				case 'ù' :
-					l_StringBuffer.append("&ugrave;");
-					break;
-				case 'Ù' :
-					l_StringBuffer.append("&Ugrave;");
-					break;
-				case 'û' :
-					l_StringBuffer.append("&ucirc;");
-					break;
-				case 'Û' :
-					l_StringBuffer.append("&Ucirc;");
-					break;
-				case 'ü' :
-					l_StringBuffer.append("&uuml;");
-					break;
-				case 'Ü' :
-					l_StringBuffer.append("&Uuml;");
-					break;
-				case '®' :
-					l_StringBuffer.append("&reg;");
-					break;
-				case '©' :
-					l_StringBuffer.append("&copy;");
-					break;
-				case '€' :
-					l_StringBuffer.append("&euro;");
-					break;
-					// be carefull with this one (non-breaking whitee space)
-				case ' ' :
-					l_StringBuffer.append("&nbsp;");
-					break;
-
+					/*				case 'à' :
+										l_StringBuffer.append("&agrave;");
+										break;
+									case 'À' :
+										l_StringBuffer.append("&Agrave;");
+										break;
+									case 'â' :
+										l_StringBuffer.append("&acirc;");
+										break;
+									case 'Â' :
+										l_StringBuffer.append("&Acirc;");
+										break;
+									case 'ä' :
+										l_StringBuffer.append("&auml;");
+										break;
+									case 'Ä' :
+										l_StringBuffer.append("&Auml;");
+										break;
+									case 'å' :
+										l_StringBuffer.append("&aring;");
+										break;
+									case 'Å' :
+										l_StringBuffer.append("&Aring;");
+										break;
+									case 'æ' :
+										l_StringBuffer.append("&aelig;");
+										break;
+									case 'Æ' :
+										l_StringBuffer.append("&AElig;");
+										break;
+									case 'ç' :
+										l_StringBuffer.append("&ccedil;");
+										break;
+									case 'Ç' :
+										l_StringBuffer.append("&Ccedil;");
+										break;
+									case 'é' :
+										l_StringBuffer.append("&eacute;");
+										break;
+									case 'É' :
+										l_StringBuffer.append("&Eacute;");
+										break;
+									case 'è' :
+										l_StringBuffer.append("&egrave;");
+										break;
+									case 'È' :
+										l_StringBuffer.append("&Egrave;");
+										break;
+									case 'ê' :
+										l_StringBuffer.append("&ecirc;");
+										break;
+									case 'Ê' :
+										l_StringBuffer.append("&Ecirc;");
+										break;
+									case 'ë' :
+										l_StringBuffer.append("&euml;");
+										break;
+									case 'Ë' :
+										l_StringBuffer.append("&Euml;");
+										break;
+									case 'ï' :
+										l_StringBuffer.append("&iuml;");
+										break;
+									case 'Ï' :
+										l_StringBuffer.append("&Iuml;");
+										break;
+									case 'ô' :
+										l_StringBuffer.append("&ocirc;");
+										break;
+									case 'Ô' :
+										l_StringBuffer.append("&Ocirc;");
+										break;
+									case 'ö' :
+										l_StringBuffer.append("&ouml;");
+										break;
+									case 'Ö' :
+										l_StringBuffer.append("&Ouml;");
+										break;
+									case 'ø' :
+										l_StringBuffer.append("&oslash;");
+										break;
+									case 'Ø' :
+										l_StringBuffer.append("&Oslash;");
+										break;
+									case 'ß' :
+										l_StringBuffer.append("&szlig;");
+										break;
+									case 'ù' :
+										l_StringBuffer.append("&ugrave;");
+										break;
+									case 'Ù' :
+										l_StringBuffer.append("&Ugrave;");
+										break;
+									case 'û' :
+										l_StringBuffer.append("&ucirc;");
+										break;
+									case 'Û' :
+										l_StringBuffer.append("&Ucirc;");
+										break;
+									case 'ü' :
+										l_StringBuffer.append("&uuml;");
+										break;
+									case 'Ü' :
+										l_StringBuffer.append("&Uuml;");
+										break;
+									case '®' :
+										l_StringBuffer.append("&reg;");
+										break;
+									case '©' :
+										l_StringBuffer.append("&copy;");
+										break;
+									case '€' :
+										l_StringBuffer.append("&euro;");
+										break;
+										// be carefull with this one (non-breaking whitee space)
+									case ' ' :
+										l_StringBuffer.append("&nbsp;");
+										break;
+					*/
 				default :
 					l_StringBuffer.append(l_char);
 					break;
 			}
 		}
 		return l_StringBuffer.toString();
-	} 
-	
+	}
+
+	public static final String htmlToString(String aS_Text)
+	{
+		if(aS_Text==null)
+		{
+			return null;
+		}
+		
+		StringBuffer l_StringBuffer = new StringBuffer();
+		int li_length = aS_Text.length();
+		for (int li_index = 0; li_index < li_length; li_index++)
+		{
+			char l_char = aS_Text.charAt(li_index);
+			switch (l_char)
+			{
+				case '&' :
+					if (li_index + 3 < li_length
+						&& aS_Text.charAt(li_index + 1) == 'l'
+						&& aS_Text.charAt(li_index + 2) == 't'
+						&& aS_Text.charAt(li_index + 3) == ';')
+					{
+						l_StringBuffer.append('<');
+						li_index += 3;
+					}
+					else if (
+						li_index + 3 < li_length
+							&& aS_Text.charAt(li_index + 1) == 'g'
+							&& aS_Text.charAt(li_index + 2) == 't'
+							&& aS_Text.charAt(li_index + 3) == ';')
+					{
+						l_StringBuffer.append('>');
+						li_index += 3;
+					}
+					else if (
+						li_index + 4 < li_length
+							&& aS_Text.charAt(li_index + 1) == 'a'
+							&& aS_Text.charAt(li_index + 2) == 'm'
+							&& aS_Text.charAt(li_index + 3) == 'p'
+							&& aS_Text.charAt(li_index + 4) == ';')
+					{
+						l_StringBuffer.append('&');
+						li_index += 4;
+					}
+					else if (
+						li_index + 5 < li_length
+							&& aS_Text.charAt(li_index + 1) == 'q'
+							&& aS_Text.charAt(li_index + 2) == 'u'
+							&& aS_Text.charAt(li_index + 3) == 'o'
+							&& aS_Text.charAt(li_index + 4) == 't'
+							&& aS_Text.charAt(li_index + 5) == ';')
+					{
+						l_StringBuffer.append('&');
+						li_index += 5;
+					}
+					break;
+				default :
+					l_StringBuffer.append(l_char);
+			}
+		}
+		return l_StringBuffer.toString();
+	}
+
 	public Component createComponentFromType(Class a_Class, Component a_Parent)
 	{
-		if(Integer.class.isAssignableFrom(a_Class))
+		if (Integer.class.isAssignableFrom(a_Class))
 		{
 			return new IntegerField(a_Parent);
 		}
-		else if(Long.class.isAssignableFrom(a_Class))
-		{
-			// Textfield
-			return new TextField(a_Parent);
-		}		
-		else if(String.class.isAssignableFrom(a_Class))
-		{
-			// Textfield 
+		else if (Long.class.isAssignableFrom(a_Class))
+		{ // Textfield
 			return new TextField(a_Parent);
 		}
-		else if(Timestamp.class.isAssignableFrom(a_Class))
-		{
-			// Timestamp field
+		else if (String.class.isAssignableFrom(a_Class))
+		{ // Textfield 
+			return new TextField(a_Parent);
+		}
+		else if (Timestamp.class.isAssignableFrom(a_Class))
+		{ // Timestamp field
 			return new TimestampField(a_Parent);
-				
 		}
 		return null;
 	}

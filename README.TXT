@@ -4,8 +4,11 @@
 
    What is new on 0.62
    -------------------------------------------------------------
-   - Developing Table so that it is also cloneable
-    + TableModel can be connected to multible tables.
+   - Table can be used inside Table as Component
+   - TableModel can be connected to multible tables.
+   - HTML escape improvements
+   - SimpleTableModel.add() adds row to last as it should
+   
    
    What is new on 0.61
    -------------------------------------------------------------

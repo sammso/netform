@@ -125,7 +125,7 @@ public class TextField extends Component
 			else
 			{
 				iS_Text = l_Object.toString();
-				return Utils.escapeHTML(iS_Text);
+				return Utils.stringToHTML(iS_Text);
 			}
 		}
 		else
@@ -136,7 +136,7 @@ public class TextField extends Component
 			}
 			else
 			{
-				return Utils.escapeHTML(iS_Text);
+				return Utils.stringToHTML(iS_Text);
 			}
 		}
 	}
@@ -156,6 +156,7 @@ public class TextField extends Component
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
 			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
+			//lS_NewText = Utils.htmlToString(lS_NewText);
 			if (!lS_NewText.equals(iS_Text))
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);

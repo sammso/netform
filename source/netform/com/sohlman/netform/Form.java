@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Sampsa Sohlman
  * @version 2004-16-20
  */
-public abstract class Form 
+public abstract class Form
 {
 	public final static int FORM_STATE_CONSTRUCTOR = 0;
 	public final static int FORM_STATE_INIT = 1;
@@ -29,9 +29,9 @@ public abstract class Form
 	public final static int FORM_STATE_SETTINGS = 3;
 	public final static int FORM_STATE_EXECUTE = 4;
 	public final static int FORM_STATE_TEMPLATING = 5;
-	
+
 	private int ii_currentState = FORM_STATE_CONSTRUCTOR;
-	
+
 	final static String FORM_CONTAINER = "@FORM_CONTAINER";
 	final static String SESSION_PAGE = "@PAGE";
 	private ArrayList iAL_Components;
@@ -53,7 +53,7 @@ public abstract class Form
 	{
 		i_HttpServletRequest = getHttpServletRequest(a_HttpServletRequest);
 	}
-	
+
 	/**
 	 * Add user level attribute. If you add user level 
 	 * attribute with this method it is always available for
@@ -68,7 +68,7 @@ public abstract class Form
 	{
 		i_FormManager.setUserAttribute(aS_Key, a_Object);
 	}
-	
+
 	/**
 	 * Get user attribute
 	 * 
@@ -79,7 +79,7 @@ public abstract class Form
 	{
 		return i_FormManager.getUserAttribute(aS_Key);
 	}
-	
+
 	/**
 	 * Remove key and object assiated with it.
 	 * 
@@ -88,7 +88,7 @@ public abstract class Form
 	protected final void removeAttribute(String aS_Key)
 	{
 		i_FormManager.removeAttribute(aS_Key);
-	}	
+	}
 
 	/**
 	 * By inherting this method is possible change HttpServletRequest object type.
@@ -115,7 +115,7 @@ public abstract class Form
 	 */
 	public void startService()
 	{
-		
+
 	}
 
 	/**
@@ -156,75 +156,60 @@ public abstract class Form
 				Component l_Component = (Component) l_Iterator.next();
 				l_Component.validate();
 			}
-		}		
+		}
 	}
 
 	public final synchronized void execute() throws DoRedirectException
 	{
 		boolean lb_eventsGenerated = false;
-		if(!ib_isInitialized)
+		if (!ib_isInitialized)
 		{
 			ii_currentState = FORM_STATE_INIT;
 			init();
 			preValidateComponents();
 			ib_isInitialized = true;
+			startService();
 		}
-		
-		// New Way to get new values
-		// This is supporting on thinking
-		// <name><extension>
-		/*
-		Enumeration l_Enumeration = getHttpServletRequest().getParameterNames();
-		
-		while(l_Enumeration.hasMoreElements())
+		else
 		{
-			System.out.println((String)l_Enumeration.nextElement());
-		}
-		*/
-		
-		//
-		// Check the all components if they have new values
-		// and parse them
-		//
-		
-		if (iAL_Components != null)
-		{
-			Iterator l_Iterator = iAL_Components.iterator();
-
-			while (l_Iterator.hasNext())
+			// We generate events only second run.
+			// Faster :D
+			if (iAL_Components != null)
 			{
-				Component l_Component = (Component) l_Iterator.next();
-				l_Component.parseValues();
-			}
-		}		
-		
-		ii_currentState = FORM_STATE_EVENTS;				
-		
-		startService();
-		
-		// Generate events to to components
-		
-		if (iAL_Components != null)
-		{
-			Iterator l_Iterator = iAL_Components.iterator();
+				Iterator l_Iterator = iAL_Components.iterator();
 
-			while (l_Iterator.hasNext())
-			{
-				Component l_Component = (Component) l_Iterator.next();
-				
-				if (l_Component.haveEvents())
+				while (l_Iterator.hasNext())
 				{
-					
-					l_Component.generateEvent();
-					lb_eventsGenerated = true;	
+					Component l_Component = (Component) l_Iterator.next();
+					l_Component.parseValues();
+				}
+			}
+
+			ii_currentState = FORM_STATE_EVENTS;
+
+			// Generate events to to components
+
+			if (iAL_Components != null)
+			{
+				Iterator l_Iterator = iAL_Components.iterator();
+
+				while (l_Iterator.hasNext())
+				{
+					Component l_Component = (Component) l_Iterator.next();
+
+					if (l_Component.haveEvents())
+					{
+
+						l_Component.generateEvent();
+						lb_eventsGenerated = true;
+					}
 				}
 			}
 		}
-		
 		endService();
-		
+
 		// Do last thing to components
-		
+
 		if (iAL_Components != null)
 		{
 			Iterator l_Iterator = iAL_Components.iterator();
@@ -234,9 +219,9 @@ public abstract class Form
 				l_Component.lastIteration();
 			}
 		}
-		if(!lb_eventsGenerated)
+		if (!lb_eventsGenerated)
 		{
-//			checkIfOutOfSynch()
+			//			checkIfOutOfSynch()
 		}
 		redirectToNextPage();
 		nextValueForComponentResponnsePrefix();
@@ -247,11 +232,11 @@ public abstract class Form
 	 *
 	 * @param a_HttpServletRequest HttpServletRequest
 	 */
-/*	private final void setHttpServletRequestToComponents(HttpServletRequest a_HttpServletRequest)
-	{
-
-	}
-*/	
+	/*	private final void setHttpServletRequestToComponents(HttpServletRequest a_HttpServletRequest)
+		{
+	
+		}
+	*/
 	/**
 	 * Set's name for current form<br>
 	 * Name of form is servlet url mapping which is binded in servlet init parameters<br>
@@ -260,7 +245,7 @@ public abstract class Form
 	 * <br>
 	 * @param aS_Name Name of the form
 	 */
-	
+
 	void setName(String aS_Name)
 	{
 		iS_Name = aS_Name;
@@ -274,8 +259,8 @@ public abstract class Form
 	public final String getTimestamp()
 	{
 		return "Made by Sampsa";
-	}	
-	
+	}
+
 	/**
 	 * Internal use
 	 * Set if form is valid or not
@@ -291,19 +276,19 @@ public abstract class Form
 		else if (ib_isValid == false && ab_isValid == true)
 		{
 			Iterator l_Enumeration = iAL_Components.iterator();
-			
+
 			boolean lb_isValid = ab_isValid;
-			
+
 			while (l_Enumeration.hasNext() && lb_isValid)
 			{
 				Component l_Component = (Component) l_Enumeration.next();
 				lb_isValid = l_Component.isValid();
 			}
-			
+
 			ib_isValid = lb_isValid;
 		}
 	}
-	
+
 	/**
 	 * This is for JSP use.
 	 * 
@@ -313,7 +298,7 @@ public abstract class Form
 	{
 		return ib_isValid;
 	}
-	
+
 	/**
 	 * This method is called when session is expired or 
 	 * user is going on other page. Do necessary actions
@@ -332,9 +317,9 @@ public abstract class Form
 				Component l_Component = (Component) l_Iterator.next();
 				l_Component.dispose();
 			}
-		}			
+		}
 	}
-	
+
 	/**
 	 * To be override if web page is not allowed to change.
 	 * 
@@ -344,17 +329,17 @@ public abstract class Form
 	{
 		return true;
 	}
-	
+
 	final void setFormManager(FormManager a_FormManager)
 	{
 		i_FormManager = a_FormManager;
 	}
-	
+
 	final protected FormManager getFormManager()
 	{
 		return i_FormManager;
 	}
-	
+
 	/**
 	 * This method is for need to be make re
 	 * 
@@ -364,22 +349,22 @@ public abstract class Form
 	{
 		iS_NextPage = aS_Page;
 	}
-	
+
 	final void redirectToNextPage() throws DoRedirectException
 	{
-		if(iS_NextPage!=null)
+		if (iS_NextPage != null)
 		{
 			String lS_NextPage = iS_NextPage;
 			iS_NextPage = null; // Just in case
-			throw new DoRedirectException(lS_NextPage);			
+			throw new DoRedirectException(lS_NextPage);
 		}
 	}
-	
+
 	final protected String getNextPage()
 	{
 		return iS_NextPage;
 	}
-	
+
 	/**
 	 * This tells if user has to be logged in to system
 	 * <br>default false
@@ -389,29 +374,29 @@ public abstract class Form
 	{
 		return false;
 	}
-	
+
 	private long il_count = 0;
-	
+
 	final String getComponentResponnsePrefix()
 	{
 		return String.valueOf(il_count);
 	}
-	
+
 	private void nextValueForComponentResponnsePrefix()
 	{
 		il_count++;
 	}
-	
+
 	public ServletContext getServletContext()
 	{
 		return i_ServletContext;
 	}
-	
+
 	public void setServletContext(ServletContext a_ServletContext)
 	{
 		i_ServletContext = a_ServletContext;
-	}		
-	
+	}
+
 	public int getCurrentState()
 	{
 		return ii_currentState;

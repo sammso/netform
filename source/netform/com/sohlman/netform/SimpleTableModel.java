@@ -59,7 +59,7 @@ public class SimpleTableModel extends TableModel
 	 */
 	public int add()
 	{
-		return insert(1);
+		return insert(getRowCount() + 1);
 	}
 
 	/** (non-Javadoc)
@@ -72,11 +72,10 @@ public class SimpleTableModel extends TableModel
 			iAL_ArrayList = new ArrayList();
 		}
 		
-		if(ai_before < 1 || ( ai_before - 1 ) > iAL_ArrayList.size())
+		if(ai_before < 1 || ai_before  > ( iAL_ArrayList.size() + 1) )
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to insert row out of range");
 		}
-		
 		iAL_ArrayList.add(ai_before - 1, null);
 		fireInsert(ai_before);
 		return ai_before;

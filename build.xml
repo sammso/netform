@@ -25,7 +25,7 @@
 	<target name="CompileNetForm" depends="Init" description="Compile NetForm Source" >
 	<!-- Complile and create jar -->
 		<mkdir dir="${builddir}"/>
-		<javac srcdir="${netformsrc}" destdir="${builddir}" classpath="${servlet.jar}" optimize="true" nowarn="true"/>
+		<javac srcdir="${netformsrc}" destdir="${builddir}" classpath="${servlet.jar}" debug="true" optimize="true" nowarn="true"/>
 		<jar jarfile="${NetForm.zip}/libs/netform.jar" basedir="${builddir}" compress="true"/>
 		<delete dir="${builddir}" failonerror="false"/>
 	</target>

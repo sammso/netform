@@ -126,7 +126,7 @@ public class TimestampField extends Component
 			else
 			{
 				iS_Text = Utils.timestampToString(l_Timestamp, iS_DateTimeFormat);
-				return Utils.escapeHTML(iS_Text);
+				return Utils.stringToHTML(iS_Text);
 			}			
 		}
 		else
@@ -137,7 +137,7 @@ public class TimestampField extends Component
 			}
 			else
 			{
-				return Utils.escapeHTML(iS_Text);
+				return Utils.stringToHTML(iS_Text);
 			}
 		}
 	}
@@ -173,6 +173,7 @@ public class TimestampField extends Component
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
 			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
+			//lS_NewText = Utils.htmlToString(lS_NewText);
 			if (!lS_NewText.equals(iS_Text))
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);

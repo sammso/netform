@@ -162,7 +162,7 @@ public class IntegerField extends Component
 				StringBuffer l_StringBuffer = new StringBuffer();
 				i_DecimalFormat.format(l_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
 		
-				return  Utils.escapeHTML(l_StringBuffer.toString());				
+				return  Utils.stringToHTML(l_StringBuffer.toString());				
 			}
 		}
 		else
@@ -173,7 +173,7 @@ public class IntegerField extends Component
 			}
 			else
 			{
-				return Utils.escapeHTML(iS_Text);
+				return Utils.stringToHTML(iS_Text);
 			}
 		}
 	}
@@ -249,6 +249,7 @@ public class IntegerField extends Component
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
 			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
+			//lS_NewText = Utils.htmlToString(lS_NewText);
 			if (!lS_NewText.equals(iS_Text))
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);

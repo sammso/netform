@@ -20,8 +20,10 @@ public class Table extends Component
 	// Selected
 	private static final int NOTFOUND = -1;
 	private static final int PAGESIZE_NOT_DEFINED = -1;
-	private int[] ii_currentSelection = null;
-	private int[] ii_oldSelection = null;
+	//private int[] ii_currentSelection = null;
+	//private int[] ii_oldSelection = null;
+	private IntArray i_IntArray_Selection = new IntArray();
+	
 	private boolean ib_multiSelection = true;
 	private boolean ib_multiPageSelection = false;
 	private TableModel i_TableModel;
@@ -53,18 +55,16 @@ public class Table extends Component
 
 	public boolean isSelected(int ai_index)
 	{	
-		if (ii_currentSelection != null)
-		{
-			return Arrays.binarySearch(ii_currentSelection, ai_index) >= 0;
-		}
-		return false;
+		i_IntArray_Selection.sort();
+		return i_IntArray_Selection.hasValue(ai_index);
 	}
 
 	public int getSelectedRow(int ai_after)
 	{
 		int[] li_currentSelection;
 
-		li_currentSelection = ii_currentSelection;
+		i_IntArray_Selection.sort();
+		li_currentSelection = i_IntArray_Selection.toArray();
 		if (li_currentSelection != null)
 		{
 			for (int li_c = 0; li_c < li_currentSelection.length; li_c++)
@@ -75,6 +75,7 @@ public class Table extends Component
 				}
 			}
 		}
+		
 		return 0;
 	}
 
@@ -82,10 +83,10 @@ public class Table extends Component
 	{
 		return getSelectedRow(0);
 	}
-
+/*
 	public int getOldSelectedRow(int ai_after)
 	{
-		if (ii_oldSelection != null)
+		if (!i_IntArray_oSelection.isEmpty())
 		{
 			for (int li_c = 0; li_c < ii_oldSelection.length; li_c++)
 			{
@@ -102,12 +103,13 @@ public class Table extends Component
 	{
 		return getOldSelectedRow(0);
 	}
-
+*/
 	public int[] getSelectedItems()
 	{
-		if (ii_currentSelection != null)
+		if (!i_IntArray_Selection.isEmpty())
 		{
-			return (int[]) ii_currentSelection.clone();
+			i_IntArray_Selection.sort();
+			return i_IntArray_Selection.toArray();
 		}
 		else
 		{
@@ -131,7 +133,7 @@ public class Table extends Component
 	 */
 	public void clearSelection()
 	{
-		ii_currentSelection = null;
+		i_IntArray_Selection.clear();
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class Table extends Component
 	 */
 	public int getSelectedCount()
 	{
-		return ii_currentSelection.length;
+		return i_IntArray_Selection.size();
 	}
 
 	/**
@@ -290,18 +292,8 @@ public class Table extends Component
 
 	public void selectItem(int ai_index)
 	{
-		if (ai_index > 0 && ai_index <= i_TableModel.getRowCount())
-		{
-			if (ib_multiSelection)
-			{
-				// Add selection
-			}
-			else
-			{
-				int[] li_selection = { ai_index };
-				ii_currentSelection = li_selection;
-			}
-		}
+		i_IntArray_Selection.clear();
+		i_IntArray_Selection.addValue(ai_index);
 	}
 
 	/**
@@ -309,11 +301,14 @@ public class Table extends Component
 	 */
 	public void deleteSelectedRows()
 	{
-		if (ii_currentSelection != null)
+		if (!i_IntArray_Selection.isEmpty())
 		{
-			for (int li_c = ii_currentSelection.length - 1; li_c >= 0; li_c--)
+			int[] li_currentSelection = i_IntArray_Selection.toArray();
+			Arrays.sort(li_currentSelection);
+			for (int li_c = li_currentSelection.length - 1; li_c >= 0; li_c--)
 			{
-				i_TableModel.delete(ii_currentSelection[li_c]);
+				i_TableModel.delete(li_currentSelection[li_c]);
+				i_IntArray_Selection.removeValue(li_currentSelection[li_c]);
 			}
 		}
 
@@ -321,8 +316,6 @@ public class Table extends Component
 		{
 			setPage(getPageCount());
 		}
-
-		clearSelection();
 	}
 
 	protected boolean checkIfNewValues()
@@ -366,7 +359,7 @@ public class Table extends Component
 
 		String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
 
-		ii_oldSelection = ii_currentSelection;
+//		ii_oldSelection = ii_currentSelection;
 
 		int[] li_newSelection = null;
 
@@ -413,14 +406,14 @@ public class Table extends Component
 	 * 
 	 *
 	 */
-
 	public void selectItems(int[] ai_indexes)
 	{
 		if (ai_indexes == null)
 		{
 			return;
 		}
-
+		i_IntArray_Selection.setArray(ai_indexes);
+/*
 		if (ii_currentSelection == null || !ib_multiSelection || !ib_multiPageSelection)
 		{
 			ii_currentSelection = ai_indexes;
@@ -455,37 +448,49 @@ public class Table extends Component
 			System.arraycopy(li_selection, 0, ii_currentSelection, 0, li_s);
 			Arrays.sort(ii_currentSelection);
 		}
-
+*/
 		validate();
 
 		if (hasComponentData() && isValid() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
 		{
-			if (ii_currentSelection == null || ii_currentSelection.length == 0)
+			if (i_IntArray_Selection.isEmpty())
 			{
 				setData(null);
 			}
 			else
 			{
-				setData(i_TableModel.getValueAt(ii_currentSelection[0], ii_dataColumn));
+				setData(i_TableModel.getValueAt(i_IntArray_Selection.getValue(0), ii_dataColumn));
 			}
 		}
 	}
 
+	/**
+	 * @param ai_displayCount
+	 */
 	public void setDisplayCount(int ai_displayCount)
 	{
 		ii_displayCount = ai_displayCount;
 	}
 
+	/**
+	 * @param ab_isFixed
+	 */
 	public void setPageSizeFixed(boolean ab_isFixed)
 	{
 		ib_pageSizeFixed = ab_isFixed;
 	}
 
+	/**
+	 * @param ab_isMultiPageSelection
+	 */
 	public void setMultiPageSelection(boolean ab_isMultiPageSelection)
 	{
 		ib_multiPageSelection = ab_isMultiPageSelection;
 	}
 
+	/**
+	 * @see com.sohlman.netform.Component#isValid()
+	 */
 	public boolean isValid()
 	{
 		boolean lb_isValid = super.isValid();
@@ -510,18 +515,6 @@ public class Table extends Component
 		return lb_isValid;
 	}
 
-	// After this part component handling
-	/*
-		private ComponentListener i_ComponentListener = new ComponentListener()
-		{
-			public void eventAction(Component a_Component)
-			{
-				TableComponent l_TableComponent = (TableComponent) a_Component;
-				System.out.println(l_TableComponent.getValue() + " : " + l_TableComponent.getRow() + "," + l_TableComponent.getColumn());
-				i_TableModel.setValueAt(l_TableComponent.getValue(), l_TableComponent.getRow(), l_TableComponent.getColumn());
-			}
-		};
-	*/
 	private ArrayList iAL_TableComponentsInRow = null;
 	private Component[] i_Component_RowModels;
 	private int ii_tableComponent_ModelsSize = 0;
@@ -634,13 +627,15 @@ public class Table extends Component
 			{
 				if (i_Component_RowModels[li_index] != null)
 				{
-					l_Components[li_index] = i_Component_RowModels[li_index].cloneComponent();
-					l_Components[li_index].setComponentData(new TableComponentData(i_TableModel));
-					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_index].getComponentData();
+					TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
 					l_TableComponentData.setRow(ai_before);
 					l_TableComponentData.setColumn(li_index + 1);
 
-					// l_TableComponents[li_index].addComponentListener(i_ComponentListener);
+					Component l_Component = i_Component_RowModels[li_index].cloneComponent();
+					l_Component.setComponentData(l_TableComponentData);
+					l_Component.syncronizeData();
+					l_Components[li_index] = l_Component;
+					
 				}
 			}
 
@@ -651,38 +646,18 @@ public class Table extends Component
 
 	int addComponentRow()
 	{
-		if (i_Component_RowModels != null)
-		{
-			if (iAL_TableComponentsInRow == null)
-			{
-				iAL_TableComponentsInRow = new ArrayList();
-			}
-
-			Component[] l_Components = new Component[ii_tableComponent_ModelsSize];
-
-			int li_size = iAL_TableComponentsInRow.size() + 1;
-
-			for (int li_index = 0; li_index < ii_tableComponent_ModelsSize; li_index++)
-			{
-				if (i_Component_RowModels[li_index] != null)
-				{
-					TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
-					l_TableComponentData.setRow(li_size);
-					l_TableComponentData.setColumn(li_index + 1);
-
-					l_Components[li_index].setComponentData(l_TableComponentData);
-					l_Components[li_index] = i_Component_RowModels[li_index].cloneComponent();
-				}
-			}
-
-			iAL_TableComponentsInRow.add(l_Components);
-			return li_size;
-		}
-		return 0;
+		return insertComponentRow(iAL_TableComponentsInRow.size() + 1);
 	}
-
+	
 	void removeComponentRow(int ai_index)
 	{
+		// Remove row from selection also
+		i_IntArray_Selection.sort();
+		if(i_IntArray_Selection.hasValue(ai_index))
+		{
+			i_IntArray_Selection.substractOneFromAll(ai_index);
+		}
+		
 		if (iAL_TableComponentsInRow != null)
 		{
 			Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_index - 1);
@@ -706,6 +681,7 @@ public class Table extends Component
 			}
 		}
 	}
+	
 	/*
 		void updateComponentAt(Object a_Object, int ai_row, int ai_column)
 		{
@@ -796,6 +772,8 @@ public class Table extends Component
 			{
 				if (l_Components[li_i] == null && i_Component_RowModels != null)
 				{
+					// Component structure has changed
+					
 					l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
 					l_Components[li_i].setComponentData(new TableComponentData(i_TableModel));
 					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
@@ -805,6 +783,8 @@ public class Table extends Component
 				}
 				else if (l_Components[li_i] != null && i_Component_RowModels[li_i] == null)
 				{
+					// Component structure has changed
+					
 					l_Components[li_i].dispose();
 					l_Components[li_i] = null;
 				}
@@ -813,8 +793,9 @@ public class Table extends Component
 					TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
 					l_TableComponentData.setRow(ai_index);
 					l_TableComponentData.setColumn(li_i + 1);
+					l_Components[li_i].syncronizeData(); 
 				}
-				else
+				else // Component column type has been changed
 				{
 					TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
 					l_TableComponentData.setRow(ai_index);
@@ -839,7 +820,7 @@ public class Table extends Component
 			return iHs_Components.iterator();
 		}
 	}
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.Component#addComponent(java.lang.String, com.sohlman.netform.Component)
 	 */
 	protected void addComponent(Component a_Component)
@@ -884,7 +865,7 @@ public class Table extends Component
 		}
 		else
 		{
-			return Utils.escapeHTML(l_Object.toString());
+			return Utils.stringToHTML(l_Object.toString());
 		}
 	}
 
@@ -934,7 +915,7 @@ public class Table extends Component
 	/**
 	 * JSP use
 	 * 
-	 * @return
+	 * @return row count to be displayed
 	 */
 	public int getDisplayRowCount()
 	{
@@ -944,7 +925,9 @@ public class Table extends Component
 	/**
 	 * JSP use
 	 * 
-	 * @return
+	 * This row id defines, which row is which in JSP page and which is selected and which not.
+	 * 
+	 * @return row id.
 	 */
 	public String getRowId(int ai_displayRow)
 	{
@@ -954,8 +937,7 @@ public class Table extends Component
 	}
 
 	/**
-	 * Not supported
-	 * @throws NoSuchMethodError
+	 * @see com.sohlman.netform.Component#cloneComponent()
 	 */
 	public Component cloneComponent()
 	{
@@ -1002,6 +984,9 @@ public class Table extends Component
 		ii_dataColumn = ai_index;
 	}
 
+	/**
+	 * @see com.sohlman.netform.Component#dispose()
+	 */
 	public void dispose()
 	{
 		super.dispose();
@@ -1025,5 +1010,9 @@ public class Table extends Component
 				selectItem(li_row);
 			}
 		}
+	}
+	
+	public void removeIndexFromSelection(int ai_index)
+	{
 	}
 }

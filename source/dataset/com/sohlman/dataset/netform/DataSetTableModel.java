@@ -44,7 +44,7 @@ public class DataSetTableModel extends TableModel
 	}
 
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#add()
 	 */
 	public int add()
@@ -52,7 +52,7 @@ public class DataSetTableModel extends TableModel
 		return i_DataSet.addRow();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#insert(int)
 	 */
 	public int insert(int ai_before)
@@ -60,7 +60,7 @@ public class DataSetTableModel extends TableModel
 		return i_DataSet.insertRow(ai_before);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#delete(int)
 	 */
 	public int delete(int ai_row)
@@ -115,7 +115,16 @@ public class DataSetTableModel extends TableModel
 	 */
 	public int search(Object a_Object, int ai_column)
 	{
-		return i_DataSet.search(a_Object, ai_column);
+		int li_row = i_DataSet.search(a_Object, ai_column);
+		
+		if(li_row == 0)
+		{
+			return -1;
+		}
+		else
+		{
+			return li_row;	
+		}
 	}
 
 }

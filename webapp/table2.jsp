@@ -1,4 +1,3 @@
-<%@ page import="sun.security.krb5.internal.n" %>
 <%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*" %>
 <% 
 	Table2Form form = null; 
@@ -9,12 +8,19 @@
 		form.execute(); 
 %>
 <jsp:include page="header.jsp" />
-<h1>1. Table Example</h1>
-<p>This is using <a href="http://dataset.sohlman.com">DataSet</a> as internal datastore</p>
+<h1>2. Table Example</h1>
+<h2>Purpose</h2>
+<p>Purpose of this example is to be test case how to use Table inside Table.</p>
 <form method="POST" action="table2.jsp">
+<table cellpadding="1" cellspacing="1" border="1" >
+<tr>
+	<td>Table</td><td>Edit - Choise List in Table</td>
+</tr>
+<tr>
+<td valign="top" >
 <table>
 	<tr>
-		<td>Selected</td><td>Choise<td>First name</td><td>Last name</td><td>Birthdate</td>
+		<td>Selected</td><td>Choise List<td>Some Text</td>
 	</tr><%
 			for(int li_y = 1 ; li_y <= form.tableList.getDisplayRowCount()  ; li_y++)
 			{ 
@@ -41,7 +47,7 @@
 				{
 				
 			%>
-				<option value="<%=l_Table.getRowId(li_s) %>"<% if(l_Table.isRowSelected(li_s)){ %> checked <% } %>><%=l_Table.getText(li_s, 1) %></option>
+				<option value="<%=l_Table.getRowId(li_s) %>"<% if(l_Table.isRowSelected(li_s)){ %> selected <% } %>><%=l_Table.getText(li_s, 1) %></option>
 				<% } %>
 			</select>
 		</td>		
@@ -51,9 +57,44 @@
 	</tr><%
 			} 
 	%></table>
+
 <input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
 <input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
 <input type="submit" name="" value="Validate">
+</td>
+<td valign="top" >
+	<table>
+		<tr>
+			<td>New Choise Text</td>
+		</tr>
+		<tr>
+			<td><input type="text" name="<%=form.textField.getResponseName() %>" value="<%=form.textField.getText() %>"></td>
+		</tr>
+		<tr>
+			<td><input type="submit" name="<%=form.addTextButton.getResponseName() %>" value="Add">
+		</tr>		
+		<tr>
+			<td>
+			<select name="<%=form.tableSelect.getResponseName() %>" size="10" ><%
+				for(int li_s = 1; li_s <= form.tableSelect.getDisplayRowCount() ; li_s++)
+				{
+				
+			%>
+				<option value="<%=form.tableSelect.getRowId(li_s) %>"<% if(form.tableSelect.isRowSelected(li_s)){ %> selected <% } %>><%=form.tableSelect.getText(li_s, 1) %></option>
+				<% } %>
+			</select>			
+			</td>
+		</tr>	
+		<tr>
+			<td><input type="submit" name="<%=form.removeTextButton.getResponseName() %>" value="Remove"></td>
+		</tr>
+		<tr>
+			<td>It is not possible to remove rows that are used on Table</td>
+		</tr>							
+	</table>
+</td>
+</tr>
+</table>
 </form> 
 <jsp:include page="footer.jsp" /><%
 	}
@@ -67,7 +108,9 @@
 		%>
 <html>
 	<head><title>Error</title></head>
-	<body>Error</body>
+	<body>
+		Error see System.out
+	</body>
 </html>		
 		<%
 	} 

@@ -7,7 +7,6 @@ import com.sohlman.dataset.netform.DataSetTableModel;
 import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
-import com.sohlman.netform.ComponentValidator;
 import com.sohlman.netform.SimpleTableModel;
 import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
@@ -17,19 +16,15 @@ import com.sohlman.netform.TextField;
  */
 public class Table2Form extends MasterForm
 {
-	public Button reloadButton = new Button(this);
 	public Button addRowButton = new Button(this);
 	public Button deleteRowButton = new Button(this);
-	public Button addButton = new Button(this);
-	public Button removeButton = new Button(this);	
+	public Button addTextButton = new Button(this);
+	public Button removeTextButton = new Button(this);	
 	
 	public TextField textField = new TextField(this);
 	public Table tableList;
 	public Table tableSelect;
-	
-	
 
-	private int ii_counter = 1;
 	private DataSet i_DataSet;
 	private SimpleTableModel i_SimpleTableModel;
 	
@@ -39,70 +34,112 @@ public class Table2Form extends MasterForm
 		{
 			if( a_Component == addRowButton )
 			{
+				// Add new row to DataSet and Table
+				// Table knows that through TableModel
+				
 				i_DataSet.addRow();
 			}
 			else if( a_Component == deleteRowButton )
 			{
+				// Delete Selected Rows from Table
 				tableList.deleteSelectedRows();
+			}
+			else if(a_Component == addTextButton)
+			{
+				// Add new text to choise list
+				
+				String lS_Text = textField.getText();
+				if(lS_Text!=null && !lS_Text.trim().equals(""))
+				{
+					if(i_SimpleTableModel.search(lS_Text,1)==-1)
+					{
+						i_SimpleTableModel.addValue(lS_Text);
+					}
+				}
+			}
+			else if(a_Component == removeTextButton)
+			{
+				// Remove text from choises
+				
+				int[] li_items = tableSelect.getSelectedItems();
+				
+				// Only 1 can be removed at once
+				
+				if(li_items!=null && li_items.length == 1)
+				{
+					Object l_Object = i_SimpleTableModel.getValueAt(li_items[0],1);
+					
+					// Check that it is not chosen in tableList
+					// DataSet is inside of that
+					
+					if(i_DataSet.search(l_Object,1)==0) 
+					{
+						i_SimpleTableModel.delete(li_items[0]);
+					}
+				}
 			}
 		}
 	};
 
-	ComponentValidator i_ComponentValidator = new ComponentValidator()
-	{
-		public boolean isValid(Component a_Component)
-		{
-			return true;
-		}
-	};
-
-	private String formatNumber(int ai_number)
-	{
-		StringBuffer lSb_Number = new StringBuffer();
-		String lS_Number = "" + ai_number;
-
-		for (int li_c = 0; li_c < 5 - lS_Number.length(); li_c++)
-		{
-			lSb_Number.append("0");
-		}
-		lSb_Number.append(lS_Number);
-		return lSb_Number.toString();
-	}
  
 	public void init()
 	{
-		reloadButton.addComponentListener(i_ComponentListener);
+		// Add component listener for compnents that we want to listen
+		
 		addRowButton.addComponentListener(i_ComponentListener);
 		deleteRowButton.addComponentListener(i_ComponentListener);
+		addTextButton.addComponentListener(i_ComponentListener);
+		removeTextButton.addComponentListener(i_ComponentListener);
 		
-		i_SimpleTableModel = new SimpleTableModel();
+		i_SimpleTableModel = new SimpleTableModel();	
+	
+		// Create Memory Only DataSet
 	
 		i_DataSet = new DataSet();
 		ColumnInfo[] l_ColumnInfos =
 			{ new ColumnInfo("Choise", String.class), new ColumnInfo("Text", String.class)};
 
 		i_DataSet.setRowInfo(new RowInfo(l_ColumnInfos));
+		
+		// Connect DataSet through DataSetTableModel to Table
+		
 		tableList = new Table(this,new DataSetTableModel(i_DataSet));
 		tableList.setMultiSelection(true);
-		
-		
-		// l_IntegerField.setEmptyIsNull(true);
-		// Let's make selection list 
+			
+		// Make choise list
+		// Table list is using i_SimpleTableModel as
+		// data container  
 		
 		Table l_Table = new Table(tableList, i_SimpleTableModel);
-		tableList.setTableModelComponent(l_Table, 1);
 		
+		// And connect that to first column of Table
+		
+		tableList.setTableModelComponent(l_Table, 1);
+	
+		// Add second editable column to table
+	
 		TextField l_Textfield = new TextField(tableList);
 		l_Textfield.setEmptyIsNull(true);
 		tableList.setTableModelComponent(l_Textfield,2);
+	
 		
+		// Make other Table to maintain 
+		// Choise List. This is made so that they are
+		// using same data container 
 		
+		tableSelect = new Table(this,i_SimpleTableModel);
+		tableSelect.setMultiSelection(false);			
+		
+		// Fill choise list 
+			
 		String lS_First = "First";
 		String lS_Second = "Second";
 		
 		i_SimpleTableModel.addValue(lS_First);
 		i_SimpleTableModel.addValue(lS_Second);			
-
+					
+		// Fill table
+		
 		int li_row = i_DataSet.addRow();
 
 		i_DataSet.setValueAt(lS_First, li_row, 1);
