@@ -15,11 +15,13 @@
 			<name>form</name>
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>Class name of Form</description>
 		</attribute>
 		<attribute>
 			<name>loginPage</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>This is the place of address of login page where user is going to be redirected if login is required and user is not logged in. This only applies if NetForm is handling authetication.</description>
 		</attribute>		
 	</tag>
 	<tag>
@@ -30,6 +32,7 @@
 			<name>name</name>
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description></description>
 		</attribute>
 		<attribute>
 			<name>value</name>
@@ -45,27 +48,26 @@
 			<name>name</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;form name=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;form style=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>id</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;form id=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>enctype</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-		</attribute>							
+			<description>As &lt;form enctype=""&gt; attribute</description>			
+		</attribute>
 	</tag>
 	<tag>
 		<name>textField</name>
@@ -95,21 +97,25 @@
 			<name>style</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="text" style=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="text" class=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>notValidStyle</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="text" style=""&gt; attribute when TextField is not valid</description>
 		</attribute>
 		<attribute>
 			<name>notValidClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="text" class=""&gt; attribute when TextField is not valid</description>
 		</attribute>							
 	</tag>
 	<tag>
@@ -133,23 +139,27 @@
 		</attribute>
 		<attribute>
 			<name>style</name>
-			<required>false</required> 
+			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="submit" style=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="submit" class=""&gt; attribute</description>
 		</attribute>
 		<attribute>
-			<name>notvalidStyle</name>
+			<name>notValidStyle</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="submit" style=""&gt; attribute when Button is not valid</description>
 		</attribute>
 		<attribute>
 			<name>notValidClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;input type="submit" class=""&gt; attribute when Button is not valid</description>
 		</attribute>
 		<attribute>
 			<name>value</name>
@@ -180,26 +190,31 @@
 			<name>style</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;select style=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;select class=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>notValidStyle</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;select style=""&gt; attribute when Table is not valid</description>
 		</attribute>
 		<attribute>
 			<name>notValidClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;select class=""&gt; attribute when Table is not valid</description>
 		</attribute>
 		<attribute>
 			<name>size</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;select size=""&gt; attribute</description>
 		</attribute>								
 	</tag>
 	<tag>
@@ -220,16 +235,19 @@
 			<name>style</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;option style=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;option class=""&gt; attribute</description>
 		</attribute>
 		<attribute>
 			<name>id</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
+			<description>As &lt;option id=""&gt; attribute</description>
 		</attribute>							
 	</tag>	
 	<tag>

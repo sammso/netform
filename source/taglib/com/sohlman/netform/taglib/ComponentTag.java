@@ -79,7 +79,7 @@ public abstract class ComponentTag extends MasterTag
 	 */
 	public abstract int doEndTag() throws JspException;
 
-	protected boolean init() throws JspException
+	protected void init() throws JspException
 	{
 		Tag l_Tag = getParent();
 		Object l_Object = null;
@@ -94,16 +94,17 @@ public abstract class ComponentTag extends MasterTag
 				int li_row = l_TableTag.getCurrentRow();
 				if(iS_Name != null)
 				{
-					// TODO: Fix the li_index to column name
-					i_Component = l_Table.getComponentAt(li_row, ii_index);
+					i_Component = l_Table.getComponentAt(li_row, iS_Name);
 				}
 				else
 				{
 					i_Component = l_Table.getComponentAt(li_row, ii_index);
 				}
-				return true;
 			}
-			return false;
+			else
+			{
+				throw new JspException("Component in Table tag is not " + Table.class.getName() + ", but " + l_Component.getClass().getName());
+			}
 		}
 		else
 		{
@@ -120,15 +121,7 @@ public abstract class ComponentTag extends MasterTag
 
 				if(i_Form == null)
 				{
-					try
-					{
-						i_PageContext.getOut().println("<b>Error : &lt;nf:init&gt; tag has to be executed before</b>");
-						return false;
-					}
-					catch (IOException l_IOException)
-					{
-						throw new JspException(l_IOException);
-					}
+					throw new JspException("Form not found");
 				}
 
 				l_Object = i_Form;
@@ -144,10 +137,9 @@ public abstract class ComponentTag extends MasterTag
 				}
 				catch (IllegalAccessException l_IllegalAccessException)
 				{
-					return false;
+					throw new JspException(l_IllegalAccessException);
 				}
 			}
-			return true;
 		}
 	}
 

@@ -1,22 +1,22 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform.taglib;
 
 import java.io.IOException;
@@ -31,19 +31,24 @@ import com.sohlman.netform.component.TextField;
 public class TextFieldTag extends ComponentTag
 {
 	private TextField i_TextField = null;
+
 	private String iS_Style = null;
+
 	private String iS_Class = null;
+
 	private String iS_NotValidStyle = null;
+
 	private String iS_NotValidClass = null;
+
 	private String iS_Id = null;
+
 	private String iS_Format = null;
-	
 
 	public void setFormat(String aS_Format)
 	{
 		iS_Format = aS_Format;
 	}
-	
+
 	public void setStyle(String aS_Style)
 	{
 		iS_Style = aS_Style;
@@ -64,7 +69,6 @@ public class TextFieldTag extends ComponentTag
 		iS_NotValidClass = aS_NotValidClass;
 	}
 
-	
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
 	 */
@@ -78,21 +82,20 @@ public class TextFieldTag extends ComponentTag
 
 			i_PageContext.getOut().print(" value=\"" + i_TextField.getText() + "\"");
 
-			
 			if(i_TextField.isValid())
 			{
-				if(iS_Style!=null)
+				if(iS_Style != null)
 				{
 					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
-				}		
-				if(iS_Class!=null)
+				}
+				if(iS_Class != null)
 				{
 					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
 				}
 			}
 			else
 			{
-				if(iS_NotValidStyle == null && iS_Style!=null)
+				if(iS_NotValidStyle == null && iS_Style != null)
 				{
 					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
 				}
@@ -100,16 +103,15 @@ public class TextFieldTag extends ComponentTag
 				{
 					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
 				}
-				if(iS_NotValidClass == null || iS_Class!=null)
+				if(iS_NotValidClass == null || iS_Class != null)
 				{
 					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
 				}
 				else if(iS_NotValidClass != null)
 				{
 					i_PageContext.getOut().print(" class=\"" + iS_NotValidClass + "\"");
-				}				
+				}
 			}
-
 
 			return EVAL_PAGE;
 		}
@@ -124,18 +126,12 @@ public class TextFieldTag extends ComponentTag
 	 */
 	public int doStartTag() throws JspException
 	{
-		if(init())
+		init();
+		i_TextField = (TextField) getComponentFormThisTag();
+
+		if(iS_Format != null)
 		{
-			i_TextField = (TextField) getComponentFormThisTag();
-			
-			if(iS_Format!=null)
-			{
-				i_TextField.setFormat(iS_Format);
-			}
-		}
-		else
-		{
-			// ERROR
+			i_TextField.setFormat(iS_Format);
 		}
 		return SKIP_BODY;
 	}
