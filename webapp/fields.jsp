@@ -4,10 +4,9 @@
 	try
 	{
 		form = (FieldForm)FormManager.getForm(request, response, getServletContext(),FieldForm.class, "login.jsp");
-		form.numberField.setFormat("00000");
+		form.integerField.setFormat("00000");
 		form.timestampField.setFormat("yyyy-MM-dd");
-		form.execute();  
-	 
+		form.execute();
 %>
 <jsp:include page="header.jsp" />
 <h1>Field Example <% if(!form.isValid())
@@ -21,11 +20,11 @@
 		<td class="text">TextField<br>component<br><i>Write anything</i></td>
 		<td colspan="2"><% if(!form.textField.isValid()){	%>*<% } %> <input type="text" name="<%=form.textField.getResponseName() %>" value="<%=form.textField.getText() %>"></td>
 	</tr>
-	<tr>
+	<tr>  
 		<td class="text">IntegerField component</td>
-		<td><% if(!form.numberField.isValid()){	%>*<% } %><input type="text" name="<%=form.numberField.getResponseName() %>" value="<%=form.numberField.getText() %>"></td>
-		<td><input name="<%=form.increaseNumberButton.getResponseName() %>" type="submit" value="+"> - <input name="<%=form.decreaseNumberButton.getResponseName() %>" type="submit" value="-"></td>
-	</tr>	
+		<td><% if(!form.integerField.isValid()){	%>*<% } %><input type="text" name="<%=form.integerField.getResponseName() %>" value="<%=form.integerField.getText() %>"></td>
+		<td><input name="<%=form.increaseIntButton.getResponseName() %>" type="submit" value="+"> - <input name="<%=form.decreaseIntButton.getResponseName() %>" type="submit" value="-"></td>
+	</tr>
 	<tr>
 		<td class="text">Timestamp field<br><i>(yyyy-mm-dd)</i></td>
 		<td><% if(!form.timestampField.isValid()){	%>*<% } %><input type="text" name="<%=form.timestampField.getResponseName() %>" value="<%=form.timestampField.getText() %>"></td>

@@ -56,7 +56,7 @@ public class Statics
     
     public static boolean isTimestamp(String aS_DateTime, String aS_Format)
     {
-        return getTimestamp(aS_DateTime, aS_Format, null, null) != null;
+        return stringToTimestamp(aS_DateTime, aS_Format, null, null) != null;
     }
     
     /**
@@ -68,7 +68,7 @@ public class Statics
      * @return java.sql.Timestamp object if ok, else null
      * @see java.text.SimpleDateFormat for format options
      */
-    public static java.sql.Timestamp getTimestamp(String aS_Timestamp, String aS_Format, Timestamp aTs_ValidStart, Timestamp aTs_ValidEnd)
+    public static java.sql.Timestamp stringToTimestamp(String aS_Timestamp, String aS_Format, Timestamp aTs_ValidStart, Timestamp aTs_ValidEnd)
     {
         SimpleDateFormat l_SimpleDateFormat;
         java.sql.Timestamp l_Timestamp;
@@ -105,9 +105,9 @@ public class Statics
         }
     }    
     
-    public static java.sql.Timestamp getTimestamp(String aS_Timestamp, String aS_Format)
+    public static java.sql.Timestamp stringToTimestamp(String aS_Timestamp, String aS_Format)
     {
-    	return getTimestamp(aS_Timestamp, aS_Format, null, null);
+    	return stringToTimestamp(aS_Timestamp, aS_Format, null, null);
     	
     }
     

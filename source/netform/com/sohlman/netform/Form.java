@@ -7,30 +7,33 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * <p>Form is place where to your form logic. 
+ * <p>Form is place where to put your form logic 
  * <p><u><b>Usage:</b></u>
  * <p>Inherit your form class from Form.
  * <p><u>Implement:  
  * <ol>
- * 	<li>{@link #init() init()} method <b>Required</b></li>
+ * 	<li>{@link #init() init()} method <b>Required</b> Normally here you do form initalization.</li>
  * 	<li>{@link #startService() startService()} method <i>Optional</i> </li>
  * 	<li>{@link #endService() endService()} method <i>Optional</i> </li>
  * 	<li>{@link #allowFormChange() allowFormChange()} method <i>Optional</i> To control if web page change is allowed.</li>
  * 	<li>{@link #isLoginRequired() isLoginRequired()} method <i>Optional</i> Tells if login is required</li>
  * </ol>
  * @author Sampsa Sohlman
- * @version 2003-11-20
+ * @version 2004-16-20
  */
 public abstract class Form 
 {
-	final static int FORM_STATE_INIT = 1;
-	final static int FORM_STATE_SETTINGS = 2;
-	final static int FORM_STATE_EXECUTE = 3;
-	final static int FORM_STATE_TEMPLATING = 4;
+	public final static int FORM_STATE_CONSTRUCTOR = 0;
+	public final static int FORM_STATE_INIT = 1;
+	public final static int FORM_STATE_EVENTS = 2;
+	public final static int FORM_STATE_SETTINGS = 3;
+	public final static int FORM_STATE_EXECUTE = 4;
+	public final static int FORM_STATE_TEMPLATING = 5;
+	
+	private int ii_currentState = FORM_STATE_CONSTRUCTOR;
 	
 	final static String FORM_CONTAINER = "@FORM_CONTAINER";
 	final static String SESSION_PAGE = "@PAGE";
-	//private Hashtable iVe_Components;
 	private ArrayList iAL_Components;
 	private String iS_NextPage = null;
 	private HttpServletRequest i_HttpServletRequest;
@@ -41,6 +44,11 @@ public abstract class Form
 
 	private String iS_Name;
 
+	/**
+	 * Internal use
+	 * 
+	 * @param a_HttpServletRequest
+	 */
 	final void setHttpServletRequest(HttpServletRequest a_HttpServletRequest)
 	{
 		i_HttpServletRequest = getHttpServletRequest(a_HttpServletRequest);
@@ -156,6 +164,7 @@ public abstract class Form
 		boolean lb_eventsGenerated = false;
 		if(!ib_isInitialized)
 		{
+			ii_currentState = FORM_STATE_INIT;
 			init();
 			preValidateComponents();
 			ib_isInitialized = true;
@@ -177,6 +186,7 @@ public abstract class Form
 		// Check the all components if they have new values
 		// and parse them
 		//
+		
 		if (iAL_Components != null)
 		{
 			Iterator l_Iterator = iAL_Components.iterator();
@@ -187,7 +197,9 @@ public abstract class Form
 				l_Component.parseValues();
 			}
 		}		
-				
+		
+		ii_currentState = FORM_STATE_EVENTS;				
+		
 		startService();
 		
 		// Generate events to to components
@@ -228,6 +240,7 @@ public abstract class Form
 		}
 		redirectToNextPage();
 		nextValueForComponentResponnsePrefix();
+		ii_currentState = FORM_STATE_TEMPLATING;
 	}
 
 	/** Pass the parameters to page components.
@@ -245,7 +258,7 @@ public abstract class Form
 	 * <br>
 	 * <b>Only internal use</b><br>
 	 * <br>
-	 * @param aS_Name Name of the form /../<nameoftheform>..
+	 * @param aS_Name Name of the form
 	 */
 	
 	void setName(String aS_Name)
@@ -387,4 +400,9 @@ public abstract class Form
 	{
 		i_ServletContext = a_ServletContext;
 	}		
+	
+	public int getCurrentState()
+	{
+		return ii_currentState;
+	}
 }

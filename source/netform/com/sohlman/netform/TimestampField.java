@@ -1,40 +1,58 @@
 package com.sohlman.netform;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * TimestampField
  *
-  @version 2002-03-05
+  @version 2004-01-15
   @author Sampsa Sohlman
  */
 
-public class TimestampField extends TextField
+public class TimestampField extends Component
 {
-	String iS_DateTimeFormat;
-	Timestamp i_Timestamp;
-	boolean ib_emptyIsValid = true;
-	boolean ib_nullAllowed = true;
-	Object lO_Info; 
+	private String iS_DateTimeFormat;
+	private Timestamp i_Timestamp;
+	private String iS_Text = "";
 
-	ComponentValidator i_ComponentValidator = new ComponentValidator()
+	private boolean ib_emptyIsValid = true;
+	private boolean ib_nullAllowed = true;
+	private boolean ib_emptyIsNull = true;
+
+	private ComponentValidator i_ComponentValidator;
+
+
+	private ComponentValidator i_ComponentValidator_Value = new ComponentValidator()
 	{
 		public boolean isValid(Component a_Component)
-		{
-			if (getText() == null && ib_nullAllowed)
+		{	
+			if (iS_Text == null && ib_nullAllowed)
 			{
 				return true;
 			}
-			else if (Statics.isTimestamp(getText(), iS_DateTimeFormat))
+			else if (Statics.isTimestamp(iS_Text, iS_DateTimeFormat))
 			{
-				return true;
+				if(i_ComponentValidator==null)
+				{
+					return true;
+				}
+				else
+				{
+					return i_ComponentValidator.isValid(a_Component);
+				}
+				
 			}
 			return false;
 		}
 	};
-	
+
+	public void setComponentValidator(ComponentValidator a_ComponentValidator)
+	{
+		i_ComponentValidator = a_ComponentValidator;	
+	}
+
 	public void setFormat(String aS_Format)
 	{
 		iS_DateTimeFormat = aS_Format;
@@ -43,13 +61,13 @@ public class TimestampField extends TextField
 	public TimestampField(Component a_Component_Parent)
 	{
 		super(a_Component_Parent);
-		setComponentValidator(i_ComponentValidator);
+		setComponentValidator(i_ComponentValidator_Value);
 	}
 
 	public TimestampField(Form a_Form)
 	{
 		super(a_Form);
-		setComponentValidator(i_ComponentValidator);
+		setComponentValidator(i_ComponentValidator_Value);
 	}
 
 	public void setTimestamp(Timestamp a_Timestamp)
@@ -57,15 +75,19 @@ public class TimestampField extends TextField
 		i_Timestamp = a_Timestamp;
 		if (iS_DateTimeFormat != null)
 		{
-			setText(Statics.timestampToString(a_Timestamp, iS_DateTimeFormat));
+			iS_Text = Statics.timestampToString(a_Timestamp, iS_DateTimeFormat);
+		}
+		if (hasComponentData())
+		{
+			setData(a_Timestamp);
 		}
 	}
 
-	private Timestamp getTimestamp(String aS_Timestamp)
+	private Timestamp stringToTimestamp(String aS_Timestamp)
 	{
 		if (Statics.isTimestamp(aS_Timestamp, iS_DateTimeFormat))
 		{
-			return Statics.getTimestamp(aS_Timestamp, iS_DateTimeFormat);
+			return Statics.stringToTimestamp(aS_Timestamp, iS_DateTimeFormat);
 		}
 		else
 		{
@@ -75,62 +97,132 @@ public class TimestampField extends TextField
 
 	public Timestamp getTimestamp()
 	{
-		return getTimestamp(getText());
-	}
-
-	public Time getTime()
-	{
-		Timestamp l_Timestamp = getTimestamp();
-		if(l_Timestamp!=null)
+		if (hasComponentData())
 		{
-			return new Time(l_Timestamp.getTime());
+			return (Timestamp) getData();
 		}
 		else
 		{
-			return null;
+			return stringToTimestamp(iS_Text);
+		}
+	}
+
+	public String getText()
+	{
+		if(hasComponentData() && isValid())
+		{
+			Timestamp l_Timestamp = (Timestamp)getData();
+			
+			if(l_Timestamp==null)
+			{
+				iS_Text = null;
+				return "";
+			}
+			else
+			{
+				iS_Text = Statics.timestampToString(l_Timestamp, iS_DateTimeFormat);
+				return iS_Text;
+			}			
+		}
+		else
+		{
+			if(iS_Text==null)
+			{
+				return "";
+			}
+			else
+			{
+				return iS_Text;
+			}
 		}
 	}
 	
-	public Date getDate()
+	private void setText(String aS_Text)
 	{
-		Timestamp l_Timestamp = getTimestamp();
-		if(l_Timestamp!=null)
+		if(ib_emptyIsNull && aS_Text.trim().equals(""))
 		{
-			return new Date(l_Timestamp.getTime());
+			aS_Text = null;
+		}
+		
+		iS_Text = aS_Text;
+		validate();
+		
+		if(hasComponentData() && isValid())
+		{
+			setData(stringToTimestamp(aS_Text));
+		}
+	}
+
+	/**
+	 * @see com.sohlman.netform.Component#checkIfNewValues()
+	 */
+	public boolean checkIfNewValues()
+	{
+		clearModifiedStatus();
+		HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
+		String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
+
+		if (lS_Parameters != null && lS_Parameters.length > 0)
+		{
+			// this is made because 
+			// XSLT processor don't convert 10 at all only 13
+			char[] lc_10 = { 10 };
+			String lS_NewText = Statics.replace(lS_Parameters[0], new String(lc_10), "");
+			if (!lS_NewText.equals(iS_Text))
+			{
+				//System.out.println(iS_NewText +" = " + iS_Text);
+				setText(lS_NewText);
+				
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
-			return null;
+			return false;
 		}
 	}
 
-	public Object getObject()
+	/**
+	 * @see com.sohlman.netform.Component#addComponent(java.lang.String, com.sohlman.netform.Component)
+	 */
+	protected void addComponent(Component a_Component)
 	{
-		return (Object) getTimestamp();
+		throw new NoSuchMethodError("Child components are not supported on TimestampField");
 	}
 
-	public void setObject(Object a_Object)
-	{
-		setTimestamp((Timestamp) a_Object);
-	}
 
 	public Component cloneComponent()
 	{
 		TimestampField l_TimestampField = new TimestampField(getParent());
+		l_TimestampField.setFormat(iS_DateTimeFormat);
 		l_TimestampField.setEmptyIsNull(emptyIsNull());
 		l_TimestampField.setVisible(isVisible());
 		l_TimestampField.setEnabled(isEnabled());
 		l_TimestampField.setNullIsAllowed(isNullAllowed());
 		return l_TimestampField;
 	}
-	
-	private void setNullIsAllowed(boolean ab_nullAllowed)
+
+	public void setNullIsAllowed(boolean ab_nullAllowed)
 	{
 		ib_nullAllowed = ab_nullAllowed;
 	}
-	
-	private boolean isNullAllowed()
+
+	public boolean isNullAllowed()
 	{
 		return ib_nullAllowed;
+	}
+	
+	public void setEmptyIsNull(boolean ab_value)
+	{
+		ib_emptyIsNull = ab_value;
+	}
+	
+	public boolean emptyIsNull()
+	{
+		return ib_emptyIsNull;
 	}
 }

@@ -1,5 +1,7 @@
 package com.sohlman.webapp.netform;
 
+import java.sql.Timestamp;
+
 import com.sohlman.dataset.ColumnInfo;
 import com.sohlman.dataset.DataSet;
 import com.sohlman.dataset.RowInfo;
@@ -8,8 +10,11 @@ import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.ComponentValidator;
+import com.sohlman.netform.IntegerField;
+import com.sohlman.netform.Statics;
 import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
+import com.sohlman.netform.TimestampField;
 
 /**
  * @author Sampsa Sohlman
@@ -68,26 +73,40 @@ public class TableForm extends MasterForm
 
 		i_DataSet = new DataSet();
 		ColumnInfo[] l_ColumnInfos =
-			{ new ColumnInfo("First Name", String.class), new ColumnInfo("Last Name", String.class), new ColumnInfo("Birthday", String.class)};
+			{ new ColumnInfo("Person id", Integer.class), new ColumnInfo("First Name", String.class), new ColumnInfo("Last Name", String.class), new ColumnInfo("Birthday", Timestamp.class)};
 
 		i_DataSet.setRowInfo(new RowInfo(l_ColumnInfos));
 		table = new Table(this,new DataSetTableModel(i_DataSet));
 		table.setMultiSelection(true);
+
+		IntegerField l_IntegerField = new IntegerField(table);
+		// l_IntegerField.setEmptyIsNull(true);
+		l_IntegerField.setFormat("0000");
+		table.setTableModelComponent(l_IntegerField,1);
 		
 		TextField l_Textfield_FirstName = new TextField(table);
 		l_Textfield_FirstName.setEmptyIsNull(true);
-		table.setTableModelComponent(l_Textfield_FirstName,1);
+		table.setTableModelComponent(l_Textfield_FirstName,2);
+		
 		TextField l_Textfield_LastName = new TextField(table);
-		table.setTableModelComponent(l_Textfield_LastName,2);
+		table.setTableModelComponent(l_Textfield_LastName,3);
+		
+		TimestampField l_TimestampField = new TimestampField(table);
+		l_TimestampField.setFormat("yyyy-MM-dd");
+		table.setTableModelComponent(l_TimestampField,4);
 
 		int li_row = i_DataSet.addRow();
 
-		i_DataSet.setValueAt("Sampsa", li_row, 1);
-		i_DataSet.setValueAt("Sohlman", li_row, 2);
+		i_DataSet.setValueAt(new Integer(1), li_row, 1);
+		i_DataSet.setValueAt("Sampsa", li_row, 2);
+		i_DataSet.setValueAt("Sohlman", li_row, 3);
+		i_DataSet.setValueAt(Statics.stringToTimestamp("1973-05-22","yyyy-MM-dd"), li_row, 4);
 
 		li_row = i_DataSet.addRow();
-
-		i_DataSet.setValueAt("Gabriela", li_row, 1);
-		i_DataSet.setValueAt("Ortiz Piña", li_row, 2);
+		
+		i_DataSet.setValueAt(new Integer(2), li_row, 1);
+		i_DataSet.setValueAt("Gabriela", li_row, 2);
+		i_DataSet.setValueAt("Ortiz Piña", li_row, 3);
+		i_DataSet.setValueAt(Statics.stringToTimestamp("1979-01-25","yyyy-MM-dd"), li_row, 4);
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * Textfield
  *
- * @version 2001-10-01
+ * @version 2004-15-01
  * @author Sampsa Sohlman
  */
 
@@ -15,6 +15,8 @@ public class TextField extends Component
 
 	private boolean ib_emptyIsNull = false;
 	private boolean ib_isTrim = false;
+
+	private boolean ib_imValidating = false;
 
 	/** Creates new TextComponent */
 
@@ -68,9 +70,6 @@ public class TextField extends Component
 
 	/** 
 	 * Set text if emptyIsNull on then "" String is handled like empty
-	 *
-	 *
-	 *
 	 */
 	public void setText(String aS_Text)
 	{
@@ -90,37 +89,50 @@ public class TextField extends Component
 		{
 			aS_Text = "";
 		}
-		
-		if(hasComponentData())
-		{
-			setData(aS_Text);	
-		}
-		
-		iS_Text = aS_Text;
-		validate();		
-	}
-	
-	
 
+		iS_Text = aS_Text;
+
+		ib_imValidating = true;
+		validate();
+		ib_imValidating = false;
+
+		if (hasComponentData() && isValid())
+		{
+			setData(iS_Text);
+		}
+	}
+
+	/**
+	 * <b>JSP also</b>  Returns current component text.<br>
+	 * Never returns null value
+	 * {@link ComponentData ComponentData} is not used
+	 * is component is not valid or you are 
+	 * calling this method in validation.
+	 * 
+	 * @return String
+	 */
 	public String getText()
 	{
-		if(hasComponentData() && isValid())
+
+		if (hasComponentData() && isValid() && !ib_imValidating)
 		{
 			Object l_Object = getData();
-			if(l_Object==null)
+			if (l_Object == null)
 			{
+				iS_Text = null;
 				return "";
 			}
 			else
 			{
-				return l_Object.toString();
+				iS_Text = l_Object.toString();
+				return iS_Text;
 			}
 		}
-		else		
+		else
 		{
-			if(iS_Text==null)
+			if (iS_Text == null)
 			{
-				return "";	
+				return "";
 			}
 			else
 			{
@@ -148,7 +160,7 @@ public class TextField extends Component
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);
 				setText(lS_NewText);
-				
+
 				return true;
 			}
 			else
@@ -167,10 +179,9 @@ public class TextField extends Component
 	 */
 	protected void addComponent(Component a_Component)
 	{
-		throw new NoSuchMethodError("Child components are not supported on Textfield");
+		throw new NoSuchMethodError("Child components are not supported on TimestampField");
 	}
 
-	
 	/**
 	 * @see com.sohlman.netform.Component#cloneComponent()
 	 */
@@ -180,7 +191,7 @@ public class TextField extends Component
 		l_Textfield.setEmptyIsNull(ib_emptyIsNull);
 		l_Textfield.setVisible(isVisible());
 		l_Textfield.setEnabled(isEnabled());
-		l_Textfield.setComponentValidator(getComponentValidator());		
+		l_Textfield.setComponentValidator(getComponentValidator());
 		return l_Textfield;
 	}
 }

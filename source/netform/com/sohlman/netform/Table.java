@@ -1018,9 +1018,7 @@ public class Table extends Component
 	 * @see com.sohlman.netform.Component#lastComponentIteration()
 	 */
 	protected void lastComponentIteration()
-	{
-		System.out.println("lastComponentIteration");
-		
+	{	
 		if (ib_componentsHasBeenChanged)
 		{
 			updateAllComponents();

@@ -7,7 +7,7 @@ import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.ComponentValidator;
-import com.sohlman.netform.NumberField;
+import com.sohlman.netform.IntegerField;
 import com.sohlman.netform.SimpleTableModel;
 import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
@@ -20,10 +20,10 @@ import com.sohlman.netform.TimestampField;
 public class FieldForm extends MasterForm
 {   
 	public TextField textField = new TextField(this);
-	public NumberField numberField = new NumberField(this, Integer.class);
+	public IntegerField integerField = new IntegerField(this);
 	public TimestampField timestampField = new TimestampField(this);
-	public Button increaseNumberButton = new Button(this);
-	public Button decreaseNumberButton = new Button(this);
+	public Button increaseIntButton = new Button(this);
+	public Button decreaseIntButton = new Button(this);
 	public Button tomorrowButton = new Button(this);
 	public Button yesterdayButton = new Button(this);
 	public Button nextMonthButton = new Button(this);
@@ -42,19 +42,20 @@ public class FieldForm extends MasterForm
 	{
 		public void eventAction(Component a_Component)
 		{
-			if (a_Component == increaseNumberButton)
+			if (a_Component == increaseIntButton) 
 			{
-				if (numberField.isValid())
-				{
-					numberField.setInt(numberField.getInt() + 1);
+				if (integerField.isValid())
+				{ 
+					integerField.setInt(integerField.getInt() + 1);
+					;
 				}
-
+ 
 			}
-			else if (a_Component == decreaseNumberButton)
+			else if (a_Component == decreaseIntButton)
 			{
-				if (numberField.isValid())
+				if (integerField.isValid())
 				{
-					numberField.setInt(numberField.getInt() - 1);
+					integerField.setInt(integerField.getInt() - 1);
 				}
 			}
 			else if (a_Component == tomorrowButton)
@@ -107,10 +108,10 @@ public class FieldForm extends MasterForm
 			}
 			else if (a_Component == numberToTableButton)
 			{
-				if (numberField.isValid())
+				if (integerField.isValid())
 				{
 					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
-					l_SimpleTableModel.addValue(numberField.getText());
+					l_SimpleTableModel.addValue(integerField.getText());
 				}
 			}
 			else if (a_Component == timestampToTableButton)
@@ -157,7 +158,7 @@ public class FieldForm extends MasterForm
 		timestampField.setTimestamp(new Timestamp(System.currentTimeMillis()));
 
 		// To NumberField
-		numberField.setInt(11);
+		integerField.setInt(11);
 
 		textField.setComponentValidator(i_ComponentValidator);
 
@@ -165,8 +166,8 @@ public class FieldForm extends MasterForm
 		// multiple items also server side
 		table.setMultiSelection(true);
 		// Register listeners
-		decreaseNumberButton.addComponentListener(i_ComponentListener);
-		increaseNumberButton.addComponentListener(i_ComponentListener);
+		decreaseIntButton.addComponentListener(i_ComponentListener);
+		increaseIntButton.addComponentListener(i_ComponentListener);
 		nextMonthButton.addComponentListener(i_ComponentListener);
 		previousMonthButton.addComponentListener(i_ComponentListener);
 		todayButton.addComponentListener(i_ComponentListener);

@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
  * <ul>
  * <li>Event handling services with {@link ComponentListener ComponentListener}</li>
  * <li>Data validation services with {@link ComponentValidator ComponentValidator}</li>
- * <li>Validation services</li>
  * </ul>
+ * 
  * @author  Sampsa Sohlman
  * @version 2003-11-20
  */
@@ -465,6 +465,21 @@ public abstract class Component
 			throw new IllegalStateException("Component object is not defined");
 		}
 	}
+	
+	final public int getCurrentState()
+	{
+		return i_Form.getCurrentState();
+	}
+	
+	final protected void checkState(int ai_state, String aS_ErrorMsg)
+	{
+		int li_state = getCurrentState();
+		if((li_state & ai_state) == 0)
+		{
+			throw new IllegalStateException(aS_ErrorMsg);
+		}
+	}
+	
 	
 	/** Has component data
 	 * @return

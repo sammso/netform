@@ -5,7 +5,7 @@
 	<!-- Put here your servlet.jar -->
 	<property name="servlet.jar" value="C:\Java\Tomcat 4.1\common\lib\servlet.jar"/>
 	<!-- Put here your dataset.jar -->
-	<property name="dataset.jar" value="C:\Java\Tomcat 4.1\common\lib\dataset.jar"/>
+	<property name="dataset.jar" value="..\DataSet\dataset.jar"/>
 	<property name="version" value="0.60"/>
 	<property name="title" value="NetForm Web Application Library v ${version}"/>
 	<property name="zipfile" value="NetForm.zip"/>
@@ -141,7 +141,7 @@
 			<packageset dir="${netformsrc}" defaultexcludes="yes"/>
 			<packageset dir="${datasetsrc}" defaultexcludes="yes"/>			
 			<doctitle><![CDATA[<h1>${title}</h1>]]></doctitle>
-			<bottom><![CDATA[<i>Sampsa Sohlman 2001-2003</i>]]></bottom>
+			<bottom><![CDATA[<i>Sampsa Sohlman 2001-2004</i>]]></bottom>
 			<group title="NetForm Core" packages="com.sohlman.netform"/>
 			<group title="DataSet NetForm Connector" packages="com.sohlman.dataset.netform"/>
 		</javadoc>		

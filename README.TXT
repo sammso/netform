@@ -9,21 +9,20 @@
      - TableModelComponent removed
        - Functionality is made through DataComponent
      - API Change Table.setTableModelComponent -> Table.setModelComponent
-     
    - Component's are based on new ComponentData data handling.
      - It is optional
      - It is done because Table. Every component now has option
        to store it's data to 
-   - Stared to developing STATE machine to prevent mal usage.
+   - Stared to developing STATE machine to control usage of method.
      - This methods that some functionality is generating Exception
        when called on wrong state
-       in 4 states. 
-        + Form.FORM_STATE_INIT
-        + Form.FORM_STATE_SETTINGS
-        + Form.FORM_STATE_EXECUTE
-        + Form.FORM_STATE_TEMPLATING
+        + Form.FORM_STATE_..
       see more on JavaDoc on Form and Components section
    - Component is isValid by default.
+   - Components removed
+     - NumberField, Replaced bye IntegerField etc.
+     - ToggleField, to be replace by BooleanField
+   - New Components, IntegerField, LongField, 
  
    
    What is new on 0.60
