@@ -50,8 +50,7 @@
 		<mkdir dir="${example.war}/WEB-INF/classes"/>		
 		
 	<!-- Complile and create example application jar -->
-		<mkdir dir="${builddir}"/>
-		<javac srcdir="${examplesrc}" destdir="${builddir}" optimize="true" nowarn="true">
+		<javac srcdir="${examplesrc}" destdir="${example.war}/WEB-INF/classes" optimize="true" nowarn="true">
 			<classpath>
 				<pathelement location="${servlet.jar}"/>
 				<pathelement location="${dataset.jar}"/>
@@ -59,8 +58,6 @@
 				<pathelement location="${NetForm.zip}/libs/dataset-netform.jar"/>				
 			</classpath>		
 		</javac>
-		<jar jarfile="${example.war}/WEB-INF/libs" basedir="${builddir}" compress="true"/>
-		<delete dir="${builddir}" failonerror="false"/>
 		
 	<!-- Copy libs to war -->
 
@@ -83,6 +80,8 @@
 		<copy todir="${example.war}">
 			<fileset dir="webapp">
 				<include name="**/*.jsp"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.jpg"/>								
 				<include name="**/*.xml"/>
 				<include name="**/*.tld"/>				
 			</fileset>

@@ -2,6 +2,11 @@
    NetForm Web Application Framework for Java V 0.5
    ================================================
    
+   Author
+   -------------------------------------------------------------
+   Sampsa Sohlman (http://sampsa.sohlman.com)
+    - All comments are more than welcome   
+        
    Goal of project
    ---------------
    
@@ -17,6 +22,4 @@
     - webapp contains webapplication sources for testing purposes
     - lib contains netform libraries and compiled web application war file.
     - javadocs is for javadocs 
-      
-   
-       
+    
