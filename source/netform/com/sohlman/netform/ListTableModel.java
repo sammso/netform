@@ -104,10 +104,6 @@ public abstract class ListTableModel extends TableModel
 		if(ai_row < 1 || ( ai_row - 1 ) > i_List.size())
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of row range");
-		}	
-		if(ai_column!=1)
-		{
-			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of column range. Column range is always 1");
 		}
 		Object lO_Row = i_List.get(ai_row - 1);
 		mapObjectToRow(a_Object, lO_Row, ai_column);
