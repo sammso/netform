@@ -568,6 +568,24 @@ public abstract class Component
 			}
 		}
 	}
+
+	/**
+	 * <b>JSP</b> Return String if component is valid othervice ""
+	 * 
+	 * @param a_String String to be returned
+	 * @return  String if component is valid othervice ""
+	 */
+	public String getStringIfIsValid(String a_String)
+	{
+		if(isValid())
+		{
+			return a_String;
+		}
+		else
+		{
+			return "";
+		}
+	}
 	
 	/**
 	 * This used to syncronize data with ComponentData
