@@ -35,6 +35,9 @@ public abstract class Component
 	private boolean ib_enabledChanged = false;
 	private boolean ib_componentIsModified = false;
 	private long il_count = 0;
+	private int ii_notValidChildComponentCount = 0; // Component is valid if this is 0
+	private String iS_Format = null;
+	private boolean ib_isFormatRead = false;
 
 	// For Storing component data
 	// Component is also allowed to store it's
@@ -109,7 +112,7 @@ public abstract class Component
 	}
 
 	/**
-	 * @return HttpServletRequest.
+	 * @return HttpServletRequest
 	 */
 	public final HttpServletRequest getHttpServletRequest()
 	{
@@ -308,7 +311,7 @@ public abstract class Component
 		return lb_componentIsModified;		
 	}
 
-	void lastIteration()
+	final void lastIteration()
 	{
 		if (ib_isVisibleChanged)
 		{
@@ -385,30 +388,48 @@ public abstract class Component
 	 * @return boolean true is no component validator defined or data is ok.
 	 * false if data is not ok.
 	 */
-	public boolean isValid()
+	public final boolean isValid()
+	{
+		// return ib_isValid;
+		return ib_isValid && ii_notValidChildComponentCount == 0;
+	}
+
+	/**
+	 * Tells validate status of this component, without child information
+	 * 
+	 * @return true if component is valid if child are not considered false if not
+	 */
+	public final boolean isValidWithoutChilds()
 	{
 		return ib_isValid;
 	}
 
 	final void setValid(boolean ab_isValid, Validate a_Validate)
 	{
+		boolean lb_isValid = ib_isValid;
 		if (i_ComponentValidator != null && ab_isValid && a_Validate!=null)
 		{
-			ib_isValid = i_ComponentValidator.isValid(a_Validate) && ab_isValid;
+			lb_isValid = i_ComponentValidator.isValid(a_Validate);
 		}
 		else
 		{
-			ib_isValid = ab_isValid;
+			lb_isValid = ab_isValid;
 		}
-		if (i_Component_Parent != null)
-		{
-			i_Component_Parent.setParentValid(ib_isValid);
+		
+		if(lb_isValid != ib_isValid) 
+		{		
+			// Component valid status has changed so we have to notify parent components
+			if (i_Component_Parent != null)
+			{
+				i_Component_Parent.setChildValid(lb_isValid);
+			}
+			else
+			{
+				// we are now on root and parent is Form
+				i_Form.setChildValid(lb_isValid);
+			}
 		}
-		else
-		{
-			// we are now on root and parent is Form
-			i_Form.setValid(ib_isValid);
-		}
+		ib_isValid = lb_isValid; // Set the componet valid status
 	}
 
 	/**
@@ -421,34 +442,24 @@ public abstract class Component
 		setValid(ab_isValid, null);
 	}
 
-	private void setParentValid(boolean ab_isValid)
+	private void setChildValid(boolean ab_isValid)
 	{
-		if (ib_isValid == true && ab_isValid == false)
+		if(ab_isValid)
 		{
-			ib_isValid = ab_isValid;
-			if (i_Component_Parent != null)
-			{
-				i_Component_Parent.setParentValid(ib_isValid);
-			}
+			ii_notValidChildComponentCount--;
 		}
-		else if (ib_isValid == false && ab_isValid == true)
+		else
 		{
-			Iterator l_Iterator = getChildComponents();
-			if (l_Iterator != null)
-			{
-				boolean lb_isValid = true;
-				while (l_Iterator.hasNext() && lb_isValid)
-				{
-					Component l_Component = (Component) l_Iterator.next();
-					lb_isValid = l_Component.isValid();
-				}
-				ib_isValid = lb_isValid;
-			}
-
-			if (i_Component_Parent != null)
-			{
-				i_Component_Parent.setParentValid(ib_isValid);
-			}
+			ii_notValidChildComponentCount++;
+		}
+		
+		if (i_Component_Parent != null)
+		{
+			i_Component_Parent.setChildValid(ib_isValid);
+		}
+		else
+		{
+			i_Form.setChildValid(ab_isValid);
 		}
 	}
 
@@ -542,7 +553,7 @@ public abstract class Component
 
 	/** 
 	 * Has component data
-	 * @return
+	 * @return true if component has ComponentData object or false if not
 	 */
 	protected boolean hasComponentData()
 	{
@@ -570,6 +581,22 @@ public abstract class Component
 				Component l_Component = (Component) l_Iterator.next();
 				l_Component.dispose();
 			}
+		}
+		// If component was not valid then it status has to be reduced from 
+		// parent components
+		if(!ib_isValid)
+		{
+			
+			Component l_Component = getParent();
+			if(l_Component!=null)
+			{
+				l_Component.setChildValid(true);
+			}
+			else
+			{
+				getForm().setChildValid(true);
+			}
+			
 		}
 	}
 
@@ -616,4 +643,70 @@ public abstract class Component
 	 * This used to syncronize data with ComponentData
 	 */
 	public abstract void syncronizeData();
+	
+	
+	/**
+	 * <b>JSP settings</b>
+	 * Set format for component, if component is not supporting formatting
+	 * this has no effect
+	 * 
+	 * @param aS_Format
+	 */
+	public void setFormat(String aS_Format)
+	{
+		iS_Format = aS_Format;
+	}
+	
+	/**
+	 * It reads column format
+	 * <p>
+	 * Format can be set with {@link #setFormat(String) setFormat()} and if 
+	 * it is not set then it tries to read it form parent component and finally
+	 * from Form. This parent search will be done only once. 
+	 * 
+	 * @param a_Class Class which type format should be for
+	 * @return String containing format information
+	 */
+	final protected String getFormat(Class a_Class)
+	{
+		if(iS_Format==null && ib_isFormatRead == false)
+		{
+			if( getParent()!=null)
+			{
+				iS_Format = getParent().getFormatFromParent(a_Class, getComponentData());
+				ib_isFormatRead = true;
+			}
+			else
+			{
+				// TODO support form level formatting
+				// getParentFormat (Class a_Class)
+				iS_Format = null;
+				ib_isFormatRead = true;
+				return null;// getForm().getFormatFromForm(a_Class);
+			}			
+		}
+		return iS_Format;
+	}
+	
+	/**
+	 * 
+	 * @param a_Class Class which type format should be for
+	 * @param a_ComponentData which may hold information about the which kind of format 
+	 * it should be, example in table it holds column number
+	 * @return String String containing format information for current 
+	 * 	Class or ComponentData, null if nothing found
+	 */
+	protected String getFormatFromParent(Class a_Class, ComponentData a_ComponentData)
+	{
+		if( getParent()!=null)
+		{
+			return getParent().getFormatFromParent(a_Class, getComponentData());
+		}
+		else
+		{
+			// TODO support form level formatting
+			// getParentFormat (Class a_Class)
+			return null;// getForm().getFormatFromForm(a_Class);
+		}
+	}
 }

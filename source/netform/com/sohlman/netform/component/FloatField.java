@@ -28,13 +28,36 @@ public class FloatField extends TextField
 		super(a_Form);
 	}
 
-	public void setFormat(String aS_Format)
+	protected DecimalFormat getDecimalFormat()
 	{
-		i_DecimalFormat = new DecimalFormat(aS_Format);
+		if(i_DecimalFormat==null)
+		{
+			String lS_Format = getFormat(Float.class);
+			if(lS_Format==null)
+			{
+				return null;
+			}
+			else
+			{
+				try
+				{
+					i_DecimalFormat = new DecimalFormat(lS_Format);
+					return i_DecimalFormat;
+				}
+				catch(Exception l_Exception)
+				{
+					return null;
+				}
+			}
+		}
+		else
+		{
+			return i_DecimalFormat;
+		}
 	}
 
 	/**
-	 * @see #setFloat(Long)
+	 * @see #setFloat(float)
 	 */
 	public boolean setFloat(float a_float)
 	{
@@ -60,13 +83,14 @@ public class FloatField extends TextField
 		{
 			validate(new FloatFieldValidate(this, a_Float));
 		}
-		if (isValid())
+		if (isValidWithoutChilds())
 		{
 			i_Float = a_Float;
-			if (i_DecimalFormat != null)
+			DecimalFormat l_DecimalFormat = getDecimalFormat();
+			if (l_DecimalFormat != null)
 			{
 				StringBuffer l_StringBuffer = new StringBuffer();
-				i_DecimalFormat.format(a_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
+				l_DecimalFormat.format(a_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
 				iS_Text = l_StringBuffer.toString();
 			}
 			else
@@ -108,7 +132,7 @@ public class FloatField extends TextField
 			validate(new FloatFieldValidate(this, l_Float));
 		}
 
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			if (iS_Text == null)
 			{
@@ -119,14 +143,14 @@ public class FloatField extends TextField
 				setData(l_Float);
 			}
 		}
-		return isValid();
+		return isValidWithoutChilds();
 	}
 	/**
 	 * @see TextField#getText()
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			i_Float = (Float) getData();
 			if (i_Float == null)
@@ -135,10 +159,11 @@ public class FloatField extends TextField
 			}
 			else
 			{
-				if (i_DecimalFormat != null)
+				DecimalFormat l_DecimalFormat = getDecimalFormat();
+				if (l_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
-					i_DecimalFormat.format(i_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
+					l_DecimalFormat.format(i_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
 
 					return Utils.stringToHTML(l_StringBuffer.toString());
 				}

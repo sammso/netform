@@ -93,7 +93,7 @@ public class TextField extends Component
 	 * Set TextField value
 	 * 
 	 * @param aS_Text if parameter is null then and null is not allowed then
-	 * it holds "" and {@link #hasNull() hasNull()} returns always false
+	 * it holds "" and {@link #isNullAllowed() isNullAllowed()} returns always false
 	 */
 	public boolean setText(String aS_Text)
 	{
@@ -106,27 +106,27 @@ public class TextField extends Component
 		
 		validate(new TextFieldValidate(this,iS_Text));
 
-		if (hasComponentData() && isValid() && ab_setData)
+		if (hasComponentData() && isValidWithoutChilds() && ab_setData)
 		{
 			setData(iS_Text);
 		}
-		return isValid();
+		return isValidWithoutChilds();
 	}
 
 	/**
 	 * <b>JSP</b>  Returns current component text.<br>
 	 * Never returns null value
-	 * {@link ComponentData ComponentData} is not used
+	 * {@link com.sohlman.netform.ComponentData ComponentData} is not used
 	 * is component is not valid or you are 
 	 * calling this method in validation.
 	 * <p>
-	 * If value is null then {@link TextField#hasNull() hasNull()} tells if field is null
+	 * If value is null then {@link #isNullAllowed isNullAllowed()} tells if field is null
 	 * or not
 	 * @return String
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			Object l_Object = getData();
 			if (l_Object == null)
@@ -158,7 +158,7 @@ public class TextField extends Component
 	 */
 	public boolean containsNull()
 	{
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			return getData()==null;
 		}
@@ -204,6 +204,12 @@ public class TextField extends Component
 		}
 	}
 
+	/**
+	 * Format String by rules of TextField 
+	 * 
+	 * @param a_String to formatted
+	 * @return String 
+	 */
 	protected String formatStringByRules(String a_String)
 	{
 		if (a_String == null && !ib_isEmptyNull)
@@ -223,7 +229,7 @@ public class TextField extends Component
 	
 
 	/**
-	 * @see com.sohlman.netform.Component#addComponent(java.lang.String, com.sohlman.netform.Component)
+	 * @see com.sohlman.netform.Component#addComponent(Component)
 	 */
 	protected void addComponent(Component a_Component)
 	{
@@ -261,7 +267,7 @@ public class TextField extends Component
 	 */
 	public void validate()
 	{
-		// SetText
+		// SetText to validate
 		setText(iS_Text);
 	}
 

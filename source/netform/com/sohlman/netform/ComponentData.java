@@ -10,14 +10,14 @@ public interface ComponentData
 {	
 	/**
 	 * Set Data To DataModel<br>
-	 * example {@link TableModel TableModel}
+	 * example {@link com.sohlman.netform.component.table.TableModel TableModel}
 	 * @param a_Object to be put to DataModel
 	 */
 	public void setData(Object a_Object);
 
 	/**
 	 * Get Data from DataModel<br>
-	 * example {@link TableModel TableModel}
+	 * example {@link com.sohlman.netform.component.table.TableModel TableModel}
 	 * @param a_Object Object in DataModel
 	 */
 	public Object getData();

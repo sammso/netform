@@ -10,17 +10,21 @@
 <jsp:include page="header.jsp" />
 <h1>2. Table Example</h1>
 <h2>Purpose</h2> 
-<p>Purpose of this example is to be test case how to use Table inside Table.</p>
+<p>Purpose of this example is to be test case, how to use Table inside Table.</p>
+<p>First (1) table is table which has combobox, which is table component inside table component. Data source for this combobox is
+same as s second (2) list  and by modifying data inside list naturally changed data inside combobox.</p>
+
+
 <form method="POST" action="<%=form.getRequestURI() %>">
 <table cellpadding="1" cellspacing="1" border="1" >
 <tr>
-	<td>Table</td><td>Edit - Choise List in Table</td>
+	<td>(1) Table</td><td>(2) Edit - Choise List in Table</td>
 </tr>
 <tr>
 <td valign="top" >
 <table>
 	<tr>
-		<td>Selected</td><td>Choise List<td>Some Text</td>
+		<th>Selected</th><th>Choise List<th>Some Text</th>
 	</tr><%
 			for(int li_y = 1 ; li_y <= form.tableList.getDisplayRowCount()  ; li_y++)
 			{ 
@@ -58,9 +62,9 @@
 			} 
 	%></table>
 
-<input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
-<input type="submit" name="<%=form.insertRowButton.getResponseName()%>" value="Insert">
-<input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
+<input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add" class="submit">
+<input type="submit" name="<%=form.insertRowButton.getResponseName()%>" value="Insert" class="submit">
+<input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete" class="submit">
 <input type="submit" name="" value="Validate">
 </td>
 <td valign="top" >
@@ -72,7 +76,7 @@
 			<td><input type="text" name="<%=form.textField.getResponseName() %>" value="<%=form.textField.getText() %>"></td>
 		</tr>
 		<tr>
-			<td><input type="submit" name="<%=form.addTextButton.getResponseName() %>" value="Add"> <input type="submit" name="<%=form.insertTextButton.getResponseName() %>" value="Insert">
+			<td><input type="submit" name="<%=form.addTextButton.getResponseName() %>" value="Add" class="submit"> <input type="submit" name="<%=form.insertTextButton.getResponseName() %>" value="Insert" class="submit">
 		</tr>		
 		<tr>
 			<td>
@@ -87,7 +91,7 @@
 			</td>
 		</tr>	
 		<tr>
-			<td><input type="submit" name="<%=form.removeTextButton.getResponseName() %>" value="Remove"></td>
+			<td><input type="submit" name="<%=form.removeTextButton.getResponseName() %>" value="Remove" class="submit"></td>
 		</tr>
 		<tr>
 			<td>It is not possible to remove rows that are used on Table</td>

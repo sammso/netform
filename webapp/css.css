@@ -148,6 +148,18 @@ A.menuitem:link
  
 }
 
+TH
+{
+ color: #FFFFFF;
+ background-color: #0313DD;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+}
+
 TD.menutitle1 
 {
  color: #000000;
@@ -378,7 +390,8 @@ LI.text
  font-weight: normal;
  text-decoration: none;
 }
- INPUT 
+
+INPUT 
 {
  color: #000000;
  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -387,9 +400,23 @@ LI.text
  line-height: normal;
  font-weight: normal;
  text-decoration: none;
+ width: 100%; 
 }
 
- INPUT.notvalid 
+input.submit {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	width: auto; 	
+	display: caption;
+}
+
+.pink
+{
+	color: #FFAAAA
+}
+
+INPUT.notvalid 
 {
  color: #000000;
  background-color: #FFAAAA;
@@ -399,6 +426,7 @@ LI.text
  line-height: normal;
  font-weight: normal;
  text-decoration: none;
+ width: 100%;
 }
 
 SELECT 
@@ -409,7 +437,9 @@ SELECT
  font-style: normal;
  line-height: normal;
  font-weight: normal;
- text-decoration: none; 
+ text-decoration: none;
+ width: 100%;
+ height: 100%;
 }
 
 TD.tabletitle 

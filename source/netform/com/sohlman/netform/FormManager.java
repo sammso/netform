@@ -99,7 +99,7 @@ public class FormManager implements HttpSessionListener
 	 * @param a_HttpServletRequest
 	 * @param a_HttpServletResponse
 	 * @param a_Class_Form
-	 * @return
+	 * @return boolean true if logged in false if not
 	 */
 	public static boolean isLoggedIn(HttpServletRequest a_HttpServletRequest, HttpServletResponse a_HttpServletResponse)
 	{
@@ -179,7 +179,7 @@ public class FormManager implements HttpSessionListener
 
 	/**
 	 * @return String containing next page after login. This is defined in 
-	 * {@link LoginForm.setDefaultPageAfterLogin(String)  LoginForm.setDefaultPageAfterLogin} or {@link #createForm createForm}
+	 * {@link com.sohlman.netform.LoginForm#setDefaultPageAfterLogin(String) LoginForm.setDefaultPageAfterLogin() } createForm() }
 	 */
 	public String getNextPageAfterLogin()
 	{
@@ -345,8 +345,6 @@ public class FormManager implements HttpSessionListener
 
 	/**
 	 * If you override this you have to call super.sessionCreated(a_HttpSessionEvent)
-	 * 
-	 * @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
 	 */
 	public void sessionCreated(HttpSessionEvent a_HttpSessionEvent)
 	{
@@ -354,8 +352,7 @@ public class FormManager implements HttpSessionListener
 	}
 
 	/**
-	 * If you override this you have to call super.sessionDestroyed(a_HttpSessionEvent);
-	 * @see javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)
+	 * If you override this you have to call super.sessionDestroyed(a_HttpSessionEvent)
 	 */
 	public void sessionDestroyed(HttpSessionEvent a_HttpSessionEvent)
 	{

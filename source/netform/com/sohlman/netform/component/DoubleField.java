@@ -28,14 +28,37 @@ public class DoubleField extends TextField
 	{
 		super(a_Form);
 	}
-
-	public void setFormat(String aS_Format)
+	
+	protected DecimalFormat getDecimalFormat()
 	{
-		i_DecimalFormat = new DecimalFormat(aS_Format);
+		if(i_DecimalFormat==null)
+		{
+			String lS_Format = getFormat(Double.class);
+			if(lS_Format==null)
+			{
+				return null;
+			}
+			else
+			{
+				try
+				{
+					i_DecimalFormat = new DecimalFormat(lS_Format);
+					return i_DecimalFormat;
+				}
+				catch(Exception l_Exception)
+				{
+					return null;
+				}
+			}
+		}
+		else
+		{
+			return i_DecimalFormat;
+		}
 	}
 
 	/**
-	 * @see #setDouble(Long)
+	 * @see #setDouble(double)
 	 */
 	public void setDouble(double a_double)
 	{
@@ -62,13 +85,14 @@ public class DoubleField extends TextField
 		{
 			validate(new DoubleFieldValidate(this, a_Double));
 		}
-		if (isValid())
+		if (isValidWithoutChilds())
 		{
 			i_Double = a_Double;
-			if (i_DecimalFormat != null)
+			DecimalFormat l_DecimalFormat = getDecimalFormat();
+			if (l_DecimalFormat != null)
 			{
 				StringBuffer l_StringBuffer = new StringBuffer();
-				i_DecimalFormat.format(a_Double.doubleValue(), l_StringBuffer, new FieldPosition(0));
+				l_DecimalFormat.format(a_Double.doubleValue(), l_StringBuffer, new FieldPosition(0));
 
 				iS_Text = l_StringBuffer.toString();
 			}
@@ -106,7 +130,7 @@ public class DoubleField extends TextField
 			validate(new DoubleFieldValidate(this, l_Double));
 		}
 
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			if (iS_Text == null)
 			{
@@ -117,14 +141,14 @@ public class DoubleField extends TextField
 				setData(l_Double);
 			}
 		}
-		return isValid();
+		return isValidWithoutChilds();
 	}
 	/**
 	 * @see TextField#getText()
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			Long l_Long = (Long) getData();
 			if (l_Long == null)
@@ -133,10 +157,11 @@ public class DoubleField extends TextField
 			}
 			else
 			{
-				if (i_DecimalFormat != null)
+				DecimalFormat l_DecimalFormat = getDecimalFormat();
+				if (l_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
-					i_DecimalFormat.format(l_Long.doubleValue(), l_StringBuffer, new FieldPosition(0));
+					l_DecimalFormat.format(l_Long.doubleValue(), l_StringBuffer, new FieldPosition(0));
 
 					return Utils.stringToHTML(l_StringBuffer.toString());
 				}

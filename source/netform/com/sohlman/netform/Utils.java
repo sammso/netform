@@ -303,7 +303,7 @@ public class Utils
 	 * stringToHTML
 	 *
 	 * @param aS_Text
-	 * @return
+	 * @return String HTML compatible String
 	 */
 	public static final String stringToHTML(String aS_Text)
 	{

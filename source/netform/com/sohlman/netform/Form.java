@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
  * <p>Inherit your form class from Form.
  * <p><u>Implement:  
  * <ol>
- * 	<li>{@link #init() init()} method <b>Required</b> Normally here you do form initalization.</li>
+ * 	<li>Make construtor where you create your Compoponents method <b>Required</b> Normally here you do form initalization.</li>
+ * 	<li>{@link #init() init()} method <b>Required</b> Here you read first data to your components. </li>
  * 	<li>{@link #startService() startService()} method <i>Optional</i> </li>
  * 	<li>{@link #endService() endService()} method <i>Optional</i> </li>
  * 	<li>{@link #allowFormChange() allowFormChange()} method <i>Optional</i> To control if web page change is allowed.</li>
@@ -43,6 +44,7 @@ public abstract class Form
 	private ServletContext i_ServletContext;
 
 	private String iS_Name;
+	private int ii_notValidChildComponentCount = 0; // Component is valid if this is 0
 
 	/**
 	 * Internal use
@@ -224,10 +226,7 @@ public abstract class Form
 					l_Component.lastIteration();
 				}
 			}
-			if (!lb_eventsGenerated)
-			{
-				//			checkIfOutOfSynch()
-			}
+
 			redirectToNextPage();
 			nextValueForComponentResponnsePrefix();
 			ii_currentState = FORM_STATE_TEMPLATING;
@@ -282,11 +281,6 @@ public abstract class Form
 		return iS_Name;
 	}
 
-	public final String getTimestamp()
-	{
-		return "Made by Sampsa";
-	}
-
 	/**
 	 * Internal use
 	 * Set if form is valid or not
@@ -295,23 +289,18 @@ public abstract class Form
 	 */
 	final void setValid(boolean ab_isValid)
 	{
-		if (ib_isValid == true && ab_isValid == false)
+		ib_isValid = ab_isValid;
+	}
+	
+	final void setChildValid(boolean ab_isValid)
+	{
+		if(ab_isValid)
 		{
-			ib_isValid = ab_isValid;
+			ii_notValidChildComponentCount--;
 		}
-		else if (ib_isValid == false && ab_isValid == true)
+		else
 		{
-			Iterator l_Enumeration = iAL_Components.iterator();
-
-			boolean lb_isValid = ab_isValid;
-
-			while (l_Enumeration.hasNext() && lb_isValid)
-			{
-				Component l_Component = (Component) l_Enumeration.next();
-				lb_isValid = l_Component.isValid();
-			}
-
-			ib_isValid = lb_isValid;
+			ii_notValidChildComponentCount++;
 		}
 	}
 
@@ -322,7 +311,7 @@ public abstract class Form
 	 */
 	public final boolean isValid()
 	{
-		return ib_isValid;
+		return ib_isValid && ii_notValidChildComponentCount == 0;
 	}
 
 	/**
@@ -465,4 +454,16 @@ public abstract class Form
 	{
 		return i_HttpServletRequest.getParameter(aS_Name);
 	}	
+	
+	/**
+	 * TODO: Implement
+	 * This returns default formats
+	 * 
+	 * @param a_Class class to be search for format
+	 * @return Format string to class
+	 */
+	final String getFormatFromParent(Class a_Class)
+	{
+		return null;	
+	}
 }

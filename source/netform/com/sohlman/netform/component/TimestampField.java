@@ -20,7 +20,7 @@ import com.sohlman.netform.Utils;
 
 public class TimestampField extends TextField
 {
-	protected SimpleDateFormat i_SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	protected SimpleDateFormat i_SimpleDateFormat = null;
 	protected Timestamp i_Timestamp = null;
 	
 	public TimestampField(Component a_Component_Parent)
@@ -35,9 +35,28 @@ public class TimestampField extends TextField
 		ib_isTrim = true;
 	}
 
-	public void setFormat(String aS_Format)
+	protected SimpleDateFormat getSimpleDateFormat()
 	{
-		i_SimpleDateFormat = new SimpleDateFormat(aS_Format);
+		if(i_SimpleDateFormat==null)
+		{
+			String lS_Format = getFormat(Timestamp.class);
+			if(lS_Format==null)
+			{
+				i_SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			}
+			else
+			{
+				try
+				{
+					i_SimpleDateFormat = new SimpleDateFormat(lS_Format);
+				}
+				catch(Exception l_Exception)
+				{
+					i_SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				}
+			}
+		}
+		return i_SimpleDateFormat;
 	}
 	
 	public void setTimestamp(Timestamp a_Timestamp)
@@ -55,15 +74,16 @@ public class TimestampField extends TextField
 		{		
 			validate(new TimestampFieldValidate(this, a_Timestamp));
 		}
-		if (isValid())
+		if (isValidWithoutChilds())
 		{
 			// If iS_Format is null then format is default of
 			
 			i_Timestamp = a_Timestamp;
+			SimpleDateFormat l_SimpleDateFormat = getSimpleDateFormat();
 			if(i_Timestamp!=null)
 			{
 				// Generates null pointer error if Timestamp is null
-				iS_Text = i_SimpleDateFormat.format(a_Timestamp);
+				iS_Text = l_SimpleDateFormat.format(a_Timestamp);
 			}
 			else
 			{
@@ -93,7 +113,8 @@ public class TimestampField extends TextField
 		{
 			try
 			{
-				Date l_Date = i_SimpleDateFormat.parse(aS_Text);
+				SimpleDateFormat l_SimpleDateFormat = getSimpleDateFormat();
+				Date l_Date = l_SimpleDateFormat.parse(aS_Text);
 				i_Timestamp = new Timestamp(l_Date.getTime());
 				validate(new TimestampFieldValidate(this, i_Timestamp));
 			}
@@ -107,7 +128,7 @@ public class TimestampField extends TextField
 			validate(new TimestampFieldValidate(this, i_Timestamp));
 		}
 
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			if (iS_Text == null)
 			{
@@ -118,14 +139,14 @@ public class TimestampField extends TextField
 				setData(i_Timestamp); 
 			}
 		}
-		return isValid();
+		return isValidWithoutChilds();
 	}
 	/**
 	 * @see TextField#getText()
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			i_Timestamp = (Timestamp) getData();
 			if (i_Timestamp == null)
@@ -134,7 +155,8 @@ public class TimestampField extends TextField
 			}
 			else
 			{
-				return i_SimpleDateFormat.format(i_Timestamp);
+				SimpleDateFormat l_SimpleDateFormat = getSimpleDateFormat();
+				return l_SimpleDateFormat.format(i_Timestamp);
 			}
 		}
 		else

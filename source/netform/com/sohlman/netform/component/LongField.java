@@ -30,9 +30,32 @@ public class LongField extends TextField
 		ib_isTrim = true;
 	}
 
-	public void setFormat(String aS_Format)
+	protected DecimalFormat getDecimalFormat()
 	{
-		i_DecimalFormat = new DecimalFormat(aS_Format);
+		if(i_DecimalFormat==null)
+		{
+			String lS_Format = getFormat(Long.class);
+			if(lS_Format==null)
+			{
+				return null;
+			}
+			else
+			{
+				try
+				{
+					i_DecimalFormat = new DecimalFormat(lS_Format);
+					return i_DecimalFormat;
+				}
+				catch(Exception l_Exception)
+				{
+					return null;
+				}
+			}
+		}
+		else
+		{
+			return i_DecimalFormat;
+		}
 	}
 
 	/**
@@ -76,13 +99,14 @@ public class LongField extends TextField
 		{
 			validate(new LongFieldValidate(this, a_Long));
 		}
-		if (isValid())
+		if (isValidWithoutChilds())
 		{
 			i_Long = a_Long;
-			if (i_DecimalFormat != null)
+			DecimalFormat l_DecimalFormat = getDecimalFormat();
+			if (l_DecimalFormat != null)
 			{
 				StringBuffer l_StringBuffer = new StringBuffer();
-				i_DecimalFormat.format(a_Long.longValue(), l_StringBuffer, new FieldPosition(0));
+				l_DecimalFormat.format(a_Long.longValue(), l_StringBuffer, new FieldPosition(0));
 
 				iS_Text = l_StringBuffer.toString();
 			}
@@ -125,7 +149,7 @@ public class LongField extends TextField
 			validate(new LongFieldValidate(this, i_Long));
 		}
 
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			if (iS_Text == null)
 			{
@@ -136,14 +160,14 @@ public class LongField extends TextField
 				setData(i_Long);
 			}
 		}
-		return isValid();
+		return isValidWithoutChilds();
 	}
 	/**
 	 * @see TextField#getText()
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValidWithoutChilds())
 		{
 			i_Long = (Long) getData();
 			if (i_Long == null)
@@ -152,10 +176,11 @@ public class LongField extends TextField
 			}
 			else
 			{
-				if (i_DecimalFormat != null)
+				DecimalFormat l_DecimalFormat = getDecimalFormat();
+				if (l_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
-					i_DecimalFormat.format(i_Long.longValue(), l_StringBuffer, new FieldPosition(0));
+					l_DecimalFormat.format(i_Long.longValue(), l_StringBuffer, new FieldPosition(0));
 
 					return Utils.stringToHTML(l_StringBuffer.toString());
 				}

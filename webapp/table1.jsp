@@ -5,15 +5,30 @@
 	try 
 	{
 		form = (Table1Form)FormManager.getForm(request, response, l_ServletContext, Table1Form.class, "login.jsp");
+		// Set column formats for table (NOTE has to be done before execute)
+		form.table.setColumnFormat(1,"00000");		
+		form.table.setColumnFormat(4,"yyyy-MM-dd");	
 		form.execute(); 
+	
 %> 
 <jsp:include page="header.jsp" />
 <h1>1. Table Example <% if(!form.isValid()) {%>(form is not valid)<% } %></h1>
+<p>This case demonstrate NetForm table component with field components inside, 
+it also demonstrates the validation of fields inside of Table. 
+Form is not valid if all components are not valid. 
+Not valid fields are shown as <b class="pink" >Pink</b></p>
+<h2>Column validation rules</h2>
+<ul>
+	<li>Number has to be number</li>
+	<li>First name has be at least 3 chars</li>
+	<li>Last name has be at least 3 chars</li>	
+	<li>Birthday has to be date format (yyyy-MM-dd)</li>
+</ul>
 <p>This is using <a href="http://dataset.sohlman.com">DataSet</a> as internal datastore</p>
 <form method="POST" action="<%=form.getRequestURI() %>">
 <table>
 	<tr>
-		<td>Selected</td><td>Number<td>First name</td><td>Last name</td><td>Birthdate</td>
+		<th>Selected</th><th>Number</th><th>First name</th><th>Last name</th><th>Birthdate</th>
 	</tr><% 
 			for(int li_y = 1 ; li_y <= form.table.getDisplayRowCount()  ; li_y++)
 			{ %>
@@ -28,10 +43,10 @@
 	</tr><%
 			} 
 	%></table>
-<input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
-<input type="submit" name="<%=form.insertRowButton.getResponseName()%>" value="Insert">
-<input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
-<input type="submit" name="" value="Validate">
+<input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add" class="submit">
+<input type="submit" name="<%=form.insertRowButton.getResponseName()%>" value="Insert" class="submit">
+<input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete" class="submit">
+<input type="submit" name="" value="Validate" class="submit">
 </form> 
 <jsp:include page="footer.jsp" /><%
 	}
