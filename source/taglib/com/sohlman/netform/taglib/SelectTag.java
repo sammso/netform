@@ -1,0 +1,154 @@
+package com.sohlman.netform.taglib;
+
+import java.io.IOException;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.IterationTag;
+
+import com.sohlman.netform.component.table.Table;
+
+/**
+ * @author Sampsa Sohlman
+ */
+public class SelectTag extends ComponentTag implements IterationTag
+{
+	private Table i_Table = null;
+
+	private String iS_Style = null;
+
+	private String iS_Class = null;
+
+	private String iS_NotValidStyle = null;
+
+	private String iS_NotValidClass = null;
+
+	private String iS_Id = null;
+
+	private String iS_Size = null;
+
+	private int ii_index = 1;
+
+	public void setStyle(String aS_Style)
+	{
+		iS_Style = aS_Style;
+	}
+
+	public void setClass(String aS_Class)
+	{
+		iS_Class = aS_Class;
+	}
+
+	public void setNotValidStyle(String aS_NotValidStyle)
+	{
+		iS_NotValidStyle = aS_NotValidStyle;
+	}
+
+	public void setNotValidClass(String aS_NotValidClass)
+	{
+		iS_NotValidClass = aS_NotValidClass;
+	}
+
+	public void setSize(String aS_Size)
+	{
+		iS_Size = aS_Size;
+	}
+
+	/**
+	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
+	 */
+	public int doEndTag() throws JspException
+	{
+		try
+		{
+			i_PageContext.getOut().print("</select>");
+			return EVAL_PAGE;
+		}
+		catch (IOException l_IOException)
+		{
+			return EVAL_PAGE;
+		}
+	}
+
+	/**
+	 * @see javax.servlet.jsp.tagext.Tag#doStartTag()
+	 */
+	public int doStartTag() throws JspException
+	{
+		if(init())
+		{
+			i_Table = (Table) getComponentFormThisTag();
+			ii_index=1;
+			try
+			{
+				i_PageContext.getOut().print("<select");
+				i_PageContext.getOut().print(" name=\"" + i_Table.getResponseName() + "\"");
+
+				i_PageContext.getOut().print(" size=\"" + iS_Size + "\"");
+
+				if(iS_Style != null)
+				{
+					if(iS_NotValidStyle == null || i_Table.isValid())
+					{
+						i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+					}
+					else
+					{
+						i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
+					}
+				}
+
+				if(iS_Class != null)
+				{
+					if(iS_NotValidClass == null || i_Table.isValid())
+					{
+						i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+					}
+					else
+					{
+						i_PageContext.getOut().print(" class=\"" + iS_NotValidClass + "\"");
+					}
+				}
+			}
+			catch (IOException l_IOException)
+			{
+				return EVAL_PAGE;
+			}
+		}
+		else
+		{
+			// ERROR
+		}
+		return EVAL_BODY_INCLUDE;
+	}
+
+	/**
+	 * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+	 */
+	public int doAfterBody() throws JspException
+	{
+		ii_index++;
+		if(ii_index <= i_Table.getTableModel().getRowCount())
+		{
+			return EVAL_BODY_AGAIN;
+		}
+		else
+		{
+			return EVAL_PAGE;
+		}
+	}
+
+	/**
+	 * @see javax.servlet.jsp.tagext.Tag#release()
+	 */
+	public void release()
+	{
+		super.release();
+		i_Table = null;
+		iS_Style = null;
+		iS_Class = null;
+		iS_NotValidStyle = null;
+		iS_NotValidClass = null;
+		iS_Id = null;
+		iS_Size = null;
+	}
+}
