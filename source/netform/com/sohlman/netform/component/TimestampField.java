@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.sohlman.netform.Component;
 import com.sohlman.netform.Form;
 import com.sohlman.netform.Utils;
@@ -42,6 +44,8 @@ public class TimestampField extends TextField
 {
 	protected SimpleDateFormat i_SimpleDateFormat = null;
 	protected Timestamp i_Timestamp = null;
+	protected String iS_TimeFormat = null;
+	protected String iS_DateFormat = null;
 	
 	public TimestampField(Component a_Component_Parent)
 	{
@@ -198,6 +202,26 @@ public class TimestampField extends TextField
 	
 	/**
 	 * <b>JSP</b>
+	 * 
+	 * @return Date part of value
+	 */
+	public String getDateText()
+	{
+		return getTextByFormat(iS_DateFormat);	
+	}
+	
+	/**
+	 * <b>JSP</b>
+	 * 
+	 * @return Time part of value
+	 */	
+	public String getTimeText()
+	{
+		return getTextByFormat(iS_TimeFormat);
+	}
+	
+	/**
+	 * <b>JSP</b>
 	 * <p>
 	 * Returns value by specific format
 	 * 
@@ -209,34 +233,24 @@ public class TimestampField extends TextField
 		if (hasComponentData() && isValidWithoutChilds())
 		{
 			i_Timestamp = (Timestamp) getData();
-			if (i_Timestamp == null)
-			{
-				return "";
-			}
-			else
-			{
-				try
-				{
-					SimpleDateFormat l_SimpleDateFormat = new SimpleDateFormat(aS_Format);
-					return l_SimpleDateFormat.format(i_Timestamp);
-				}
-				catch(Exception l_Exception)
-				{
-					return "";
-				}
-				
-			}
+		}
+
+		if (i_Timestamp == null)
+		{
+			return "";
 		}
 		else
 		{
-			if (iS_Text == null)
+			try
+			{
+				SimpleDateFormat l_SimpleDateFormat = new SimpleDateFormat(aS_Format);
+				return l_SimpleDateFormat.format(i_Timestamp);
+			}
+			catch(Exception l_Exception)
 			{
 				return "";
 			}
-			else
-			{
-				return Utils.stringToHTML(iS_Text);
-			}
+				
 		}		
 	}
 	
@@ -354,4 +368,169 @@ public class TimestampField extends TextField
 			setTimestamp((Timestamp)getData(), false);
 		}
 	}
+	
+	/**
+	 * Overiding TextField#checkIfNewValues()
+	 * 
+	 * @see com.sohlman.netform.Component#checkIfNewValues()
+	 */
+	public boolean checkIfNewValues()
+	{	
+		clearModifiedStatus();
+				
+		if(iS_DateFormat==null && iS_TimeFormat==null)
+		{
+			return super.checkIfNewValues();	
+		}
+		else
+		{
+			HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
+			Timestamp lTs_Time = null;
+			Timestamp lTs_Date = null;
+					
+			if(iS_TimeFormat !=null)
+			{
+				// It is possilbe that date and time is handled differently
+				String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseNameForTime());
+				if (lS_Parameters != null && lS_Parameters.length > 0)
+				{			
+					// this is made because 
+					// XSLT processor don't convert 10 at all only 13
+					char[] lc_10 = { 10 };
+					String lS_Text = Utils.replace(lS_Parameters[0], new String(lc_10), "");
+					//lS_NewText = Utils.htmlToString(lS_NewText);
+					
+					lS_Text = formatStringByRules(lS_Text);
+					lTs_Time = Utils.stringToTimestamp(lS_Text, iS_TimeFormat);
+				}
+			}
+			if(iS_DateFormat !=null)
+			{
+				// It is possilbe that date and time is handled differently
+				String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseNameForDate());
+				if (lS_Parameters != null && lS_Parameters.length > 0)
+				{			
+					// this is made because 
+					// XSLT processor don't convert 10 at all only 13
+					char[] lc_10 = { 10 };
+					String lS_Text = Utils.replace(lS_Parameters[0], new String(lc_10), "");
+					//lS_NewText = Utils.htmlToString(lS_NewText);
+					
+					lS_Text = formatStringByRules(lS_Text);
+					lTs_Date = Utils.stringToTimestamp(lS_Text, iS_DateFormat);
+				}
+			}
+			
+			
+			
+			Timestamp lTs_Final = combineDateAndTime(lTs_Date, lTs_Time);
+			
+			if( (lTs_Final==null && i_Timestamp == null) || ( lTs_Final!=null && lTs_Final.equals(i_Timestamp)))
+			{
+				return false;
+			}
+			else
+			{
+				setTimestamp(lTs_Final);
+				return true;
+			}
+		}
+	}	
+	/**
+	 * @return String containing Date part format of Timestamp
+	 */
+	public String getDateFormat()
+	{
+		return iS_DateFormat;
+	}
+
+	/**
+	 * @return String containing Time part format of Timestamp
+	 */
+	public String getTimeFormat()
+	{
+		return iS_TimeFormat;
+	}
+
+	/**
+	 * @param a_Format Contain Format of date part of Timestamp
+	 */
+	public void setDateFormat(String a_Format)
+	{
+		iS_DateFormat = a_Format;
+	}
+
+	/**
+	 * @param a_Format Contain Format of date part of Timestamp
+	 */
+	public void setTimeFormat(String a_Format)
+	{
+		iS_TimeFormat = a_Format;
+	}
+	
+	/**
+	 * <b>JSP</b>
+	 * 
+	 * Returns response name for Date. This is to be used if Date and Time
+	 * are send to server as separated fields.
+	 * 
+	 * @return String containing response name for Date
+	 */
+	public String getResponseNameForDate()
+	{
+		return getResponseName() + "D";
+	}
+
+	/**
+	 * <b>JSP</b>
+	 * 
+	 * Returns response name for Time. This is to be used if Date and Time
+	 * are send to server as separated fields.
+	 * 
+	 * @return String containing response name for Time
+	 */
+	public String getResponseNameForTime()
+	{
+		return getResponseName() + "T";
+	}
+	
+	/**
+	 * @param aTs_Date Date part
+	 * @param aTs_Time Time part
+	 * @return Timestamp containing these together, if null then 0 assumed if both null 
+	 */
+	private Timestamp combineDateAndTime(Timestamp aTs_Date, Timestamp aTs_Time)
+	{	
+		int li_day = 0, li_month = 0, li_year = 0;
+		int li_hour = 0, li_minute = 0, li_second = 0, li_millisecond = 0;
+		
+		if(aTs_Date==null && aTs_Time==null)
+		{
+			return null;
+		}
+		
+		Calendar l_Calendar = Calendar.getInstance();
+		
+		if(aTs_Date!=null)
+		{
+			l_Calendar.setTime(aTs_Date);
+			li_day = l_Calendar.get(Calendar.DAY_OF_MONTH);
+			li_month = l_Calendar.get(Calendar.MONTH);
+			li_year = l_Calendar.get(Calendar.YEAR);			
+		}
+		if(aTs_Time!=null)
+		{
+			l_Calendar.setTime(aTs_Time);
+			li_hour = l_Calendar.get(Calendar.HOUR);
+			li_minute = l_Calendar.get(Calendar.MINUTE);
+			li_second = l_Calendar.get(Calendar.SECOND);
+			li_millisecond = l_Calendar.get(Calendar.MILLISECOND);
+		}
+		
+		l_Calendar.set(li_year, li_month, li_day, li_hour, li_minute, li_second);
+		l_Calendar.set(Calendar.MILLISECOND, li_millisecond);
+		
+		return new Timestamp(l_Calendar.getTimeInMillis());
+	}
+
 }
