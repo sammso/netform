@@ -194,6 +194,14 @@ public abstract class Component
 		}
 		return i_Form;
 	}
+	
+	/**
+	 * @return FormManager
+	 */
+	public final FormManager getFormManager()
+	{
+		return getForm().getFormManager();
+	}
 
 	/** Set Component visiblity state.<br>
 	 * Note not visible components are imposible render, because DOM tree
