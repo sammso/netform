@@ -35,4 +35,6 @@ public abstract class Validate
 	{
 		return i_Component;
 	}
+	
+	public abstract Object getObject();
 }

@@ -22,6 +22,7 @@ package com.sohlman.netform.component.table;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.NetFormException;
 
 /**
@@ -198,7 +199,7 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 	/**
 	 * @see com.sohlman.netform.component.table.CollectionTableModel#mapObjectToRow(java.lang.Object, java.lang.Object, int)
 	 */
-	protected void mapObjectToRow(Object a_Object, Object aO_row, int ai_columnIndex)
+	protected void mapObjectToRow(Object a_Object, Object aO_row, int ai_columnIndex) throws ComponentDataException
 	{
 		try 
 		{
@@ -210,7 +211,7 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 		}		
 		catch(InvocationTargetException l_InvocationTargetException)
 		{
-			// Ignore
+			throw new ComponentDataException(l_InvocationTargetException.getCause());
 		}	
 	}
 	

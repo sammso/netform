@@ -29,6 +29,13 @@ import com.sohlman.netform.Component;
  */
 public class FloatFieldValidate extends Validate
 {
+	/**
+	 * @see com.sohlman.netform.Validate#getObject()
+	 */
+	public Object getObject()
+	{
+		return getFloat();
+	}
 	private Float i_Float;
 	
 	public FloatFieldValidate(Component a_Component, Float a_Float)

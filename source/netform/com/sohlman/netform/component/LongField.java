@@ -1,22 +1,22 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform.component;
 
 import java.text.DecimalFormat;
@@ -28,13 +28,14 @@ import com.sohlman.netform.Utils;
 
 /**
  * Numberfield for number handling
- *
- * @author  Sampsa Sohlman
+ * 
+ * @author Sampsa Sohlman
  * @version 2004-01-15
  */
 public class LongField extends TextField
 {
 	protected Long i_Long = null;
+
 	protected DecimalFormat i_DecimalFormat = null;
 
 	public LongField(Component a_Component_Parent)
@@ -51,10 +52,10 @@ public class LongField extends TextField
 
 	protected DecimalFormat getDecimalFormat()
 	{
-		if(i_DecimalFormat==null)
+		if(i_DecimalFormat == null)
 		{
 			String lS_Format = getFormat(Long.class);
-			if(lS_Format==null)
+			if(lS_Format == null)
 			{
 				return null;
 			}
@@ -65,7 +66,7 @@ public class LongField extends TextField
 					i_DecimalFormat = new DecimalFormat(lS_Format);
 					return i_DecimalFormat;
 				}
-				catch(Exception l_Exception)
+				catch (Exception l_Exception)
 				{
 					return null;
 				}
@@ -95,13 +96,13 @@ public class LongField extends TextField
 		return i_Long.longValue();
 	}
 
-
-
 	/**
-	 * Set long value, this causes also value validation, if value is not valid it is not set
+	 * Set long value, this causes also value validation, if value is not valid
+	 * it is not set
 	 * 
 	 * @param a_Long
-	 * @return boolean true if value is valid false if not (depends of validation)
+	 * @return boolean true if value is valid false if not (depends of
+	 *         validation)
 	 */
 	public boolean setLong(Long a_Long)
 	{
@@ -110,19 +111,22 @@ public class LongField extends TextField
 
 	protected boolean setLong(Long a_Long, boolean ab_setData)
 	{
-		if (ib_isNullAllowed == false && a_Long == null)
+		if(ib_isNullAllowed == false && a_Long == null)
 		{
 			setValid(false);
 		}
 		else
 		{
-			validate(new LongFieldValidate(this, a_Long));
+			if(ab_setData)
+			{
+				validate(new LongFieldValidate(this, a_Long));
+			}
 		}
-		if (isValidWithoutChilds())
+		if(isValidWithoutChilds())
 		{
 			i_Long = a_Long;
 			DecimalFormat l_DecimalFormat = getDecimalFormat();
-			if (l_DecimalFormat != null)
+			if(l_DecimalFormat != null)
 			{
 				StringBuffer l_StringBuffer = new StringBuffer();
 				l_DecimalFormat.format(a_Long.longValue(), l_StringBuffer, new FieldPosition(0));
@@ -133,7 +137,7 @@ public class LongField extends TextField
 			{
 				iS_Text = String.valueOf(a_Long);
 			}
-			if (hasComponentData() && ab_setData)
+			if(hasComponentData() && ab_setData)
 			{
 				setData(a_Long);
 			}
@@ -144,6 +148,7 @@ public class LongField extends TextField
 			return false;
 		}
 	}
+
 	/**
 	 * @see TextField#getText()
 	 */
@@ -151,7 +156,7 @@ public class LongField extends TextField
 	{
 		iS_Text = formatStringByRules(aS_Text);
 		i_Long = null;
-		if (aS_Text != null)
+		if(aS_Text != null)
 		{
 			try
 			{
@@ -168,9 +173,9 @@ public class LongField extends TextField
 			validate(new LongFieldValidate(this, i_Long));
 		}
 
-		if (hasComponentData() && isValidWithoutChilds())
+		if(hasComponentData() && isValidWithoutChilds())
 		{
-			if (iS_Text == null)
+			if(iS_Text == null)
 			{
 				setData(null);
 			}
@@ -181,22 +186,23 @@ public class LongField extends TextField
 		}
 		return isValidWithoutChilds();
 	}
+
 	/**
 	 * @see TextField#getText()
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValidWithoutChilds())
+		if(hasComponentData() && isValidWithoutChilds())
 		{
 			i_Long = (Long) getData();
-			if (i_Long == null)
+			if(i_Long == null)
 			{
 				return "";
 			}
 			else
 			{
 				DecimalFormat l_DecimalFormat = getDecimalFormat();
-				if (l_DecimalFormat != null)
+				if(l_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
 					l_DecimalFormat.format(i_Long.longValue(), l_StringBuffer, new FieldPosition(0));
@@ -211,7 +217,7 @@ public class LongField extends TextField
 		}
 		else
 		{
-			if (iS_Text == null)
+			if(iS_Text == null)
 			{
 				return "";
 			}
@@ -244,9 +250,9 @@ public class LongField extends TextField
 	 */
 	public void syncronizeData()
 	{
-		if (hasComponentData())
+		if(hasComponentData())
 		{
-			setLong((Long)getData(), false);
+			setLong((Long) getData(), false);
 		}
 	}
 }

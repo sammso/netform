@@ -1,22 +1,22 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform.component;
 
 import java.text.DecimalFormat;
@@ -28,13 +28,14 @@ import com.sohlman.netform.Utils;
 
 /**
  * FloatField for number handling
- *
- * @author  Sampsa Sohlman
+ * 
+ * @author Sampsa Sohlman
  * @version 2004-02-15
  */
 public class FloatField extends TextField
 {
 	protected Float i_Float = null;
+
 	protected DecimalFormat i_DecimalFormat = null;
 
 	public FloatField(Component a_Component_Parent)
@@ -49,10 +50,10 @@ public class FloatField extends TextField
 
 	protected DecimalFormat getDecimalFormat()
 	{
-		if(i_DecimalFormat==null)
+		if(i_DecimalFormat == null)
 		{
 			String lS_Format = getFormat(Float.class);
-			if(lS_Format==null)
+			if(lS_Format == null)
 			{
 				return null;
 			}
@@ -63,7 +64,7 @@ public class FloatField extends TextField
 					i_DecimalFormat = new DecimalFormat(lS_Format);
 					return i_DecimalFormat;
 				}
-				catch(Exception l_Exception)
+				catch (Exception l_Exception)
 				{
 					return null;
 				}
@@ -82,6 +83,7 @@ public class FloatField extends TextField
 	{
 		return setFloat(new Float(a_float));
 	}
+
 	/**
 	 * Set long value, this causes also value validation
 	 * 
@@ -94,19 +96,22 @@ public class FloatField extends TextField
 
 	protected boolean setFloat(Float a_Float, boolean ab_setData)
 	{
-		if (ib_isNullAllowed == false && a_Float == null)
+		if(ib_isNullAllowed == false && a_Float == null)
 		{
 			setValid(false);
 		}
 		else
 		{
-			validate(new FloatFieldValidate(this, a_Float));
+			if(ab_setData)
+			{
+				validate(new FloatFieldValidate(this, a_Float));
+			}
 		}
-		if (isValidWithoutChilds())
+		if(isValidWithoutChilds())
 		{
 			i_Float = a_Float;
 			DecimalFormat l_DecimalFormat = getDecimalFormat();
-			if (l_DecimalFormat != null)
+			if(l_DecimalFormat != null)
 			{
 				StringBuffer l_StringBuffer = new StringBuffer();
 				l_DecimalFormat.format(a_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
@@ -116,7 +121,7 @@ public class FloatField extends TextField
 			{
 				iS_Text = String.valueOf(a_Float);
 			}
-			if (hasComponentData() && ab_setData)
+			if(hasComponentData() && ab_setData)
 			{
 				setData(a_Float);
 			}
@@ -127,6 +132,7 @@ public class FloatField extends TextField
 			return false;
 		}
 	}
+
 	/**
 	 * @see TextField#getText()
 	 */
@@ -134,7 +140,7 @@ public class FloatField extends TextField
 	{
 		iS_Text = formatStringByRules(aS_Text);
 		Float l_Float = null;
-		if (aS_Text != null)
+		if(aS_Text != null)
 		{
 			try
 			{
@@ -155,9 +161,9 @@ public class FloatField extends TextField
 			setValid(false);
 		}
 
-		if (hasComponentData() && isValidWithoutChilds())
+		if(hasComponentData() && isValidWithoutChilds())
 		{
-			if (iS_Text == null)
+			if(iS_Text == null)
 			{
 				setData(null);
 			}
@@ -168,22 +174,23 @@ public class FloatField extends TextField
 		}
 		return isValidWithoutChilds();
 	}
+
 	/**
 	 * @see TextField#getText()
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValidWithoutChilds())
+		if(hasComponentData() && isValidWithoutChilds())
 		{
 			i_Float = (Float) getData();
-			if (i_Float == null)
+			if(i_Float == null)
 			{
 				return "";
 			}
 			else
 			{
 				DecimalFormat l_DecimalFormat = getDecimalFormat();
-				if (l_DecimalFormat != null)
+				if(l_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
 					l_DecimalFormat.format(i_Float.floatValue(), l_StringBuffer, new FieldPosition(0));
@@ -198,7 +205,7 @@ public class FloatField extends TextField
 		}
 		else
 		{
-			if (iS_Text == null)
+			if(iS_Text == null)
 			{
 				return "";
 			}
@@ -231,7 +238,7 @@ public class FloatField extends TextField
 	 */
 	public void syncronizeData()
 	{
-		if (hasComponentData())
+		if(hasComponentData())
 		{
 			setFloat((Float) getData(), false);
 		}

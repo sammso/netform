@@ -43,4 +43,12 @@ public class TimestampFieldValidate extends Validate
 	{
 		return i_Timestamp;
 	}
+	
+	/**
+	 * @see com.sohlman.netform.Validate#getObject()
+	 */
+	public Object getObject()
+	{
+		return getTimestamp();
+	}
 }

@@ -21,6 +21,7 @@ package com.sohlman.netform.component.table;
 
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentData;
+import com.sohlman.netform.ComponentDataException;
 
 /**
  * @author Sampsa Sohlman
@@ -46,7 +47,7 @@ public class TableComponentData implements ComponentData
 	/**
 	 * @see com.sohlman.netform.ComponentData#setData(java.lang.Object)
 	 */
-	public void setData(Object a_Object)
+	public void setData(Object a_Object) throws ComponentDataException
 	{
 		i_TableModel.setValueAt(a_Object, ii_row, ii_column);
 	}

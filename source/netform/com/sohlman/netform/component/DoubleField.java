@@ -102,7 +102,10 @@ public class DoubleField extends TextField
 		}
 		else
 		{
-			validate(new DoubleFieldValidate(this, a_Double));
+			if(ab_setData)
+			{
+				validate(new DoubleFieldValidate(this, a_Double));
+			}
 		}
 		if (isValidWithoutChilds())
 		{

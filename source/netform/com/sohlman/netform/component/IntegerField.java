@@ -1,22 +1,22 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform.component;
 
 import java.text.DecimalFormat;
@@ -28,13 +28,14 @@ import com.sohlman.netform.Utils;
 
 /**
  * Numberfield for number handling
- *
- * @author  Sampsa Sohlman
+ * 
+ * @author Sampsa Sohlman
  * @version 2004-01-15
  */
 public class IntegerField extends TextField
 {
 	protected Integer i_Integer = null;
+
 	protected DecimalFormat i_DecimalFormat = null;
 
 	public IntegerField(Component a_Component_Parent)
@@ -49,10 +50,10 @@ public class IntegerField extends TextField
 
 	protected DecimalFormat getDecimalFormat()
 	{
-		if(i_DecimalFormat==null)
+		if(i_DecimalFormat == null)
 		{
 			String lS_Format = getFormat(Integer.class);
-			if(lS_Format==null)
+			if(lS_Format == null)
 			{
 				return null;
 			}
@@ -63,7 +64,7 @@ public class IntegerField extends TextField
 					i_DecimalFormat = new DecimalFormat(lS_Format);
 					return i_DecimalFormat;
 				}
-				catch(Exception l_Exception)
+				catch (Exception l_Exception)
 				{
 					return null;
 				}
@@ -83,22 +84,22 @@ public class IntegerField extends TextField
 		return setInteger(new Integer(a_int));
 	}
 
-	/** 
+	/**
 	 * @return Integer value null if contains null
 	 */
 	public Integer getInteger()
 	{
 		return i_Integer;
 	}
-	
+
 	/**
 	 * @return int value if null then 0
 	 */
 	public int getInt()
 	{
-		if(i_Integer==null)
+		if(i_Integer == null)
 		{
-			return 0; 
+			return 0;
 		}
 		else
 		{
@@ -116,22 +117,26 @@ public class IntegerField extends TextField
 	{
 		return setInteger(a_Integer, true);
 	}
+
 	protected boolean setInteger(Integer a_Integer, boolean ab_setData)
 	{
-		if(ib_isNullAllowed==false && a_Integer==null)
+		if(ib_isNullAllowed == false && a_Integer == null)
 		{
 			setValid(false);
 		}
 		else
 		{
-			validate(new IntegerFieldValidate(this, a_Integer));
+			if(ab_setData)
+			{
+				validate(new IntegerFieldValidate(this, a_Integer));
+			}
 		}
 
-		if (isValidWithoutChilds())
+		if(isValidWithoutChilds())
 		{
 			i_Integer = a_Integer;
 			DecimalFormat l_DecimalFormat = getDecimalFormat();
-			if (l_DecimalFormat != null)
+			if(l_DecimalFormat != null)
 			{
 				StringBuffer l_StringBuffer = new StringBuffer();
 				l_DecimalFormat.format(a_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
@@ -142,7 +147,7 @@ public class IntegerField extends TextField
 			{
 				iS_Text = String.valueOf(a_Integer);
 			}
-			if (hasComponentData() && ab_setData)
+			if(hasComponentData() && ab_setData)
 			{
 				setData(a_Integer);
 			}
@@ -153,21 +158,22 @@ public class IntegerField extends TextField
 			return false;
 		}
 	}
+
 	/**
 	 * @see TextField#getText()
 	 */
 	public boolean setText(String aS_Text)
 	{
-		iS_Text = formatStringByRules(aS_Text); 
+		iS_Text = formatStringByRules(aS_Text);
 		i_Integer = null;
-		if(aS_Text!=null)
+		if(aS_Text != null)
 		{
 			try
 			{
 				i_Integer = new Integer(iS_Text);
 				validate(new IntegerFieldValidate(this, i_Integer));
 			}
-			catch(NumberFormatException l_NumberFormatException)
+			catch (NumberFormatException l_NumberFormatException)
 			{
 				setValid(false);
 			}
@@ -181,35 +187,36 @@ public class IntegerField extends TextField
 			setValid(false);
 		}
 
-		if (hasComponentData() && isValidWithoutChilds())
+		if(hasComponentData() && isValidWithoutChilds())
 		{
-			if (iS_Text == null)
+			if(iS_Text == null)
 			{
 				setData(null);
 			}
 			else
 			{
-				setData(i_Integer); 
+				setData(i_Integer);
 			}
 		}
 		return isValidWithoutChilds();
 	}
+
 	/**
 	 * @see TextField#getText()
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValidWithoutChilds())
+		if(hasComponentData() && isValidWithoutChilds())
 		{
 			i_Integer = (Integer) getData();
-			if (i_Integer == null)
+			if(i_Integer == null)
 			{
 				return "";
 			}
 			else
 			{
 				DecimalFormat l_DecimalFormat = getDecimalFormat();
-				if (l_DecimalFormat != null)
+				if(l_DecimalFormat != null)
 				{
 					StringBuffer l_StringBuffer = new StringBuffer();
 					l_DecimalFormat.format(i_Integer.intValue(), l_StringBuffer, new FieldPosition(0));
@@ -224,7 +231,7 @@ public class IntegerField extends TextField
 		}
 		else
 		{
-			if (iS_Text == null)
+			if(iS_Text == null)
 			{
 				return "";
 			}
@@ -234,7 +241,7 @@ public class IntegerField extends TextField
 			}
 		}
 	}
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#cloneComponent()
 	 */
@@ -248,7 +255,7 @@ public class IntegerField extends TextField
 		l_IntegerField.setTrim(isTrim());
 		l_IntegerField.setComponentValidator(getComponentValidator());
 		l_IntegerField.shareComponentListenerFrom(this);
-		
+
 		return l_IntegerField;
 	}
 
@@ -257,9 +264,9 @@ public class IntegerField extends TextField
 	 */
 	public void syncronizeData()
 	{
-		if (hasComponentData())
+		if(hasComponentData())
 		{
-			setInteger((Integer)getData(), false);
+			setInteger((Integer) getData(), false);
 		}
 	}
 }

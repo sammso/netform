@@ -31,9 +31,9 @@ public interface ComponentData
 	 * Set Data To DataModel<br>
 	 * example {@link com.sohlman.netform.component.table.TableModel TableModel}
 	 * @param a_Object to be put to DataModel
-	 * @throws Exception if exception is thrown then data is invalid.
+	 * @throws ComponentDataException TODO
 	 */
-	public void setData(Object a_Object);
+	public void setData(Object a_Object) throws ComponentDataException;
 
 	/**
 	 * Get Data from DataModel<br>

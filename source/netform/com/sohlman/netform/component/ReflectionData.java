@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.sohlman.netform.ComponentData;
+import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.NetFormException;
 
 /**
@@ -113,7 +114,7 @@ public class ReflectionData extends Object implements ComponentData
 	/**
 	 * @see com.sohlman.netform.ComponentData#setData(java.lang.Object)
 	 */
-	public void setData(Object a_Object)
+	public void setData(Object a_Object) throws ComponentDataException
 	{
 		try 
 		{
@@ -125,7 +126,7 @@ public class ReflectionData extends Object implements ComponentData
 		}
 		catch(InvocationTargetException l_InvocationTargetException)
 		{
-			// Ignore
+			throw new ComponentDataException(l_InvocationTargetException);
 		}
 	}
 

@@ -41,4 +41,13 @@ public class DoubleFieldValidate extends Validate
 	{
 		return i_Double;
 	}
+	
+	
+	/**
+	 * @see com.sohlman.netform.Validate#getObject()
+	 */
+	public Object getObject()
+	{
+		return getDouble();
+	}
 }

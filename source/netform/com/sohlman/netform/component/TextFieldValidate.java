@@ -41,4 +41,12 @@ public class TextFieldValidate extends Validate
 	{
 		return iS_Text;
 	}
+	
+	/**
+	 * @see com.sohlman.netform.Validate#getObject()
+	 */
+	public Object getObject()
+	{
+		return getText();
+	}
 }

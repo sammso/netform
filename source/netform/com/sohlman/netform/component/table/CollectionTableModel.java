@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.NotSupportedException;
 
 /**
@@ -269,7 +270,7 @@ public abstract class CollectionTableModel extends TableModel
 	 * @see com.sohlman.netform.component.table.TableModel#setValueAt(java.lang.Object,
 	 *      int, int)
 	 */
-	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
+	public boolean setValueAt(Object a_Object, int ai_row, int ai_column) throws ComponentDataException
 	{
 		if(ai_row < 1 || (ai_row - 1) > getRowCount())
 		{
@@ -297,7 +298,7 @@ public abstract class CollectionTableModel extends TableModel
 	 * @param ai_columnIndex
 	 *            columnIndex of object
 	 */
-	protected void mapObjectToRow(Object a_Object, Object aO_Row, int ai_columnIndex)
+	protected void mapObjectToRow(Object a_Object, Object aO_Row, int ai_columnIndex) throws ComponentDataException
 	{
 		// TODO: Check if this can be changed to NetFormException
 		throw new NotSupportedException(this.getClass().getName()

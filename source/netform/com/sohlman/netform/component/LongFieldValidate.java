@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform.component;
 
-import com.sohlman.netform.*;
 import com.sohlman.netform.Component;
+import com.sohlman.netform.Validate;
 
 /**
  * @author Sampsa Sohlman
@@ -40,5 +40,12 @@ public class LongFieldValidate extends Validate
 	public Long getLong()
 	{
 		return i_Long;
+	}
+	/**
+	 * @see com.sohlman.netform.Validate#getObject()
+	 */
+	public Object getObject()
+	{
+		return getLong();
 	}
 }

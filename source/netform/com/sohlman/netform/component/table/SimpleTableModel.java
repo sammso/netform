@@ -21,6 +21,8 @@ package com.sohlman.netform.component.table;
 
 import java.util.ArrayList;
 
+import com.sohlman.netform.ComponentDataException;
+
 /**
  * @author Sampsa Sohlman
  * 
@@ -169,7 +171,7 @@ public class SimpleTableModel extends TableModel
 	 * @see com.sohlman.netform.component.table.TableModel#setValueAt(java.lang.Object,
 	 *      int, int)
 	 */
-	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
+	public boolean setValueAt(Object a_Object, int ai_row, int ai_column) throws ComponentDataException
 	{
 		if(ai_row < 1 || (ai_row - 1) > iAL_ArrayList.size())
 		{
@@ -196,7 +198,14 @@ public class SimpleTableModel extends TableModel
 	public int addValue(Object a_Object)
 	{
 		int li_row = add();
-		setValueAt(a_Object, li_row, 1);
+		try
+		{
+			setValueAt(a_Object, li_row, 1);
+		}
+		catch(ComponentDataException l_ComponentDataException)
+		{
+			delete(li_row);
+		}
 		return li_row;
 
 	}

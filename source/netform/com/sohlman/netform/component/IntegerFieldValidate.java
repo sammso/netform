@@ -41,4 +41,11 @@ public class IntegerFieldValidate extends Validate
 	{
 		return i_Integer;
 	}
+	/**
+	 * @see com.sohlman.netform.Validate#getObject()
+	 */
+	public Object getObject()
+	{
+		return getInteger();
+	}
 }

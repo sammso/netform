@@ -22,6 +22,7 @@ package com.sohlman.netform.component.table;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.NotSupportedException;
 
 /**
@@ -84,8 +85,9 @@ public abstract class TableModel
 	 * @param ai_row row number, row numbers starts from 1
 	 * @param ai_column column nubmer, column numbers starts from 1
 	 * @return true if succeed false if not (this depends also class which is implementing it)
+	 * @throws ComponentDataException TODO
 	 */
-	public abstract boolean setValueAt(Object a_Object, int ai_row, int ai_column);
+	public abstract boolean setValueAt(Object a_Object, int ai_row, int ai_column) throws ComponentDataException;
 	/**
 	 * Should return column name
 	 * 

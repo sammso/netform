@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentData;
+import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.Form;
 import com.sohlman.netform.NetFormException;
 import com.sohlman.netform.Utils;
@@ -296,10 +297,18 @@ public class Table extends Component
 	 * @param a_Object Object to be set at column
 	 * @param ai_row
 	 * @param ai_column
+	 * @return 
 	 */
-	public void setValueAt(Object a_Object, int ai_row, int ai_column)
+	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
 	{
-		i_TableModel.setValueAt(a_Object, ai_row, ai_column);
+		try
+		{
+			return i_TableModel.setValueAt(a_Object, ai_row, ai_column);
+		}
+		catch(ComponentDataException l_ComponentDataException)
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -789,8 +798,8 @@ public class Table extends Component
 					Component l_Component = i_Component_RowModels[li_index].cloneComponent();
 					l_Component.setComponentData(l_TableComponentData);
 					l_Component.syncronizeData();
+					l_Component.validate();
 					l_Components[li_index] = l_Component;
-
 				}
 			}
 
@@ -922,6 +931,7 @@ public class Table extends Component
 
 	private void updateComponentRow(int ai_index)
 	{
+
 		Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_index - 1);
 
 		if (l_Components != null && i_Component_RowModels != null && l_Components.length > 0 && i_Component_RowModels.length > 0)
@@ -940,6 +950,7 @@ public class Table extends Component
 						Component l_Component = i_Component_RowModels[li_index].cloneComponent();
 						l_Component.setComponentData(l_TableComponentData);
 						l_Component.syncronizeData();
+						l_Component.validate();
 						l_Components[li_index] = l_Component;
 
 					}
@@ -948,45 +959,51 @@ public class Table extends Component
 			}
 			else
 			{
-				for (int li_i = 0; li_i < ii_tableComponent_ModelsSize; li_i++)
+				for (int li_index = 0; li_index < ii_tableComponent_ModelsSize; li_index++)
 				{
-					if (l_Components[li_i] == null && i_Component_RowModels[li_i] == null)
+					if (l_Components[li_index] == null && i_Component_RowModels[li_index] == null)
 					{
 						// Do nothing
 					}
-					else if (l_Components[li_i] == null && i_Component_RowModels[li_i] != null)
+					else if (l_Components[li_index] == null && i_Component_RowModels[li_index] != null)
 					{
-						// Component structure has changed
-						l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
-						l_Components[li_i].setComponentData(new TableComponentData(i_TableModel));
-						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
+						// This columns componend doesn't exists, but component exist in row model
+						// =>Add component to this column						
+						l_Components[li_index] = i_Component_RowModels[li_index].cloneComponent();
+						l_Components[li_index].setComponentData(new TableComponentData(i_TableModel));
+						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_index].getComponentData();
 						l_TableComponentData.setRow(ai_index);
-						l_TableComponentData.setColumn(li_i + 1);
-						l_Components[li_i].syncronizeData();
+						l_TableComponentData.setColumn(li_index + 1);
+						l_Components[li_index].syncronizeData();
+						l_Components[li_index].validate();
 					}
-					else if (l_Components[li_i] != null && i_Component_RowModels[li_i] == null)
+					else if (l_Components[li_index] != null && i_Component_RowModels[li_index] == null)
 					{
-						// Component structure has changed
-
-						l_Components[li_i].dispose();
-						l_Components[li_i] = null;
+						// This columns componend exists, but component doesn't exist in row model
+						// =>Remove component from this column
+						l_Components[li_index].dispose();
+						l_Components[li_index] = null;
 					}
-					else if (l_Components[li_i].getClass().equals(i_Component_RowModels[li_i].getClass()))
+					else if (l_Components[li_index].getClass().equals(i_Component_RowModels[li_index].getClass()))
 					{
-						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_i].getComponentData();
+						// Component is equal.
+						// TODO: for this component would need equals method override
+						// => Just update row information			
+						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_index].getComponentData();
 						l_TableComponentData.setRow(ai_index);
-						l_TableComponentData.setColumn(li_i + 1);
-						l_Components[li_i].syncronizeData();
 					}
-					else // Component column type has been changed
-						{
+					else 
+					{
+						//´Component type has been changed
+						// Change component and update it
 						TableComponentData l_TableComponentData = new TableComponentData(i_TableModel);
 						l_TableComponentData.setRow(ai_index);
-						l_TableComponentData.setColumn(li_i + 1);
+						l_TableComponentData.setColumn(li_index + 1);
 
-						l_Components[li_i] = i_Component_RowModels[li_i].cloneComponent();
-						l_Components[li_i].setComponentData(l_TableComponentData);
-						l_Components[li_i].syncronizeData();
+						l_Components[li_index] = i_Component_RowModels[li_index].cloneComponent();
+						l_Components[li_index].setComponentData(l_TableComponentData);
+						l_Components[li_index].syncronizeData();
+						l_Components[li_index].validate();
 					}
 				}
 			}

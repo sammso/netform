@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform.component.table;
 
+import com.sohlman.netform.NetFormException;
 import com.sohlman.netform.Validate;
 
 /**
@@ -41,6 +42,13 @@ public class TableValidate extends Validate
 		return ii_selectedItems;
 	}
 	
+	/**
+	 * @see com.sohlman.netform.Validate#getObject()
+	 */
+	public Object getObject()
+	{
+		throw new NetFormException("TableValidate doesn't support yet getObject() method.");
+	}
 	public boolean hasSelectedItems()
 	{
 		return ii_selectedItems!=null;

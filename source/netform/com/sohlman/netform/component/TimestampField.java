@@ -98,8 +98,11 @@ public class TimestampField extends TextField
 			setValid(false);
 		}
 		else
-		{		
-			validate(new TimestampFieldValidate(this, a_Timestamp));
+		{
+			if(ab_setData)
+			{
+				validate(new TimestampFieldValidate(this, a_Timestamp));
+			}
 		}
 		if (isValidWithoutChilds())
 		{
