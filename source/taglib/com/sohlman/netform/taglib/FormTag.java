@@ -47,12 +47,12 @@ public class FormTag extends MasterTag
 		try
 		{
 			i_PageContext.getOut().print("</form>");
+			return EVAL_PAGE;
 		}
-		catch(IOException ioException)
+		catch(IOException l_IOException)
 		{
-			
+			throw new JspException(l_IOException);
 		}
-		return EVAL_PAGE;
 	}
 
 	/**
@@ -69,36 +69,36 @@ public class FormTag extends MasterTag
 		
 		try
 		{
-			i_PageContext.getOut().print("<form");
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("<form");
 			if(iS_Name!=null)
 			{
-				i_PageContext.getOut().print(" name=\"" + iS_Name + "\"");
+				l_StringBuffer.append(" name=\"").append(iS_Name).append("\"");
 			}
 			
-			i_PageContext.getOut().print(" action=\"" + i_Form.getPostAction() + "\"");
+			l_StringBuffer.append(" action=\"").append(i_Form.getPostAction()).append("\"");
 			
 			if(iS_Enctype!=null)
 			{
-				i_PageContext.getOut().print(" enctype=\"" + iS_Enctype + "\"");
+				l_StringBuffer.append(" enctype=\"").append(iS_Enctype).append("\"");
 			}
 			
 			if(iS_Style!=null)
 			{
-				i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+				l_StringBuffer.append(" style=\"").append(iS_Style).append("\"");
 			}			
 			if(iS_Id!=null)
 			{
-				i_PageContext.getOut().print(" id=\"" + iS_Id + "\"");
+				l_StringBuffer.append(" id=\"").append(iS_Id).append("\"");
 			}	
-			
-			i_PageContext.getOut().print(" method=\"post\">");
+			l_StringBuffer.append(" method=\"post\">");
+			i_PageContext.getOut().print(l_StringBuffer.toString());
 			return EVAL_BODY_INCLUDE;
 		}
-		catch(IOException ioException)
+		catch(IOException l_IOException)
 		{
-			
+			throw new JspException(l_IOException);
 		}
-		return 0;
 	}
 
 	/**

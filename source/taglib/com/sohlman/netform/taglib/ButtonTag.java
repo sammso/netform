@@ -75,46 +75,48 @@ public class ButtonTag extends ComponentTag
 		
 		try
 		{
-			i_PageContext.getOut().print("<input");
-			i_PageContext.getOut().print(" type=\"submit\"");
-			i_PageContext.getOut().print(" name=\"" + i_Button.getResponseName() + "\"");
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("<input");
+			l_StringBuffer.append(" type=\"submit\"");
+			l_StringBuffer.append(" name=\"" + i_Button.getResponseName() + "\"");
 
 			if(i_Button.isValid())
 			{
 				if(iS_Style!=null)
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+					l_StringBuffer.append(" style=\"" + iS_Style + "\"");
 				}		
 				if(iS_Class!=null)
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+					l_StringBuffer.append(" class=\"" + iS_Class + "\"");
 				}
 			}
 			else
 			{
 				if(iS_NotValidStyle == null && iS_Style!=null)
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+					l_StringBuffer.append(" style=\"" + iS_Style + "\"");
 				}
 				else if(iS_NotValidStyle != null)
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
+					l_StringBuffer.append(" style=\"" + iS_NotValidStyle + "\"");
 				}
 				if(iS_NotValidClass == null || iS_Class!=null)
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+					l_StringBuffer.append(" class=\"" + iS_Class + "\"");
 				}
 				else if(iS_NotValidClass != null)
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_NotValidClass + "\"");
+					l_StringBuffer.append(" class=\"" + iS_NotValidClass + "\"");
 				}				
 			}
 			
 			if(iS_Value !=null)
 			{
-				i_PageContext.getOut().print(" value=\"" + iS_Value + "\"");
+				l_StringBuffer.append(" value=\"" + iS_Value + "\"");
 			}
-
+			l_StringBuffer.append(">");
+			i_PageContext.getOut().print(l_StringBuffer.toString());
 			return EVAL_PAGE;
 		}
 		catch (IOException l_IOException)

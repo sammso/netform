@@ -98,26 +98,6 @@ public abstract class ComponentTag extends MasterTag
 		Object l_Object = null;
 		int li_pos = 0;
 		int li_oldPos = 0;
-
-		// TODO:
-		// Finish this
-		// So it is possible to reference object
-		// directly example
-		// form.
-		//		if( (li_pos = iS_Name.indexOf(".",li_pos)) > 0)
-		//		{
-		//			i_Stack.clear();
-		//			while(( li_pos = iS_Name.indexOf(".",li_pos))>0 && li_oldPos <
-		// iS_Name.length())
-		//			{
-		//				li_pos = li_pos > 0 ? li_pos : iS_Name.length();
-		//				String lS_Name = iS_Name.substring(li_oldPos, li_pos);
-		//				i_Stack.push(lS_Name);
-		//				
-		//				li_oldPos = li_pos;
-		//			}
-		//			
-		//		}
 		if(TableTag.class.isInstance(l_Tag))
 		{
 			TableTag l_TableTag = (TableTag) l_Tag;
