@@ -338,9 +338,9 @@ public abstract class Component
 			String[] lS_Parameters = getHttpServletRequest().getParameterValues(getResponseName());
 			if(lS_Parameters != null)
 			{
-				// Values found so
+				// Values found so 
 				// Then session is sync
-				getForm().setSessionIsSync();
+				getForm().setSessiodIsSync();
 			}
 
 			if(checkIfNewValues(lS_Parameters))
