@@ -1,7 +1,7 @@
 /*
 NetForm Library
 ---------------
-Copyright (C) 2001-2004 - Sampsa Sohlman, Teemu Sohlman
+Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -489,13 +489,15 @@ public class Table extends Component
 		if (lS_Parameters != null)
 		{
 			int li_max = i_TableModel.getRowCount();
+			// Getting dot location, doing here for hope to save few milliseconds
+			int li_dotLocation = getResponseName().length();
 			if (ib_multiSelection)
 			{
 				li_newSelection = new int[lS_Parameters.length];
 				int li_y = 0;
 				for (int li_c = 0; li_c < lS_Parameters.length; li_c++)
 				{
-					int li_value = Utils.stringToInt(lS_Parameters[li_c], -1);
+					int li_value = parameterToValue(lS_Parameters[li_c], li_dotLocation);
 					if (li_value >= 1 && li_value <= li_max)
 					{
 						li_newSelection[li_y] = li_value;
@@ -506,7 +508,7 @@ public class Table extends Component
 			}
 			else
 			{
-				int li_value = Utils.stringToInt(lS_Parameters[0], -1);
+				int li_value = parameterToValue(lS_Parameters[0], li_dotLocation);
 				if (li_value >= 1 && li_value <= li_max)
 				{
 					li_newSelection = new int[1];
@@ -517,6 +519,11 @@ public class Table extends Component
 			return selectItems(li_newSelection);
 		}
 		return false;
+	}
+	
+	private int parameterToValue(String aS_Parameter, int ai_dotLocation)
+	{
+		return Utils.stringToInt(aS_Parameter.substring(ai_dotLocation + 1),-1);
 	}
 
 	/**
@@ -742,7 +749,6 @@ public class Table extends Component
 	 */
 	public Table getTableModelTable(int ai_column)
 	{
-		// TODO: Finish getTableModelTable
 		if (i_Component_RowModels == null)
 		{
 			throw new ArrayIndexOutOfBoundsException("No component at index " + ai_column);
@@ -1428,7 +1434,7 @@ public class Table extends Component
 	{
 		int li_row = translateDisplayRowToRealRow(ai_displayRow);
 
-		return String.valueOf(li_row);
+		return getResponseName() + "." + String.valueOf(li_row);
 	}
 
 	/**
@@ -1598,5 +1604,21 @@ public class Table extends Component
 		{
 			return getColumnFormat(((TableComponentData) a_ComponentData).getColumn(), a_Class);
 		}
+	}
+	
+	/**
+	 * Set source table where data can be copied/moving to this table.
+	 * <p>
+	 * Source and destination tables has to has same type  {@link TableModel TableModel}s. 
+	 * <p>
+	 * Copying/Moving is possible to do also with java script in client side.
+	 * Of course ultimate validation is done at server side.
+	 * <p>
+	 * 
+	 * @param a_Table source Table
+	 */
+	public void setSourceTable(Table a_Table)
+	{
+		// TOD0: To implement
 	}
 }
