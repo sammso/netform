@@ -63,41 +63,41 @@ public class TableSelectionTag extends MasterTag
 		try
 		{
 			JspWriter l_JspWriter = i_PageContext.getOut();
-			
+			StringBuffer l_StringBuffer = new StringBuffer();
 			int li_row = i_TableTag.getCurrentRow();
 			
-			l_JspWriter.print("<input type=\"");
-			l_JspWriter.print(iS_Type);
-			l_JspWriter.print("\"");
+			l_StringBuffer.append("<input type=\"");
+			l_StringBuffer.append(iS_Type);
+			l_StringBuffer.append("\"");
 
-			l_JspWriter.print(" name=\"");
-			l_JspWriter.print(i_Table.getResponseName());
-			l_JspWriter.print("\"");			
+			l_StringBuffer.append(" name=\"");
+			l_StringBuffer.append(i_Table.getResponseName());
+			l_StringBuffer.append("\"");			
 			
-			l_JspWriter.print(" value=\"");
-			l_JspWriter.print(i_Table.getRowId(li_row));
-			l_JspWriter.print("\"");				
+			l_StringBuffer.append(" value=\"");
+			l_StringBuffer.append(i_Table.getRowId(li_row));
+			l_StringBuffer.append("\"");				
 			
 			if(iS_Class!=null)
 			{
-				l_JspWriter.print(" class=\"");
-				l_JspWriter.print(iS_Class);
-				l_JspWriter.print("\"");				
+				l_StringBuffer.append(" class=\"");
+				l_StringBuffer.append(iS_Class);
+				l_StringBuffer.append("\"");				
 			}
 			if(iS_Style!=null)
 			{
-				l_JspWriter.print(" style=\"");
-				l_JspWriter.print(iS_Style);
-				l_JspWriter.print("\"");				
+				l_StringBuffer.append(" style=\"");
+				l_StringBuffer.append(iS_Style);
+				l_StringBuffer.append("\"");				
 			}
 			
 			
 			if(i_Table.isRowSelected(li_row))
 			{
-				l_JspWriter.print(" checked ");
+				l_StringBuffer.append(" checked ");
 			}
-			
-			l_JspWriter.print(">");
+			l_StringBuffer.append(">");
+			i_PageContext.getOut().print(l_StringBuffer.toString());
 			return EVAL_PAGE;
 		}
 		catch(IOException l_IOException)

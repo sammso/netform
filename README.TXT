@@ -1,9 +1,11 @@
 
-   NetForm Web Application Framework for Java V 0.70
+   NetForm Web Application Framework for Java V 0.80
    =================================================
    
    What is new on 0.80
    ------------------------------------------------------------
+   - Because of many changes version number has been rised
+     signifally.
    - This version gives netform support for Portlet  based 
      programming. 
      + In Netform Portlet is reusable component which can
@@ -13,17 +15,27 @@
          it is not attached to just one but many pages.
        - NetForm portlet is not same as java portlet api.
          (Note NetForm Portlet API is not very tested yet)
-   - New reflection based programming, possibly to connect 
-     directly to POJO of usiness logic.
+   - New reflection based programming, possibly to bind components 
+     directly to POJO.
       + Related Classes:
         - ReflectionData
         - ReflectionValidate
         - ObjectCollectionTableModel
+      + If Pojo's set method is throwing exception then binded 
+        component is considered as not valid.
+      
    - Session out of sync is now possible to capture on JSP level,
      by using form.isSessionOutOfSync() method.
    - JSP Tag lib
+   - JSP 2.0 support
+   - Table changes
+     + Table related components (AddRowButton, InsertRowButton
+       and DeleteRowButton )
+     + TableModelListener
+   - MultiForm support 
+     + Form.allowChange not suppported and removed
    - Fixes
-     + TextField.validate() fixed
+     + TextField.validate() and all related 
    
    
      

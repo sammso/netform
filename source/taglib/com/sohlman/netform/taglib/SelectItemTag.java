@@ -1,28 +1,27 @@
 /*
-NetForm Library
----------------
-Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
+ NetForm Library
+ ---------------
+ Copyright (C) 2001-2005 - Sampsa Sohlman, Teemu Sohlman
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 package com.sohlman.netform.taglib;
 
 import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.Tag;
 
 import com.sohlman.netform.component.table.Table;
@@ -76,84 +75,75 @@ public class SelectItemTag extends MasterTag
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
 	 */
-	public int doEndTag() throws JspException
+public int doEndTag() throws JspException
 	{
 		try
 		{
-			JspWriter l_JspWriter = i_PageContext.getOut();
-
-			l_JspWriter.print("<option value=\"");
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("<option value=\"");
 			int li_row = i_SelectTag.getCurrentRow();
-			l_JspWriter.print(i_Table.getRowId(li_row));
-			l_JspWriter.print("\"");
+			l_StringBuffer.append(i_Table.getRowId(li_row));
+			l_StringBuffer.append("\"");
 
 			if(i_Table.isRowSelected(li_row))
 			{
-				l_JspWriter.print(" selected");
+				l_StringBuffer.append(" selected");
 			}
 
 			if(iS_Class != null)
 			{
-				l_JspWriter.print(" class=\"");
-				l_JspWriter.print(iS_Class);
-				l_JspWriter.print("\"");
+				l_StringBuffer.append(" class=\"");
+				l_StringBuffer.append(iS_Class);
+				l_StringBuffer.append("\"");
 			}
 			if(iS_Id != null)
 			{
-				l_JspWriter.print(" id=\"");
-				l_JspWriter.print(iS_Id);
-				l_JspWriter.print("\"");
+				l_StringBuffer.append(" id=\"");
+				l_StringBuffer.append(iS_Id);
+				l_StringBuffer.append("\"");
 			}
-			l_JspWriter.print(">");			
+			l_StringBuffer.append(">");			
 			if(iS_ColumnName != null)
 			{
-				l_JspWriter.print(i_Table.getText(li_row, iS_ColumnName));
+				l_StringBuffer.append(i_Table.getText(li_row, iS_ColumnName));
 			}
 			else
 			{
-				l_JspWriter.print(i_Table.getText(li_row, ii_column));
+				l_StringBuffer.append(i_Table.getText(li_row, ii_column));
 			}
-
-			l_JspWriter.print("</option>");
+			l_StringBuffer.append("</option>");
+			i_PageContext.getOut().print(l_StringBuffer.toString());
+			return EVAL_PAGE;
 		}
 		catch (IOException l_IOException)
 		{
 			throw new JspException(l_IOException);
 		}
-		return EVAL_PAGE;
 	}
-
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#doStartTag()
 	 */
 	public int doStartTag() throws JspException
 	{
-		try
+		Tag l_Tag = getParent();
+		Object l_Object = null;
+		if(SelectTag.class.isInstance(l_Tag))
 		{
-			Tag l_Tag = getParent();
-			Object l_Object = null;
-			if(SelectTag.class.isInstance(l_Tag))
-			{
-				i_SelectTag = ((SelectTag) getParent());
+			i_SelectTag = ((SelectTag) getParent());
 
-				i_Table = (Table) i_SelectTag.getComponentFormThisTag();
-				if(i_Table == null)
-				{
-					i_PageContext.getOut().println(
-							"<b>Page design error! Table component is not set for &lt;nf:select&gt; tag</b><br>");
-				}
-			}
-			else
+			i_Table = (Table) i_SelectTag.getComponentFormThisTag();
+			
+			if(i_Table == null)
 			{
-				i_PageContext.getOut().println(
-						"<b>Page design error! &lt;nf:select&gt; has to master for &lt;nf:selectitem&gt;</b><br>");
+				throw new JspException("Page design error! Table component is not set for SELECT tag");
 			}
+			return SKIP_BODY;
 		}
-		catch (IOException l_IOException)
+		else
 		{
-			throw new JspException(l_IOException);
+			throw new JspException("Page design error! SELECT tag has to be master for SELECTITEM");
 		}
-		return SKIP_BODY;
+
 	}
 
 	/**

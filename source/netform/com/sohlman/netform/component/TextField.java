@@ -48,28 +48,6 @@ public class TextField extends Component
 
 	/**
 	 * @param a_Component_Parent
-	 *            parent component
-	 * @param ab_isValid
-	 *            is valid by default
-	 * @param ab_isEmptyNull
-	 *            if empty value is considered as null
-	 * @param ab_isNullAllowed
-	 *            is null allowed
-	 * @param ab_isTrim
-	 *            if spaces are trimmed automaticly out
-	 */
-	public TextField(Component a_Component_Parent, boolean ab_isValid, boolean ab_isEmptyNull,
-			boolean ab_isNullAllowed, boolean ab_isTrim)
-	{
-		super(a_Component_Parent);
-		setValid(ab_isValid);
-		ib_isEmptyNull = ab_isEmptyNull;
-		ib_isNullAllowed = ab_isNullAllowed;
-		ib_isTrim = ab_isTrim;
-	}
-
-	/**
-	 * @param a_Component_Parent
 	 *            Parent component
 	 * @param ab_isEmptyNull
 	 *            if empty value is considered as null
@@ -258,18 +236,11 @@ public class TextField extends Component
 	public boolean checkIfNewValues(String[] aS_Parameters)
 	{
 		clearModifiedStatus();
-		//HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
-		//String[] lS_Parameters =
-		// l_HttpServletRequest.getParameterValues(getResponseName());
-
 		if(aS_Parameters != null && aS_Parameters.length > 0)
 		{
-			// this is made because
-			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 =
 				{ 10 };
 			String lS_NewText = Utils.replace(aS_Parameters[0], new String(lc_10), "");
-			//lS_NewText = Utils.htmlToString(lS_NewText);
 
 			lS_NewText = formatStringByRules(lS_NewText);
 

@@ -99,17 +99,6 @@ public class InitTag extends MasterTag
 						(HttpServletResponse) this.i_PageContext.getResponse(), i_PageContext.getServletContext(),
 						l_Class, iS_LoginPage);
 				i_PageContext.getRequest().setAttribute(Form.FORM, i_Form);
-				
-				// HashMap l_HashMap = i_Form.getComponentByComponentNameHashMap();
-				//
-				// Iterator l_Iterator = l_HashMap.keySet().iterator();
-				//
-//				while(l_Iterator.hasNext())
-//				{
-//					String lS_Key = (String)l_Iterator.next();
-//					Object l_Object = l_HashMap.get(lS_Key);
-//					i_PageContext.getRequest().setAttribute(Form.FORM + "." + lS_Key, l_Object);
-//				}
 			}
 			if(i_Form.isInitialized())
 			{

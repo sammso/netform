@@ -786,7 +786,6 @@ public class Table extends Component
 			}
 
 			Component[] l_Components = new Component[ii_tableComponent_ModelsSize];
-
 			for (int li_index = 0; li_index < ii_tableComponent_ModelsSize; li_index++)
 			{
 				if (i_Component_RowModels[li_index] != null)
@@ -905,7 +904,7 @@ public class Table extends Component
 		}
 
 		// Update all rows
-
+		
 		for (int li_index = 1; li_index <= li_tableModelCount; li_index++)
 		{
 			updateComponentRow(li_index);
@@ -968,7 +967,7 @@ public class Table extends Component
 					else if (l_Components[li_index] == null && i_Component_RowModels[li_index] != null)
 					{
 						// This columns componend doesn't exists, but component exist in row model
-						// =>Add component to this column						
+						// =>Add component to this column
 						l_Components[li_index] = i_Component_RowModels[li_index].cloneComponent();
 						l_Components[li_index].setComponentData(new TableComponentData(i_TableModel));
 						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_index].getComponentData();
@@ -988,7 +987,7 @@ public class Table extends Component
 					{
 						// Component is equal.
 						// TODO: for this component would need equals method override
-						// => Just update row information			
+						// => Just update row information	
 						TableComponentData l_TableComponentData = (TableComponentData) l_Components[li_index].getComponentData();
 						l_TableComponentData.setRow(ai_index);
 					}
@@ -1511,7 +1510,7 @@ public class Table extends Component
 	protected void lastComponentIteration()
 	{
 		super.lastComponentIteration();
-
+		
 		if (i_TableModel == null)
 		{
 			throw new IllegalStateException("No TableModel defined for Table");
@@ -1525,7 +1524,7 @@ public class Table extends Component
 		synchRowNumbers();
 
 		// Handle status of page buttons.
-		validate(new TableValidate(this, getSelectedItems()));
+		//validate(new TableValidate(this, getSelectedItems()));
 
 		if (ii_pageSize != PAGESIZE_NOT_DEFINED)
 		{
@@ -1686,4 +1685,14 @@ public class Table extends Component
 	{
 		// TOD0: To implement
 	}
+	
+	/**
+	 * Override
+	 * 
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		validate(new TableValidate(this,getSelectedItems()));
+	}	
 }

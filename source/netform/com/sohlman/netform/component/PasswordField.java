@@ -19,8 +19,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform.component;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.sohlman.netform.Component;
 import com.sohlman.netform.Form;
 import com.sohlman.netform.Utils;
@@ -59,25 +57,18 @@ public class PasswordField extends TextField
 	 * Overriden from TextField
 	 * @see com.sohlman.netform.Component#checkIfNewValues()
 	 */
-	public boolean checkIfNewValues()
+	public boolean checkIfNewValues(String[] aS_Parameters)
 	{
 		clearModifiedStatus();
-		HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
-		String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
-
-		if (lS_Parameters != null && lS_Parameters.length > 0)
+		if (aS_Parameters != null && aS_Parameters.length > 0)
 		{
-			// this is made because 
-			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
-			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
-			//lS_NewText = Utils.htmlToString(lS_NewText);
+			String lS_NewText = Utils.replace(aS_Parameters[0], new String(lc_10), "");
 			
 			lS_NewText = formatStringByRules(lS_NewText);
 			
 			if ( ( lS_NewText==null && iS_Text==null ) || ( lS_NewText!=null && lS_NewText.equals(iS_Text)) || lS_NewText.equals(""))
 			{
-				//System.out.println(iS_NewText +" = " + iS_Text);
 				return false;
 			}
 			else

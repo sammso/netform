@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 
+import com.sohlman.netform.component.PasswordField;
 import com.sohlman.netform.component.TextField;
 
 /**
@@ -76,48 +77,58 @@ public class TextFieldTag extends ComponentTag
 	{
 		try
 		{
-			i_PageContext.getOut().print("<input");
-			i_PageContext.getOut().print(" type=\"text\"");
-			i_PageContext.getOut().print(" name=\"" + i_TextField.getResponseName() + "\"");
+			StringBuffer l_StringBuffer = new StringBuffer();
 
-			i_PageContext.getOut().print(" value=\"" + i_TextField.getText() + "\"");
+			l_StringBuffer.append("<input");
+			if(PasswordField.class.isInstance(i_TextField))
+			{
+				l_StringBuffer.append(" type=\"password\"");
+			}
+			else
+			{
+				l_StringBuffer.append(" type=\"text\"");
+			}
+			l_StringBuffer.append(" name=\"").append(i_TextField.getResponseName()).append("\"").append(" value=\"").append(i_TextField.getText())
+					.append("\"");
 
 			if(i_TextField.isValid())
 			{
 				if(iS_Style != null)
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+					l_StringBuffer.append(" style=\"" + iS_Style + "\"");
 				}
 				if(iS_Class != null)
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+					l_StringBuffer.append(" class=\"" + iS_Class + "\"");
 				}
 			}
 			else
 			{
 				if(iS_NotValidStyle == null && iS_Style != null)
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+					l_StringBuffer.append(" style=\"" + iS_Style + "\"");
 				}
 				else if(iS_NotValidStyle != null)
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
+					l_StringBuffer.append(" style=\"" + iS_NotValidStyle + "\"");
 				}
 				if(iS_NotValidClass == null || iS_Class != null)
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+					l_StringBuffer.append(" class=\"" + iS_Class + "\"");
 				}
 				else if(iS_NotValidClass != null)
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_NotValidClass + "\"");
+					l_StringBuffer.append(" class=\"" + iS_NotValidClass + "\"");
 				}
 			}
+			l_StringBuffer.append(">");
 
+			i_PageContext.getOut().print(l_StringBuffer.toString());
 			return EVAL_PAGE;
 		}
 		catch (IOException l_IOException)
 		{
-			return EVAL_PAGE;
+			throw new JspException(l_IOException);
 		}
 	}
 

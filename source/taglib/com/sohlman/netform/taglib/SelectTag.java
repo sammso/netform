@@ -107,20 +107,21 @@ public class SelectTag extends ComponentTag implements IterationTag
 		ii_index = 1;
 		try
 		{
-			i_PageContext.getOut().print("<select");
-			i_PageContext.getOut().print(" name=\"" + i_Table.getResponseName() + "\"");
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("<select");
+			l_StringBuffer.append(" name=\"" + i_Table.getResponseName() + "\"");
 
-			i_PageContext.getOut().print(" size=\"" + String.valueOf(ii_size) + "\"");
+			l_StringBuffer.append(" size=\"" + String.valueOf(ii_size) + "\"");
 
 			if(iS_Style != null)
 			{
 				if(iS_NotValidStyle == null || i_Table.isValid())
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+					l_StringBuffer.append(" style=\"" + iS_Style + "\"");
 				}
 				else
 				{
-					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
+					l_StringBuffer.append(" style=\"" + iS_NotValidStyle + "\"");
 				}
 			}
 
@@ -128,18 +129,27 @@ public class SelectTag extends ComponentTag implements IterationTag
 			{
 				if(iS_NotValidClass == null || i_Table.isValid())
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+					l_StringBuffer.append(" class=\"" + iS_Class + "\"");
 				}
 				else
 				{
-					i_PageContext.getOut().print(" class=\"" + iS_NotValidClass + "\"");
+					l_StringBuffer.append(" class=\"" + iS_NotValidClass + "\"");
 				}
 			}
-			return EVAL_BODY_INCLUDE;
+			l_StringBuffer.append(">");
+			i_PageContext.getOut().print(l_StringBuffer.toString());
+			if(i_Table.getTableModel().getRowCount() >= ii_index)
+			{
+				return EVAL_BODY_INCLUDE;
+			}
+			else
+			{
+				return SKIP_BODY;
+			}
 		}
 		catch (IOException l_IOException)
 		{
-			return EVAL_PAGE;
+			throw new JspException(l_IOException);
 		}
 	}
 

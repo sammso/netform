@@ -44,7 +44,7 @@ public abstract class CollectionTableModel extends TableModel
 
 	private String[] iS_ColumnNames = null;
 
-	private int ii_rowCount = 0;
+//	private int ii_rowCount = 0;
 
 	public void setCollection(Collection a_Collection)
 	{
@@ -216,19 +216,11 @@ public abstract class CollectionTableModel extends TableModel
 	{
 		if(i_List == null)
 		{
-			ii_rowCount = 0;
 			return 0;
 		}
 		else
 		{
-			int li_size = i_List.size();
-
-			if(li_size != ii_rowCount)
-			{
-				ii_rowCount = li_size;
-				fireUpdateAll();
-			}
-			return li_size;
+			return i_List.size();
 		}
 	}
 

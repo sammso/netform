@@ -56,6 +56,8 @@ import javax.servlet.http.HttpSession;
  */
 public abstract class Form
 {
+	public static final int TIMEOUT_SESSION = -1;
+
 	public final static String FORM = "form";
 
 	//  To be removed end
@@ -66,9 +68,12 @@ public abstract class Form
 
 	private ArrayList iAL_Components = null;
 
-	private HashMap iHm_ComponentNameByComponent = new HashMap(); // This hasmap is for
-														 // future loggin
-														 // purporses
+	private HashMap iHm_ComponentNameByComponent = new HashMap(); // This hasmap
+
+	// is for
+
+	// future loggin
+	// purporses
 
 	private HashMap iHm_ComponentByComponentName = new HashMap();
 
@@ -90,10 +95,15 @@ public abstract class Form
 
 	private ServletContext i_ServletContext;
 
+	private long il_timeOutMinutes = TIMEOUT_SESSION;
+
+	private long il_timeOutTime = TIMEOUT_SESSION;
+
 	private String iS_Name;
 
 	private int ii_notValidChildComponentCount = 0; // Component is valid if
-													// this is 0
+
+	// this is 0
 
 	/**
 	 * Tells if form is initialized. With this method is possible to check if
@@ -345,7 +355,7 @@ public abstract class Form
 				}
 
 				// Generate events to to components
-
+				
 				if(iAL_Components != null)
 				{
 					Iterator l_Iterator = iAL_Components.iterator();
@@ -366,7 +376,6 @@ public abstract class Form
 			endService();
 			callPortletEndService();
 			// Do last thing to components
-
 			if(iAL_Components != null)
 			{
 				Iterator l_Iterator = iAL_Components.iterator();
@@ -376,7 +385,6 @@ public abstract class Form
 					l_Component.lastIteration();
 				}
 			}
-
 			redirectToNextPage();
 			nextValueForComponentResponnsePrefix();
 			mapCurrentComponents();
@@ -389,6 +397,7 @@ public abstract class Form
 		finally
 		{
 			ib_isInitialized = true;
+			updateTimeOutTime();
 			finallyCleanUp();
 		}
 	}
@@ -413,8 +422,7 @@ public abstract class Form
 	 */
 	/*
 	 * private final void setHttpServletRequestToComponents(HttpServletRequest
-	 * a_HttpServletRequest) {
-	 *  }
+	 * a_HttpServletRequest) { }
 	 */
 	/**
 	 * Set's name for current form <br>
@@ -503,16 +511,6 @@ public abstract class Form
 		}
 	}
 
-	/**
-	 * To be override if web page is not allowed to change.
-	 * 
-	 * @return boolean true if it is allowed
-	 */
-	public boolean allowFormChange()
-	{
-		return true;
-	}
-
 	final void setFormManager(FormManager a_FormManager)
 	{
 		i_FormManager = a_FormManager;
@@ -539,6 +537,7 @@ public abstract class Form
 		{
 			String lS_NextPage = iS_NextPage;
 			iS_NextPage = null; // Just in case
+			getFormManager().removeForm(getName());
 			throw new DoRedirectException(lS_NextPage);
 		}
 	}
@@ -697,13 +696,12 @@ public abstract class Form
 	}
 
 	/**
-	 * For start every execute iteration session is out of sync.
-	 * and when somecomponent get parameters then it is 
-	 * sync again
+	 * For start every execute iteration session is out of sync. and when
+	 * somecomponent get parameters then it is sync again
 	 */
 	private void initSessionOutOfSync()
 	{
-		if(iAL_Components==null || iAL_Components.size() > 0)
+		if(iAL_Components == null || iAL_Components.size() > 0)
 		{
 			ib_isSessionOutOfSync = false;
 		}
@@ -713,7 +711,7 @@ public abstract class Form
 			ib_isSessionOutOfSync = true;
 		}
 	}
-	
+
 	final void setSessiodIsSync()
 	{
 		ib_isSessionOutOfSync = false;
@@ -771,5 +769,34 @@ public abstract class Form
 	public HashMap getComponentByComponentNameHashMap()
 	{
 		return iHm_ComponentByComponentName;
+	}
+
+	/**
+	 * Time out when when Form is in active it is allowed to clean up. After
+	 * clean up all the data from from is removed. When form is removed then
+	 * 
+	 * @return
+	 */
+	public long getTimeOutMinutes()
+	{
+		return il_timeOutMinutes;
+	}
+
+	public void setTimeOutMinutes(long al_timeOutMinutes)
+	{
+		il_timeOutMinutes = al_timeOutMinutes;
+	}
+
+	final long getTimeOutTime()
+	{
+		return il_timeOutTime;
+	}
+
+	private void updateTimeOutTime()
+	{
+		if(il_timeOutTime != TIMEOUT_SESSION)
+		{
+			il_timeOutTime = System.currentTimeMillis() + (il_timeOutMinutes * 60000);
+		}
 	}
 }

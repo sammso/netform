@@ -62,6 +62,8 @@ public abstract class Component
 	private boolean ib_enabledChanged = false;
 
 	private boolean ib_componentIsModified = false;
+	
+	private String iS_StaticResponseName = null;
 
 	private long il_count = 0;
 
@@ -123,7 +125,14 @@ public abstract class Component
 	 */
 	public String getResponseName()
 	{
-		return i_Form.getComponentResponnsePrefix() + "SS" + hashCode();
+		if(iS_StaticResponseName==null)
+		{
+			return i_Form.getComponentResponnsePrefix() + "SS" + hashCode();
+		}
+		else
+		{
+			return iS_StaticResponseName;
+		}
 	}
 
 	/**
@@ -477,7 +486,7 @@ public abstract class Component
 
 	final void setValid(boolean ab_isValid, Validate a_Validate)
 	{
-		boolean lb_isValid = ib_isValid;
+		boolean lb_isValid;
 		if(i_ComponentValidator != null && ab_isValid && a_Validate != null)
 		{
 			lb_isValid = i_ComponentValidator.isValid(a_Validate);
@@ -515,7 +524,7 @@ public abstract class Component
 	}
 
 	private void setChildValid(boolean ab_isValid)
-	{
+	{	
 		if(ab_isValid)
 		{
 			ii_notValidChildComponentCount--;
