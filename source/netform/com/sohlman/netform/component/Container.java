@@ -1,6 +1,8 @@
-package com.sohlman.netform;
+package com.sohlman.netform.component;
 
 import java.util.Vector;
+
+import com.sohlman.netform.Component;
 
 /**
  *
@@ -15,10 +17,6 @@ public class Container extends Component
 		super(a_Component_Parent);
 	}
 	
-    public boolean checkIfNewValues()
-    {
-		return false;
-    }
 	private Vector iVe_Components;
 	    
 	protected void addComponent(Component a_Component)    

@@ -5,6 +5,13 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.sohlman.netform.component.Validate;
+
+/**
+ * @author Sampsa Sohlman
+ * 
+ * @version Apr 13, 2004
+ */
 /**
  * <p>All the components in NetForm framework are inherited from this class. </p>
  * <p>Component class provides basic functionality for all components. Such as:</p>
@@ -266,7 +273,7 @@ public abstract class Component
 		}
 	}
 
-	final boolean parseValues()
+	protected final boolean parseValues()
 	{
 		clearModifiedStatus();
 		boolean lb_isModified = false;
@@ -281,7 +288,26 @@ public abstract class Component
 		return lb_isModified;
 	}
 
-	protected abstract boolean checkIfNewValues();
+	protected boolean checkIfNewValues()
+	{
+		// Put all values to child components
+		boolean lb_componentIsModified = false;
+
+		Iterator l_Iterator = getChildComponents();
+
+		if (l_Iterator != null)
+		{
+			while (l_Iterator.hasNext())
+			{
+				Component l_Component = (Component) l_Iterator.next();
+				if (l_Component.parseValues()) 
+				{
+					lb_componentIsModified = true;
+				}
+			}
+		}
+		return lb_componentIsModified;		
+	}
 
 	void lastIteration()
 	{
@@ -350,7 +376,7 @@ public abstract class Component
 		return ib_componentIsModified;
 	}
 
-	final void clearModifiedStatus()
+	protected final void clearModifiedStatus()
 	{
 		ib_componentIsModified = false;
 	}
@@ -422,7 +448,26 @@ public abstract class Component
 		}
 	}
 
-	public final void validate(Validate a_Validate)
+	/**
+	 * Forces validation. This is usually done by setting data as it would
+	 * be coming from browser inside components
+	 */
+	public void validate()
+	{
+		Iterator l_Iterator = getChildComponents();
+
+		if (l_Iterator != null)
+		{
+			while (l_Iterator.hasNext())
+			{
+
+				Component l_Component = (Component) l_Iterator.next();
+				l_Component.validate();
+			}
+		}
+	}
+
+	protected final void validate(Validate a_Validate)
 	{
 		setValid(true, a_Validate);
 	}
@@ -501,7 +546,7 @@ public abstract class Component
 	}
 
 	/**
-	 * This should clone component, with same 
+	 * This should clone component
 	 */
 	public abstract Component cloneComponent();
 
@@ -524,5 +569,8 @@ public abstract class Component
 		}
 	}
 	
+	/**
+	 * This used to syncronize data with ComponentData
+	 */
 	public abstract void syncronizeData();
 }

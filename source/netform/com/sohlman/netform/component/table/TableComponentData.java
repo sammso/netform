@@ -1,4 +1,7 @@
-package com.sohlman.netform;
+package com.sohlman.netform.component.table;
+
+import com.sohlman.netform.Component;
+import com.sohlman.netform.ComponentData;
 
 /**
  * @author Sampsa Sohlman

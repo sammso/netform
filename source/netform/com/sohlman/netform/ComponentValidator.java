@@ -1,5 +1,7 @@
 package com.sohlman.netform;
 
+import com.sohlman.netform.component.Validate;
+
 /**
  *
  * @author  Sampsa Sohlman

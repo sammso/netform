@@ -1,4 +1,4 @@
-package com.sohlman.netform;
+package com.sohlman.netform.component.table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +6,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.sohlman.netform.Component;
+import com.sohlman.netform.Form;
+import com.sohlman.netform.NetFormException;
+import com.sohlman.netform.Utils;
+import com.sohlman.netform.component.TextField;
 
 /**
  * High level component for handling table form data
@@ -360,7 +366,7 @@ public class Table extends Component
 		// Following execution order is important. Do not change it.
 		// Change may cause fault on setData method
 
-		boolean lb_newValuesComponents = checkIfNewValuesComponents();
+		boolean lb_newValuesComponents = super.checkIfNewValues();// checkIfNewValuesComponents();
 		boolean lb_newValuesSelection = checkNewValuesSelection();
 
 		// Do not these rows to together to one OR clause
@@ -369,26 +375,26 @@ public class Table extends Component
 		return lb_newValuesComponents || lb_newValuesSelection;
 	}
 
-	private boolean checkIfNewValuesComponents()
-	{
-		// Put all values to child components
-		boolean lb_componentIsModified = false;
-
-		Iterator l_Iterator = getChildComponents();
-
-		if (l_Iterator != null)
-		{
-			while (l_Iterator.hasNext())
-			{
-				Component l_Component = (Component) l_Iterator.next();
-				if (l_Component.parseValues())
-				{
-					lb_componentIsModified = true;
-				}
-			}
-		}
-		return lb_componentIsModified;
-	}
+//	private boolean checkIfNewValuesComponents()
+//	{
+//		// Put all values to child components
+//		boolean lb_componentIsModified = false;
+//
+//		Iterator l_Iterator = getChildComponents();
+//
+//		if (l_Iterator != null)
+//		{
+//			while (l_Iterator.hasNext())
+//			{
+//				Component l_Component = (Component) l_Iterator.next();
+//				if (l_Component.parseValues()) 
+//				{
+//					lb_componentIsModified = true;
+//				}
+//			}
+//		}
+//		return lb_componentIsModified;
+//	}
 
 	private boolean checkNewValuesSelection()
 	{
@@ -445,7 +451,6 @@ public class Table extends Component
 		if (!i_IntArray_Selection.equals(ai_indexes))
 		{
 			i_IntArray_Selection.setArray(ai_indexes);
-			validate(null);
 
 			if (hasComponentData() && isValid() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
 			{
@@ -1003,14 +1008,25 @@ public class Table extends Component
 			return null;
 		}
 	}
-	
+
+	/**
+	 * <b>JSP</p>
+	 * <p>
+	 * Returns Table compatible control
+	 * 
+	 * @param ai_displayRow Display row nro, which is translated to real Table row
+	 * @param ai_column Column number
+	 * @return Table
+	 * @throws NullPointerException component is not assigned to this column
+	 * @throws ClassCastException if Component is not Table 
+	 */	
 	public Table getTableAt(int ai_displayRow, int ai_column)
 	{
 		Component l_Component = getComponentAt(ai_displayRow, ai_column);
 		
 		if(l_Component==null)
 		{
-			throw new NetFormException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning null instead of Table");			
+			throw new NullPointerException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning null instead of Table");			
 		}
 		else if(l_Component.getClass().isAssignableFrom(Table.class))
 		{
@@ -1018,7 +1034,88 @@ public class Table extends Component
 		}
 		else
 		{
-			throw new NetFormException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning " + l_Component.getClass().getName() + " instead of Table" );
+			throw new ClassCastException("Table.getTableAt row=" + ai_displayRow + ", column=" +ai_column + " is returning " + l_Component.getClass().getName() + " instead of Table" );
+		}
+	}
+	/**
+	 * <b>JSP</p>
+	 * <p>
+	 * Returns Table compatible control
+	 * 
+	 * @param ai_displayRow Display row nro, which is translated to real Table row
+	 * @param aS_ColumnName Column name
+	 * @return Table
+	 * @throws NullPointerException component is not assigned to this column
+	 * @throws ClassCastException if Component is not Table 
+	 */	
+	public Table getTableAt(int ai_displayRow, String aS_ColumnName)
+	{
+		return getTableAt(ai_displayRow, i_TableModel.getIndexByName(aS_ColumnName));
+	}
+
+	/**
+	 * <b>JSP</p>
+	 * <p>
+	 * Returns TextField compatible control
+	 * 
+	 * @param ai_displayRow Display row nro, which is translated to real Table row
+	 * @param ai_column Column number
+	 * @return TextField
+	 * @throws NullPointerException component is not assigned to this column
+	 * @throws ClassCastException if Component is not TextField 
+	 */
+	public TextField getTextFieldAt(int ai_displayRow, int ai_column)
+	{
+		Component l_Component = getComponentAt(ai_displayRow, ai_column);
+		
+		if(l_Component==null)
+		{
+			throw new NullPointerException("Table.getTextFieldAt row=" + ai_displayRow + ", column=" +ai_column + " is returning null instead of TextField");			
+		}
+		else if(l_Component.getClass().isAssignableFrom(TextField.class))
+		{
+			return (TextField)l_Component;
+		}
+		else
+		{
+			throw new ClassCastException("Table.getTextFieldAt row=" + ai_displayRow + ", column=" +ai_column + " is returning " + l_Component.getClass().getName() + " instead of TextField" );
+		}		
+	}
+	
+	/**
+	 * <b>JSP</p>
+	 * <p>
+	 * Returns TextField compatible control
+	 * 
+	 * @param ai_displayRow Display row nro, which is translated to real Table row
+	 * @param aS_ColumnName Column name
+	 * @return TextField
+	 * @throws NullPointerException component is not assigned to this column
+	 * @throws ClassCastException if Component is not TextField 
+	 */	
+	public TextField getTextFieldAt(int ai_displayRow, String aS_ColumnName)
+	{
+		return getTextFieldAt(ai_displayRow, i_TableModel.getIndexByName(aS_ColumnName));
+	}
+
+	/**
+	 * <b>JSP</b>
+	 * <p>
+	 * Return parameter string only if row is selected
+	 * 
+	 * @param ai_row
+	 * @param a_String String to be returned if row is seleced
+	 * @return String if row is selecgted "" if not
+	 */
+	public String getStringIfRowSelected(int ai_row, String a_String)
+	{
+		if(isRowSelected(ai_row))
+		{
+			return a_String;
+		}
+		else
+		{
+			return "";
 		}
 	}
 
@@ -1156,4 +1253,14 @@ public class Table extends Component
 			}
 		}
 	}
+	
+	
+	/**
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		
+	}
+
 }

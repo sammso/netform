@@ -14,9 +14,11 @@
    - Fixes on table
    - New Component FloatField
    - New Component DoubleField
-   - New validation system
-   - ListModel, this is abstract class. Can be used with J2EE
+   - New validation system, which is doing more that it should
+   - ListModel, this is abstract class to model Lists. Can be used with J2EE
      applications. I'm using it with JBoss.
+   - Package strucuture has changed. If you are using Eclipse. CTRL-SHIFT-O
+     helps, remember also your JSP pages
    
    What is new on 0.62
    -------------------------------------------------------------

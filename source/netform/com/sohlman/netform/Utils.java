@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import com.sohlman.netform.component.IntegerField;
+import com.sohlman.netform.component.TextField;
+import com.sohlman.netform.component.TimestampField;
+
 /**
  * This class contains static methods that are needed on various places.
  * 
@@ -163,6 +167,7 @@ public class Utils
 	 * Converts java.sql.Timestamp to String with using specified format
 	 * @param a_Timestamp Timestamp containing time
 	 * @param aS_Format String containing format specifications
+	 * if format is null then format is "yyyy-MM-dd hh:mm:ss"
 	 * @return String containing datetime
 	 *
 	 * @see java.text.SimpleDateFormat for format options

@@ -1,6 +1,8 @@
-package com.sohlman.netform;
+package com.sohlman.netform.component;
 
 import java.sql.Timestamp;
+
+import com.sohlman.netform.Component;
 
 /**
  * @author Sampsa Sohlman

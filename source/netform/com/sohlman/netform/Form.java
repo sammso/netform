@@ -144,7 +144,7 @@ public abstract class Form
 			iAL_Components.add(a_Component);
 		}
 	}
-	/*
+
 	private void preValidateComponents()
 	{
 		if (iAL_Components != null)
@@ -154,11 +154,10 @@ public abstract class Form
 			while (l_Iterator.hasNext())
 			{
 				Component l_Component = (Component) l_Iterator.next();
-				l_Component.validate();
+				l_Component.validate(); 
 			}
 		}
 	}
-	*/
 	
 	public final synchronized void execute() throws DoRedirectException
 	{
@@ -169,7 +168,7 @@ public abstract class Form
 			{
 				ii_currentState = FORM_STATE_INIT;
 				init();
-				//preValidateComponents();
+				preValidateComponents();
 				ib_isInitialized = true;
 				startService();
 			}

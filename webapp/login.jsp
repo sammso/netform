@@ -1,4 +1,4 @@
-<%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*" %>
+<%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*, com.sohlman.netform.component.*" %>
 <% 
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";

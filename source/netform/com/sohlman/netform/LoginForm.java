@@ -1,10 +1,13 @@
 package com.sohlman.netform;
 
+import com.sohlman.netform.component.Button;
+import com.sohlman.netform.component.TextField;
+
 
 /**
  * @author Sampsa Sohlman
 /*
- * Version: 17.11.2003
+ * Version: 2003-11-17
  *
  */
 public abstract class LoginForm extends Form

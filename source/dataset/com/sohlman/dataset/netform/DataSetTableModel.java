@@ -5,7 +5,7 @@ import com.sohlman.dataset.DataSetEvent;
 import com.sohlman.dataset.DataSetException;
 import com.sohlman.dataset.DataSetListener;
 import com.sohlman.netform.NetFormException;
-import com.sohlman.netform.TableModel;
+import com.sohlman.netform.component.table.TableModel;
 
 /**
  * @author Sampsa Sohlman

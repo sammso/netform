@@ -1,22 +1,24 @@
+package com.sohlman.netform.component;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.sohlman.netform.Component;
+import com.sohlman.netform.Form;
+import com.sohlman.netform.Utils;
+
 /**
- * Textfield
+ * TextField is component to String data
  *
  * @version 2004-15-01
  * @author Sampsa Sohlman
  */
-
-package com.sohlman.netform;
-
-import javax.servlet.http.HttpServletRequest;
-
 public class TextField extends Component
 {
 	protected String iS_Text = null;
 
-	private boolean ib_emptyIsNull = false;
-	private boolean ib_isTrim = false;
-
-	private boolean ib_imValidating = false;
+	protected boolean ib_emptyIsNull = true;
+	protected boolean  ib_nullIsAllowed = true;
+	protected boolean ib_isTrim = false;
 
 	/** Creates new TextComponent */
 
@@ -41,6 +43,11 @@ public class TextField extends Component
 	{
 		ib_emptyIsNull = ab_emptyIsNull;
 	}
+	
+	public void setNullIsAllowed(boolean ab_isNullAllowed)
+	{
+		ib_nullIsAllowed = ab_isNullAllowed;
+	}
 
 	/**
 	 * Set trim mode on for textfield.
@@ -58,43 +65,41 @@ public class TextField extends Component
 	}
 
 	/**
-	 * Tells if empty textfield is handled as null
+	 * Textfield value is empty "" then it is considered as null,
+	 * by default it is null.
+	 * <p>
+	 * Use {@link #setEmptyIsNull(boolean) setEmptyIsNull()} to set 
+	 * behavior
+	 * 
 	 * @return boolean true if can be null else false
-	 *
 	 */
 
-	public boolean emptyIsNull()
+	public boolean isEmptyNull()
 	{
 		return ib_emptyIsNull;
 	}
+	
+	/**
+	 * Tells if null is allowed, by default nullIsAllowed
+	 * 
+	 * @return true if allowed false if not
+	 */
+	public boolean isNullAllowed()
+	{
+		return ib_nullIsAllowed;
+	}
 
-	/** 
-	 * Set text if emptyIsNull on then "" String is handled like empty
+	/**
+	 * Set TextField value
+	 * 
+	 * @param aS_Text if parameter is null then and null is not allowed then
+	 * it holds "" and {@link #hasNull() hasNull()} returns always false
 	 */
 	public void setText(String aS_Text)
 	{
-		if (aS_Text != null && ib_isTrim)
-		{
-			aS_Text = aS_Text.trim();
-		}
-
-		if (ib_emptyIsNull && aS_Text != null)
-		{
-			if (aS_Text.equals(""))
-			{
-				aS_Text = null;
-			}
-		}
-		if (aS_Text == null && !ib_emptyIsNull)
-		{
-			aS_Text = "";
-		}
-
-		iS_Text = aS_Text;
-
-		//ib_imValidating = true;
-		validate(new TextFieldValidate(this,aS_Text));
-		//ib_imValidating = false;
+		iS_Text = formatStringByRules(aS_Text);
+		
+		validate(new TextFieldValidate(this,iS_Text));
 
 		if (hasComponentData() && isValid())
 		{
@@ -108,12 +113,14 @@ public class TextField extends Component
 	 * {@link ComponentData ComponentData} is not used
 	 * is component is not valid or you are 
 	 * calling this method in validation.
-	 * 
+	 * <p>
+	 * If value is null then {@link TextField#hasNull() hasNull()} tells if field is null
+	 * or not
 	 * @return String
 	 */
 	public String getText()
 	{
-		if (hasComponentData() && isValid() && !ib_imValidating)
+		if (hasComponentData() && isValid())
 		{
 			Object l_Object = getData();
 			if (l_Object == null)
@@ -140,27 +147,21 @@ public class TextField extends Component
 		}
 	}
 	
-	public String getTextValue()
+	/**
+	 * @return true if contains null false if not
+	 */
+	public boolean containsNull()
 	{
-		if (hasComponentData() && isValid() && !ib_imValidating)
+		if (hasComponentData() && isValid())
 		{
-			Object l_Object = getData();
-			if (l_Object == null)
-			{
-				return null;
-			}
-			else
-			{
-				return l_Object.toString();
-				
-			}
+			return getData()==null;
 		}
 		else
 		{
-			return iS_Text;
-		}		
+			return iS_Text == null;
+		}
 	}
-
+	
 	/**
 	 * @see com.sohlman.netform.Component#checkIfNewValues()
 	 */
@@ -177,16 +178,18 @@ public class TextField extends Component
 			char[] lc_10 = { 10 };
 			String lS_NewText = Utils.replace(lS_Parameters[0], new String(lc_10), "");
 			//lS_NewText = Utils.htmlToString(lS_NewText);
-			if (!lS_NewText.equals(iS_Text))
+			
+			lS_NewText = formatStringByRules(lS_NewText);
+			
+			if ( ( lS_NewText==null && iS_Text==null ) || ( lS_NewText!=null && lS_NewText.equals(iS_Text)) )
 			{
 				//System.out.println(iS_NewText +" = " + iS_Text);
-				setText(lS_NewText);
-
-				return true;
+				return false;
 			}
 			else
 			{
-				return false;
+				setText(lS_NewText);
+				return true;
 			}
 		}
 		else
@@ -194,6 +197,24 @@ public class TextField extends Component
 			return false;
 		}
 	}
+
+	protected String formatStringByRules(String a_String)
+	{
+		if (a_String == null && !ib_emptyIsNull)
+		{
+			a_String = "";
+		}
+		if(ib_isTrim && a_String!=null)
+		{
+			a_String = a_String.trim();
+		}
+		if(ib_emptyIsNull && a_String!=null && a_String.equals("") )
+		{
+			a_String = null;
+		}
+		return a_String;
+	}
+	
 
 	/**
 	 * @see com.sohlman.netform.Component#addComponent(java.lang.String, com.sohlman.netform.Component)
@@ -209,9 +230,13 @@ public class TextField extends Component
 	public Component cloneComponent()
 	{
 		TextField l_Textfield = new TextField(getParent());
-		l_Textfield.setEmptyIsNull(ib_emptyIsNull);
+		l_Textfield.setEmptyIsNull(isEmptyNull());
+		l_Textfield.setTrim(isTrim());
+		l_Textfield.setNullIsAllowed(isNullAllowed());
+		
 		l_Textfield.setVisible(isVisible());
 		l_Textfield.setEnabled(isEnabled());
+		
 		l_Textfield.setComponentValidator(getComponentValidator());
 		return l_Textfield;
 	}
@@ -221,8 +246,17 @@ public class TextField extends Component
 	public void syncronizeData()
 	{
 		if(hasComponentData())
-		{
+		{			
 			iS_Text = (String)getData();
 		}
 	}
+	/**
+	 * @see com.sohlman.netform.Component#validate()
+	 */
+	public void validate()
+	{
+		// SetText
+		setText(iS_Text);
+	}
+
 }

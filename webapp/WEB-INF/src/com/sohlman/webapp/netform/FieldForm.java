@@ -3,20 +3,21 @@ package com.sohlman.webapp.netform;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.ComponentValidator;
-import com.sohlman.netform.DoubleField;
-import com.sohlman.netform.FloatField;
-import com.sohlman.netform.IntegerField;
-import com.sohlman.netform.LongField;
-import com.sohlman.netform.SimpleTableModel;
-import com.sohlman.netform.Table;
-import com.sohlman.netform.TextField;
-import com.sohlman.netform.TextFieldValidate;
-import com.sohlman.netform.TimestampField;
-import com.sohlman.netform.Validate;
+import com.sohlman.netform.component.Button;
+import com.sohlman.netform.component.DoubleField;
+import com.sohlman.netform.component.FloatField;
+import com.sohlman.netform.component.IntegerField;
+import com.sohlman.netform.component.LongField;
+import com.sohlman.netform.component.LongFieldValidate;
+import com.sohlman.netform.component.TextField;
+import com.sohlman.netform.component.TextFieldValidate;
+import com.sohlman.netform.component.TimestampField;
+import com.sohlman.netform.component.Validate;
+import com.sohlman.netform.component.table.SimpleTableModel;
+import com.sohlman.netform.component.table.Table;
 
 /**
  * 
@@ -37,9 +38,13 @@ public class FieldForm extends MasterForm
 	public Button nextMonthButton = new Button(this);
 	public Button previousMonthButton = new Button(this);
 	public Button todayButton = new Button(this);
+
 	public Button textToTableButton = new Button(this);
 	public Button timestampToTableButton = new Button(this);
-	public Button numberToTableButton = new Button(this);
+	public Button integerToTableButton = new Button(this);
+	public Button longToTableButton = new Button(this);
+	public Button floatToTableButton = new Button(this);
+	public Button doubleToTableButton = new Button(this);	
 	public Button deleteSelectedFromTableButton = new Button(this);
 	public Table table = new Table(this, new SimpleTableModel());
 	//Table i_Table_Second = new Table(this, new SimpleTableModel());
@@ -55,7 +60,7 @@ public class FieldForm extends MasterForm
 				if (integerField.isValid())
 				{ 
 					integerField.setInt(integerField.getInt() + 1);
-				}
+				} 
  
 			}
 			else if (a_Component == decreaseIntButton)
@@ -113,7 +118,7 @@ public class FieldForm extends MasterForm
 			{
 				table.deleteSelectedRows();
 			}
-			else if (a_Component == numberToTableButton)
+			else if (a_Component == integerToTableButton)
 			{
 				if (integerField.isValid())
 				{
@@ -138,6 +143,30 @@ public class FieldForm extends MasterForm
 					l_SimpleTableModel.addValue(textField.getText());
 				}
 			}
+			else if (a_Component == floatToTableButton)
+			{
+				if (floatField.isValid())
+				{
+					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
+					l_SimpleTableModel.addValue(floatField.getText());
+				}
+			}	
+			else if (a_Component == doubleToTableButton)
+			{
+				if (doubleField.isValid())
+				{
+					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
+					l_SimpleTableModel.addValue(doubleField.getText());
+				}
+			}
+			else if (a_Component == longToTableButton)
+			{
+				if (longField.isValid())
+				{
+					SimpleTableModel l_SimpleTableModel = (SimpleTableModel) table.getTableModel();
+					l_SimpleTableModel.addValue(longField.getText());
+				}
+			}			
 		}
 	};
 
@@ -148,11 +177,31 @@ public class FieldForm extends MasterForm
 			if (a_Validate.getSource() == textField)
 			{
 				String lS_Text = ((TextFieldValidate)a_Validate).getText();
+				
+				if(lS_Text==null)
+				{
+					return false;
+				}
 
-				if (lS_Text.trim().length() > 0 && lS_Text.trim().length() <= 12)
+				if ( lS_Text.trim().length() > 0 && lS_Text.trim().length() <= 12 )
 				{
 					return true;
 				}
+				else
+				{
+					return false;
+				}
+			}
+			if(a_Validate.getSource() == longField)
+			{
+				Long l_Long =((LongFieldValidate)a_Validate).getLong();
+				if(l_Long==null)
+				{
+					return false;
+				}
+				long ll_value = l_Long.longValue();
+				
+				return ll_value >= 1 && ll_value <= 20;	
 			}
 			return false;
 
@@ -172,6 +221,7 @@ public class FieldForm extends MasterForm
 		
 
 		textField.setComponentValidator(i_ComponentValidator);
+		longField.setComponentValidator(i_ComponentValidator);
 
 		// Set multiselection true so that it is posible select
 		// multiple items also server side
@@ -186,7 +236,10 @@ public class FieldForm extends MasterForm
 		yesterdayButton.addComponentListener(i_ComponentListener);
 		textToTableButton.addComponentListener(i_ComponentListener);
 		timestampToTableButton.addComponentListener(i_ComponentListener);
-		numberToTableButton.addComponentListener(i_ComponentListener);
+		integerToTableButton.addComponentListener(i_ComponentListener);
+		longToTableButton.addComponentListener(i_ComponentListener);
+		doubleToTableButton.addComponentListener(i_ComponentListener);
+		floatToTableButton.addComponentListener(i_ComponentListener);
 		deleteSelectedFromTableButton.addComponentListener(i_ComponentListener);
 	}
 	

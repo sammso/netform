@@ -4,12 +4,12 @@ import com.sohlman.dataset.ColumnInfo;
 import com.sohlman.dataset.DataSet;
 import com.sohlman.dataset.RowInfo;
 import com.sohlman.dataset.netform.DataSetTableModel;
-import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
-import com.sohlman.netform.SimpleTableModel;
-import com.sohlman.netform.Table;
-import com.sohlman.netform.TextField;
+import com.sohlman.netform.component.Button;
+import com.sohlman.netform.component.TextField;
+import com.sohlman.netform.component.table.SimpleTableModel;
+import com.sohlman.netform.component.table.Table;
 
 /**
  * @author Sampsa Sohlman

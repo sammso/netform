@@ -1,4 +1,4 @@
-package com.sohlman.netform;
+package com.sohlman.netform.component.table;
 
 import java.util.ArrayList;
 
