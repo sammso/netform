@@ -7,7 +7,10 @@ import com.sohlman.netform.Button;
 import com.sohlman.netform.Component;
 import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.ComponentValidator;
+import com.sohlman.netform.DoubleField;
+import com.sohlman.netform.FloatField;
 import com.sohlman.netform.IntegerField;
+import com.sohlman.netform.LongField;
 import com.sohlman.netform.SimpleTableModel;
 import com.sohlman.netform.Table;
 import com.sohlman.netform.TextField;
@@ -21,6 +24,9 @@ public class FieldForm extends MasterForm
 {   
 	public TextField textField = new TextField(this);
 	public IntegerField integerField = new IntegerField(this);
+	public FloatField floatField = new FloatField(this);
+	public DoubleField doubleField = new DoubleField(this);
+	public LongField longField = new LongField(this);
 	public TimestampField timestampField = new TimestampField(this);
 	public Button increaseIntButton = new Button(this);
 	public Button decreaseIntButton = new Button(this);
@@ -159,6 +165,9 @@ public class FieldForm extends MasterForm
 
 		// To NumberField
 		integerField.setInt(11);
+		doubleField.setDouble(15);
+		floatField.setFloat(20);
+		
 
 		textField.setComponentValidator(i_ComponentValidator);
 
