@@ -105,6 +105,7 @@ public class TextField extends Component
 		iS_Text = formatStringByRules(aS_Text);
 		
 		validate(new TextFieldValidate(this,iS_Text));
+		
 
 		if (hasComponentData() && isValidWithoutChilds() && ab_setData)
 		{

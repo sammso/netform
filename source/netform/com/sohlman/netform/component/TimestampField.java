@@ -123,9 +123,13 @@ public class TimestampField extends TextField
 				setValid(false);
 			}
 		}
-		else
+		else if(ib_isNullAllowed)
 		{
 			validate(new TimestampFieldValidate(this, i_Timestamp));
+		}
+		else
+		{
+			setValid(false);
 		}
 
 		if (hasComponentData() && isValidWithoutChilds())

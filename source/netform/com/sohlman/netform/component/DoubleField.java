@@ -125,9 +125,13 @@ public class DoubleField extends TextField
 				setValid(false);
 			}
 		}
-		else
+		else if(ib_isNullAllowed)
 		{
 			validate(new DoubleFieldValidate(this, l_Double));
+		}
+		else
+		{
+			setValid(false);
 		}
 
 		if (hasComponentData() && isValidWithoutChilds())

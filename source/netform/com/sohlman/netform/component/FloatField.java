@@ -127,9 +127,13 @@ public class FloatField extends TextField
 				setValid(false);
 			}
 		}
-		else
+		else if(ib_isNullAllowed)
 		{
 			validate(new FloatFieldValidate(this, l_Float));
+		}
+		else
+		{
+			setValid(false);
 		}
 
 		if (hasComponentData() && isValidWithoutChilds())

@@ -153,9 +153,13 @@ public class IntegerField extends TextField
 				setValid(false);
 			}
 		}
-		else
+		else if(ib_isNullAllowed)
 		{
 			validate(new IntegerFieldValidate(this, i_Integer));
+		}
+		else
+		{
+			setValid(false);
 		}
 
 		if (hasComponentData() && isValidWithoutChilds())
