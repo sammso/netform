@@ -37,7 +37,7 @@ public abstract class ListTableModel extends TableModel
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried to insert row out of range");
 		}
-		i_List.add(ai_before - 1, null);
+		i_List.add(ai_before - 1, createRow());
 		fireInsert(ai_before);
 		return ai_before;
 	}

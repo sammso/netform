@@ -115,8 +115,8 @@ public class FormManager implements HttpSessionListener
 		{
 			return false;
 		}
+		
 		return l_FormManager.isLoggedIn();
-
 	}
 
 	/**

@@ -15,6 +15,8 @@
    - New Component FloatField
    - New Component DoubleField
    - New validation system
+   - ListModel, this is abstract class. Can be used with J2EE
+     applications. I'm using it with JBoss.
    
    What is new on 0.62
    -------------------------------------------------------------
