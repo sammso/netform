@@ -22,7 +22,7 @@ public class TableForm extends MasterForm
 	public Table table;
 
 	private int ii_counter = 1;
-	private DataSet i_DataSet;
+	private DataSet i_DataSet;  
 	
 	private ComponentListener i_ComponentListener = new ComponentListener()
 	{
@@ -59,7 +59,7 @@ public class TableForm extends MasterForm
 		lSb_Number.append(lS_Number);
 		return lSb_Number.toString();
 	}
-
+ 
 	public void init()
 	{
 		reloadButton.addComponentListener(i_ComponentListener);

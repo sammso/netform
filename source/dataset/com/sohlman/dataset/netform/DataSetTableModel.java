@@ -24,10 +24,6 @@ public class DataSetTableModel extends TableModel
 				case DataSetEvent.ROW_INSERTED:
 					fireInsert(a_DataSetEvent.getRow());
 					break;
-				case DataSetEvent.COLUMN_CHANGED :
-					//System.out.println("fireUpdate(" + a_DataSetEvent.getRow() + "," + a_DataSetEvent.getColumn() + ")");
-					fireUpdate(a_DataSetEvent.getRow(), a_DataSetEvent.getColumn());
-					break;
 				case DataSetEvent.ROW_REMOVED :
 					fireDelete(a_DataSetEvent.getRow());
 					break;
@@ -99,6 +95,14 @@ public class DataSetTableModel extends TableModel
 	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
 	{
 		return i_DataSet.setValueAt(a_Object, ai_row, ai_column);
+	}
+
+	/**
+	 * @see com.sohlman.netform.TableModel#getColumnName(int)
+	 */
+	public String getColumnName(int ai_index)
+	{
+		return i_DataSet.getRowInfo().getColumnName(ai_index);
 	}
 
 }

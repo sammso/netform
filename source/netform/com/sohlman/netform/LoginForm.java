@@ -12,7 +12,6 @@ public abstract class LoginForm extends Form
 	public Button loginButton = new Button(this);
 	public TextField loginTextField = new TextField(this);
 	public TextField passwordTextField = new TextField(this);
-	private boolean ib_loginDone = false;
 	private String iS_DefaultNextPage = null;
 
 	ComponentListener i_ComponentListener = new ComponentListener()
@@ -26,7 +25,6 @@ public abstract class LoginForm extends Form
 				Object l_Object = doLogin(lS_LoginName, lS_Password);
 				if(l_Object !=null)
 				{
-					ib_loginDone = true;
 					getFormManager().setLoginInfo(l_Object); 
 					setNextPage(iS_DefaultNextPage);
 				}

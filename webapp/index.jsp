@@ -1,5 +1,5 @@
 					<jsp:include page="header.jsp" />
-						<h1>NetForm test application</h1>
+						<h1>NetForm test application v0.61</h1>
 						<h2>Introduction</h2>
 						<p>NetForm example application is test and show case of NetForm framework 
 						features and capabilities. </p>
@@ -18,5 +18,4 @@
 						it's columns. At this point table don't use validation mechanisms, but it is still there.
 						</p>
 					<jsp:include page="footer.jsp" />						
-							
 							

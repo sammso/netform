@@ -26,14 +26,23 @@ public abstract class Component
 	private boolean ib_enabledChanged = false;
 	private boolean ib_componentIsModified = false;
 	private long il_count = 0;
+	
+	// For Storing component data
+	// Component is also allowed to store it's
+	// data by it self.
+	// Component data makes posible to create
+	// external Datamodels
+	
+	private ComponentData i_ComponentData;
 
 	// For validation
-	// First run it has to check if it is valid
-	private boolean ib_isValid = false;
 
-	private ArrayList iAL_Components = null;
+	// First run it has to check if it is valid
+	// Component assumes that they are 
+	private boolean ib_isValid = true;
+
 	private ArrayList iAL_Listeners = null;
-	
+
 	private ComponentValidator i_ComponentValidator = null;
 
 	private Form i_Form;
@@ -67,7 +76,7 @@ public abstract class Component
 	 */
 	public String getResponseName()
 	{
-		return i_Form.getComponentResponnsePrefix() + "SS"  + hashCode();
+		return i_Form.getComponentResponnsePrefix() + "SS" + hashCode();
 	}
 
 	/**
@@ -128,15 +137,16 @@ public abstract class Component
 	final void setForm(Form a_Form)
 	{
 		i_Form = a_Form;
-		if (iAL_Components != null)
-		{
-			// Change state to old_value
 
-			Iterator l_Iterator = iAL_Components.iterator();
-			Component l_Component;
+		// Change state to old_value
+
+		Iterator l_Iterator = getChildComponents();
+
+		if (l_Iterator != null)
+		{
 			while (l_Iterator.hasNext())
 			{
-				l_Component = (Component) l_Iterator.next();
+				Component l_Component = (Component) l_Iterator.next();
 				l_Component.setForm(a_Form);
 			}
 		}
@@ -170,11 +180,10 @@ public abstract class Component
 	{
 		if (iAL_Listeners != null)
 		{
-			Iterator l_Enumeration = iAL_Listeners.iterator();
-			while (l_Enumeration.hasNext())
+			Iterator l_Iterator = iAL_Listeners.iterator();
+			while (l_Iterator.hasNext())
 			{
-				((ComponentListener) l_Enumeration.next()).eventAction(
-					this);
+				((ComponentListener) l_Iterator.next()).eventAction(this);
 			}
 		}
 	}
@@ -191,9 +200,14 @@ public abstract class Component
 		}
 	}
 
-	public boolean haveEvents()
+	private boolean haveNewValues()
 	{
-		return (ib_isVisible || ib_enabled);
+		return ib_isVisible && ib_enabled;
+	}
+
+	boolean haveEvents()
+	{
+		return ib_isVisible && ib_enabled && ib_componentIsModified;
 	}
 
 	public void setEnabled(boolean ab_enabled)
@@ -232,13 +246,14 @@ public abstract class Component
 		{
 			fireEvent();
 		}
-		if (iAL_Components != null)
-		{
-			// Change state to old_value
 
-			Iterator l_Iterator = iAL_Components.iterator();
+		Iterator l_Iterator = getChildComponents();
+
+		if (l_Iterator != null)
+		{
 			while (l_Iterator.hasNext())
 			{
+
 				Component l_Component = (Component) l_Iterator.next();
 				if (l_Component.haveEvents())
 				{
@@ -248,9 +263,24 @@ public abstract class Component
 		}
 	}
 
-	public abstract boolean checkIfNewValues();
+	final boolean parseValues()
+	{
+		clearModifiedStatus();
+		boolean lb_isModified = false;
+		if (haveNewValues())
+		{
+			if (checkIfNewValues())
+			{
+				componentIsModified();
+				lb_isModified = true;
+			}
+		}
+		return lb_isModified;
+	}
 
-	public void changeVisibleEnable()
+	protected abstract boolean checkIfNewValues();
+
+	void lastIteration()
 	{
 		if (ib_isVisibleChanged)
 		{
@@ -262,32 +292,39 @@ public abstract class Component
 			ib_enabled = ib_newEnabled;
 			ib_enabledChanged = false;
 		}
-		if (iAL_Components != null)
+		// Change state to old_value
+		
+		lastComponentIteration();
+		
+		Iterator l_Iterator = getChildComponents();
+		if (l_Iterator != null)
 		{
-			// Change state to old_value
-
-			Iterator l_Iterator = iAL_Components.iterator();
-			Component l_Component;
 			while (l_Iterator.hasNext())
 			{
-				l_Component = (Component) l_Iterator.next();
-				l_Component.changeVisibleEnable();
+				Component l_Component = (Component) l_Iterator.next();
+				l_Component.lastIteration();
 			}
 		}
+	}
+	
+	/**
+	 * To be overridden. This last to be called when 
+	 * Before form execution
+	 */
+	protected void lastComponentIteration()
+	{
+		// To be override
 	}
 
 	final void clearState()
 	{
-		if (iAL_Components != null)
+		Iterator l_Iterator = getChildComponents();
+		if (l_Iterator != null)
 		{
-			// Change state to old_value
-
-			Iterator l_Iterator = iAL_Components.iterator();
-			Component l_Component;
 			while (l_Iterator.hasNext())
 			{
-				l_Component = (Component) l_Iterator.next();
-				l_Component.changeVisibleEnable();
+				Component l_Component = (Component) l_Iterator.next();
+				l_Component.lastIteration();
 			}
 		}
 	}
@@ -355,16 +392,16 @@ public abstract class Component
 		}
 		else if (ib_isValid == false && ab_isValid == true)
 		{
-			if(iAL_Components!=null)
+			Iterator l_Iterator = getChildComponents();
+			if (l_Iterator != null)
 			{
-				Iterator l_Enumeration = iAL_Components.iterator();
 				boolean lb_isValid = true;
-				while (l_Enumeration.hasNext() && lb_isValid)
+				while (l_Iterator.hasNext() && lb_isValid)
 				{
-					Component l_Component = (Component) l_Enumeration.next();
+					Component l_Component = (Component) l_Iterator.next();
 					lb_isValid = l_Component.isValid();
-				}		
-				ib_isValid = lb_isValid;		
+				}
+				ib_isValid = lb_isValid;
 			}
 
 			if (i_Component_Parent != null)
@@ -378,16 +415,67 @@ public abstract class Component
 	{
 		setValid(true, true);
 	}
-	
+
 	protected Iterator getChildComponents()
 	{
-		if(iAL_Components==null)
+		return null;
+	}
+	
+	/**
+	 * Set DataContainer to component. DataContainer
+	 * Makes posiblity create data models.
+	 * 
+	 * @param a_ComponentData
+	 */
+	public void setComponentData(ComponentData a_ComponentData)
+	{
+		i_ComponentData = a_ComponentData;
+	}
+	
+	public ComponentData getComponentData()
+	{
+		return i_ComponentData;
+	}
+	
+	/**
+	 * Set data to this Component's {@link com.sohlman.netform.ComponentData ComponentData} object 
+	 * If {@link com.sohlman.netform.ComponentData ComponentData} is not set is ignored
+	 * @param a_Object Object
+	 */
+	protected void setData(Object a_Object)
+	{
+		if(i_ComponentData!=null)
 		{
-			return null;
+			i_ComponentData.setData(a_Object);
+		}
+	}
+	
+	/** gets data from {@link com.sohlman.netform.ComponentData ComponentData}
+	 * @return Object 
+	 * @throws IllegalStateException if component data doesn't exists
+	 */
+	protected Object getData()
+	{
+		if(i_ComponentData!=null)
+		{
+			return i_ComponentData.getData();
 		}
 		else
 		{
-			return iAL_Components.iterator();
+			throw new IllegalStateException("Component object is not defined");
 		}
 	}
+	
+	/** Has component data
+	 * @return
+	 */
+	protected boolean hasComponentData()
+	{
+		return i_ComponentData != null;
+	}
+	
+	/**
+	 * This should clone component, with same 
+	 */
+	public abstract Component cloneComponent();	
 }

@@ -17,19 +17,44 @@ public class SimpleTableModel extends TableModel
 		super();
 	}
 	
+	
+	/**
+	 * Contruct tableModel from array of objects
+	 * 
+	 * @param a_Objects
+	 */
 	public SimpleTableModel(Object[] a_Objects)
 	{
 		super();
 		if(a_Objects!=null)
 		{
+			iAL_ArrayList = new ArrayList();
 			for(int li_y = 0 ; li_y < a_Objects.length ; li_y++)
 			{
-				addValue(a_Objects[li_y]);
+				iAL_ArrayList.add(a_Objects[li_y]);
 			}
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/**
+	 * Possiblity to reset all object from Array of Objects
+	 * 
+	 * @param a_Objects
+	 */
+	public void resetAll(Object[] a_Objects)
+	{
+		if(a_Objects!=null)
+		{
+			iAL_ArrayList = new ArrayList();
+			for(int li_y = 0 ; li_y < a_Objects.length ; li_y++)
+			{
+				iAL_ArrayList.add(a_Objects[li_y]);
+			}
+			fireUpdateAll();
+		}
+	}
+	
+	/**
 	 * @see com.sohlman.netform.TableModel#add()
 	 */
 	public int add()
@@ -37,7 +62,7 @@ public class SimpleTableModel extends TableModel
 		return insert(1);
 	}
 
-	/* (non-Javadoc)
+	/** (non-Javadoc)
 	 * @see com.sohlman.netform.TableModel#insert(int)
 	 */
 	public int insert(int ai_before)
@@ -53,11 +78,11 @@ public class SimpleTableModel extends TableModel
 		}
 		
 		iAL_ArrayList.add(ai_before - 1, null);
-		
+		fireInsert(ai_before);
 		return ai_before;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#delete(int)
 	 */
 	public int delete(int ai_row)
@@ -67,10 +92,11 @@ public class SimpleTableModel extends TableModel
 			throw new ArrayIndexOutOfBoundsException("Tried to delete row from out of range");
 		}
 		iAL_ArrayList.remove(ai_row - 1);
+		fireDelete(ai_row);
 		return ai_row;		
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#getRowCount()
 	 */
 	public int getRowCount()
@@ -85,7 +111,7 @@ public class SimpleTableModel extends TableModel
 		}
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#getColumnCount()
 	 */
 	public int getColumnCount()
@@ -93,7 +119,7 @@ public class SimpleTableModel extends TableModel
 		return 1;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#getValueAt(int, int)
 	 */
 	public Object getValueAt(int ai_row, int ai_column)
@@ -109,7 +135,7 @@ public class SimpleTableModel extends TableModel
 		return iAL_ArrayList.get(ai_row - 1);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.TableModel#setValueAt(java.lang.Object, int, int)
 	 */
 	public boolean setValueAt(Object a_Object, int ai_row, int ai_column)
@@ -123,14 +149,46 @@ public class SimpleTableModel extends TableModel
 			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of column range. Column range is always 1");
 		}
 		iAL_ArrayList.set(ai_row - 1, a_Object);
-		
 		return true;
 	}
 	
+	/**
+	 * Adds object end of list in SimpleTableModel
+	 * 
+	 * @param a_Object to put end of List
+	 */
 	public void addValue(Object a_Object)
 	{
 		int li_row = add();
 		setValueAt(a_Object,li_row, 1);
+	}
+	/**
+	 * All object in array
+	 *  
+	 * @return Array of objects null if none
+	 */
+	public Object[] toArray()
+	{
+		if(iAL_ArrayList!=null)
+		{
+			return iAL_ArrayList.toArray();
+		}
+		else
+		{
+			return null;
+		}	
+	}
+
+	/**
+	 * @see com.sohlman.netform.TableModel#getColumnName(int)
+	 */
+	public String getColumnName(int ai_index)
+	{
+		if(ai_index!=1)
+		{
+			throw new ArrayIndexOutOfBoundsException("Tried to getColumnName to out of column range. Column range is always 1");
+		}		
+		return "";
 	}
 
 }

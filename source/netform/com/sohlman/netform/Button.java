@@ -48,18 +48,28 @@ public class Button extends Component
 
 	/**
 	 * Is button clicked.
+	 * @return true if button is clicked false if not
 	 */
-
 	public final boolean isClicked()
 	{
 		return ib_isButtonClicked;
 	}
 	
-	/* 
+	/**
 	 * Not supported
+	 * @throws NoSuchMethodError
 	 */
 	protected void addComponent(Component a_Component)
 	{
 		throw new NoSuchMethodError("Child components are not supported on Textfield");
 	}
+	
+	/**
+	 * Not supported
+	 * @throws NoSuchMethodError
+	 */	
+	public Component cloneComponent()
+	{
+		throw new NoSuchMethodError("At moment clone component is not supported");
+	}	
 }

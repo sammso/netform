@@ -3,6 +3,7 @@ package com.sohlman.netform;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -22,6 +23,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class Form 
 {
+	final static int FORM_STATE_INIT = 1;
+	final static int FORM_STATE_SETTINGS = 2;
+	final static int FORM_STATE_EXECUTE = 3;
+	final static int FORM_STATE_TEMPLATING = 4;
+	
 	final static String FORM_CONTAINER = "@FORM_CONTAINER";
 	final static String SESSION_PAGE = "@PAGE";
 	//private Hashtable iVe_Components;
@@ -31,6 +37,7 @@ public abstract class Form
 	private boolean ib_isInitialized = false;
 	private boolean ib_isValid = true;
 	private FormManager i_FormManager;
+	private ServletContext i_ServletContext;
 
 	private String iS_Name;
 
@@ -38,6 +45,42 @@ public abstract class Form
 	{
 		i_HttpServletRequest = getHttpServletRequest(a_HttpServletRequest);
 	}
+	
+	/**
+	 * Add user level attribute. If you add user level 
+	 * attribute with this method it is always available for
+	 * all forms. Don't put very memory consuming objects here
+	 * or you might create very heavy session object.
+	 * <br>
+	 * If key is already defined it is replaced by new.
+	 * @param aS_Key Key
+	 * @param a_Object Object 
+	 */
+	protected final void setUserAttribute(String aS_Key, Object a_Object)
+	{
+		i_FormManager.setUserAttribute(aS_Key, a_Object);
+	}
+	
+	/**
+	 * Get user attribute
+	 * 
+	 * @param aS_Key
+	 * @return Object for key
+	 */
+	protected final Object getUserAttribute(String aS_Key)
+	{
+		return i_FormManager.getUserAttribute(aS_Key);
+	}
+	
+	/**
+	 * Remove key and object assiated with it.
+	 * 
+	 * @param aS_Key
+	 */
+	protected final void removeAttribute(String aS_Key)
+	{
+		i_FormManager.removeAttribute(aS_Key);
+	}	
 
 	/**
 	 * By inherting this method is possible change HttpServletRequest object type.
@@ -118,8 +161,21 @@ public abstract class Form
 			ib_isInitialized = true;
 		}
 		
+		// New Way to get new values
+		// This is supporting on thinking
+		// <name><extension>
+		/*
+		Enumeration l_Enumeration = getHttpServletRequest().getParameterNames();
+		
+		while(l_Enumeration.hasMoreElements())
+		{
+			System.out.println((String)l_Enumeration.nextElement());
+		}
+		*/
+		
 		//
 		// Check the all components if they have new values
+		// and parse them
 		//
 		if (iAL_Components != null)
 		{
@@ -128,18 +184,13 @@ public abstract class Form
 			while (l_Iterator.hasNext())
 			{
 				Component l_Component = (Component) l_Iterator.next();
-				l_Component.clearModifiedStatus();
-				if (l_Component.haveEvents())
-				{
-					if (l_Component.checkIfNewValues())
-					{
-						l_Component.componentIsModified();
-					}
-				}
+				l_Component.parseValues();
 			}
 		}		
 				
 		startService();
+		
+		// Generate events to to components
 		
 		if (iAL_Components != null)
 		{
@@ -148,8 +199,10 @@ public abstract class Form
 			while (l_Iterator.hasNext())
 			{
 				Component l_Component = (Component) l_Iterator.next();
+				
 				if (l_Component.haveEvents())
 				{
+					
 					l_Component.generateEvent();
 					lb_eventsGenerated = true;	
 				}
@@ -158,13 +211,15 @@ public abstract class Form
 		
 		endService();
 		
+		// Do last thing to components
+		
 		if (iAL_Components != null)
 		{
 			Iterator l_Iterator = iAL_Components.iterator();
 			while (l_Iterator.hasNext())
 			{
 				Component l_Component = (Component) l_Iterator.next();
-				l_Component.changeVisibleEnable();
+				l_Component.lastIteration();
 			}
 		}
 		if(!lb_eventsGenerated)
@@ -179,11 +234,11 @@ public abstract class Form
 	 *
 	 * @param a_HttpServletRequest HttpServletRequest
 	 */
-	private final void setHttpServletRequestToComponents(HttpServletRequest a_HttpServletRequest)
+/*	private final void setHttpServletRequestToComponents(HttpServletRequest a_HttpServletRequest)
 	{
 
 	}
-	
+*/	
 	/**
 	 * Set's name for current form<br>
 	 * Name of form is servlet url mapping which is binded in servlet init parameters<br>
@@ -322,4 +377,14 @@ public abstract class Form
 	{
 		il_count++;
 	}
+	
+	public ServletContext getServletContext()
+	{
+		return i_ServletContext;
+	}
+	
+	public void setServletContext(ServletContext a_ServletContext)
+	{
+		i_ServletContext = a_ServletContext;
+	}		
 }

@@ -38,4 +38,9 @@ public class Container extends Component
 			iVe_Components.add(a_Component);
 		}
 	}    
+	
+	public Component cloneComponent()
+	{
+		throw new IllegalAccessError("At moment clone component is not supported");
+	}	
 }

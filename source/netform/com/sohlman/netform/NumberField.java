@@ -101,6 +101,11 @@ public class NumberField extends TextField
 
 	public double getDouble()
 	{
+		if(hasComponentData())
+		{
+			Double l_Double = (Double)getData();
+			return l_Double.doubleValue();
+		}
 		return getNumber(getText()).doubleValue();
 	}
 
@@ -111,8 +116,18 @@ public class NumberField extends TextField
 		setText(l_StringBuffer.toString());
 	}
 
+	public void setText()
+	{
+		
+	}
+
 	public void setDouble(double ad_double)
 	{
+		if(hasComponentData())
+		{
+			setData(new Double(ad_double));	
+		}
+		
 		StringBuffer l_StringBuffer = new StringBuffer();
 		i_DecimalFormat.format(ad_double, l_StringBuffer, new FieldPosition(0));
 		setText(l_StringBuffer.toString());
@@ -199,7 +214,7 @@ public class NumberField extends TextField
 				
 	}
 
-	public TableComponent newInstance()
+	public Component cloneComponent()
 	{
 		NumberField l_NumberField = new NumberField(getParent(), getNumberClass());
 		l_NumberField.setEmptyIsNull(emptyIsNull());

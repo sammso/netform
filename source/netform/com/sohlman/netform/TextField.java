@@ -7,20 +7,14 @@
 
 package com.sohlman.netform;
 
-import java.util.Vector;
-
 import javax.servlet.http.HttpServletRequest;
 
-public class TextField extends TableComponent
+public class TextField extends Component
 {
 	protected String iS_Text = null;
-	protected String iS_NewText = null;
-	protected String iS_OldText = null;
 
 	private boolean ib_emptyIsNull = false;
 	private boolean ib_isTrim = false;
-
-	protected Vector iV_Listeners;
 
 	/** Creates new TextComponent */
 
@@ -89,34 +83,59 @@ public class TextField extends TableComponent
 		{
 			if (aS_Text.equals(""))
 			{
-				iS_Text = null;
+				aS_Text = null;
 			}
 		}
 		if (aS_Text == null && !ib_emptyIsNull)
 		{
 			aS_Text = "";
 		}
+		
+		if(hasComponentData())
+		{
+			setData(aS_Text);	
+		}
+		
 		iS_Text = aS_Text;
-		validate();
+		validate();		
 	}
+	
+	
 
 	public String getText()
 	{
-		if(iS_Text==null)
+		if(hasComponentData() && isValid())
 		{
-			return "";	
+			Object l_Object = getData();
+			if(l_Object==null)
+			{
+				return "";
+			}
+			else
+			{
+				return l_Object.toString();
+			}
 		}
-		else
+		else		
 		{
-			return iS_Text;
+			if(iS_Text==null)
+			{
+				return "";	
+			}
+			else
+			{
+				return iS_Text;
+			}
 		}
 	}
 
+	/**
+	 * @see com.sohlman.netform.Component#checkIfNewValues()
+	 */
 	public boolean checkIfNewValues()
 	{
+		clearModifiedStatus();
 		HttpServletRequest l_HttpServletRequest = getHttpServletRequest();
-		iS_NewText = null;
-		iS_OldText = iS_Text;
 		String[] lS_Parameters = l_HttpServletRequest.getParameterValues(getResponseName());
 
 		if (lS_Parameters != null && lS_Parameters.length > 0)
@@ -124,10 +143,12 @@ public class TextField extends TableComponent
 			// this is made because 
 			// XSLT processor don't convert 10 at all only 13
 			char[] lc_10 = { 10 };
-			iS_NewText = Statics.replace(lS_Parameters[0], new String(lc_10), "");
-			if (!iS_NewText.equals(iS_Text))
+			String lS_NewText = Statics.replace(lS_Parameters[0], new String(lc_10), "");
+			if (!lS_NewText.equals(iS_Text))
 			{
-				setText(iS_NewText);
+				//System.out.println(iS_NewText +" = " + iS_Text);
+				setText(lS_NewText);
+				
 				return true;
 			}
 			else
@@ -141,26 +162,7 @@ public class TextField extends TableComponent
 		}
 	}
 
-	public TableComponent newInstance()
-	{
-		TextField l_Textfield = new TextField(getParent());
-		l_Textfield.setEmptyIsNull(ib_emptyIsNull);
-		l_Textfield.setVisible(isVisible());
-		l_Textfield.setEnabled(isEnabled());
-		l_Textfield.setComponentValidator(getComponentValidator());
-		return l_Textfield;
-	}
-
-	public Object getValue()
-	{
-		return iS_Text;
-	}
-
-	public void setObject(Object a_Object)
-	{
-		setText((String) a_Object);
-	}
-	/* (non-Javadoc)
+	/**
 	 * @see com.sohlman.netform.Component#addComponent(java.lang.String, com.sohlman.netform.Component)
 	 */
 	protected void addComponent(Component a_Component)
@@ -168,4 +170,17 @@ public class TextField extends TableComponent
 		throw new NoSuchMethodError("Child components are not supported on Textfield");
 	}
 
+	
+	/**
+	 * @see com.sohlman.netform.Component#cloneComponent()
+	 */
+	public Component cloneComponent()
+	{
+		TextField l_Textfield = new TextField(getParent());
+		l_Textfield.setEmptyIsNull(ib_emptyIsNull);
+		l_Textfield.setVisible(isVisible());
+		l_Textfield.setEnabled(isEnabled());
+		l_Textfield.setComponentValidator(getComponentValidator());		
+		return l_Textfield;
+	}
 }

@@ -16,9 +16,9 @@ import com.sohlman.netform.TimestampField;
 /**
  * 
  * @author Sampsa Sohlman
- */
+ */ 
 public class FieldForm extends MasterForm
-{
+{   
 	public TextField textField = new TextField(this);
 	public NumberField numberField = new NumberField(this, Integer.class);
 	public TimestampField timestampField = new TimestampField(this);
@@ -176,7 +176,6 @@ public class FieldForm extends MasterForm
 		timestampToTableButton.addComponentListener(i_ComponentListener);
 		numberToTableButton.addComponentListener(i_ComponentListener);
 		deleteSelectedFromTableButton.addComponentListener(i_ComponentListener);
-
 	}
 	
 	

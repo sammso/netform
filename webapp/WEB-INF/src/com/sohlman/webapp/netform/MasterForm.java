@@ -17,7 +17,7 @@ public class MasterForm extends Form
 	{
 	
 	}
-	
+	 
 	/**
 	 * @see com.sohlman.netform.Form#isLoginRequired()
 	 */

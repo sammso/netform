@@ -43,6 +43,7 @@ public abstract class TableModel
 	public abstract int getColumnCount();
 	public abstract Object getValueAt(int ai_row, int ai_column);
 	public abstract boolean setValueAt(Object a_Object, int ai_row, int ai_column);
+	public abstract String getColumnName(int ai_index);
 	
 	public void fireInsert(int ai_before)
 	{
@@ -52,11 +53,6 @@ public abstract class TableModel
 	public void fireDelete(int ai_index)
 	{
 		i_Table.removeComponentRow(ai_index);
-	}
-	
-	public void fireUpdate(int ai_row, int ai_column)
-	{
-		i_Table.updateComponentAt(getValueAt(ai_row, ai_column), ai_row, ai_column);
 	}
 
 	public void fireUpdateAll()

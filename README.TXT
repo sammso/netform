@@ -1,6 +1,30 @@
 
-   NetForm Web Application Framework for Java V 0.60s
+   NetForm Web Application Framework for Java V 0.61s
    =================================================
+
+   What is new on 0.61
+   -------------------------------------------------------------
+   - Table programming interface is changed (easier, better)
+     - DisplayRow (removed) class removed
+     - TableModelComponent removed
+       - Functionality is made through DataComponent
+     - API Change Table.setTableModelComponent -> Table.setModelComponent
+     
+   - Component's are based on new ComponentData data handling.
+     - It is optional
+     - It is done because Table. Every component now has option
+       to store it's data to 
+   - Stared to developing STATE machine to prevent mal usage.
+     - This methods that some functionality is generating Exception
+       when called on wrong state
+       in 4 states. 
+        + Form.FORM_STATE_INIT
+        + Form.FORM_STATE_SETTINGS
+        + Form.FORM_STATE_EXECUTE
+        + Form.FORM_STATE_TEMPLATING
+      see more on JavaDoc on Form and Components section
+   - Component is isValid by default.
+ 
    
    What is new on 0.60
    -------------------------------------------------------------

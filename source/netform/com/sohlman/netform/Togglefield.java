@@ -104,11 +104,20 @@ public class Togglefield extends Component
 		throw new NoSuchMethodError("Child components are not supported on Textfield");
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.sohlman.netform.Component#addComponent(java.lang.String, com.sohlman.netform.Component)
+	/**
+	 * Not supported
+	 * @throws NoSuchMethodError
 	 */
 	protected void addComponent(Component a_Component)
 	{
 		throw new NoSuchMethodError("Child components are not supported on Textfield");
+	}	
+	/**
+	 * Not supported
+	 * @throws NoSuchMethodError
+	 */	
+	public Component cloneComponent()
+	{
+		throw new NoSuchMethodError("At moment clone component is not supported");
 	}	
 }

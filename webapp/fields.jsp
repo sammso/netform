@@ -46,19 +46,18 @@
 		</td> 
 		<td colspan="2">	
 			<select name="<%=form.table.getResponseName() %>" size="10" ><%
-	DisplayRow[] l_DisplayRows = form.table.getDisplayRows();
 	
-	for(int li_y = 0 ; li_y < l_DisplayRows.length ; li_y++)
+	for(int li_y = 1 ; li_y < form.table.getDisplayRowCount() ; li_y++)
 	{	
-		if(l_DisplayRows[li_y].isSelected())
+		if(form.table.isSelected(li_y))
 		{
 		%>
-				<option value="<%=l_DisplayRows[li_y].getRowId() %>" selected ><%=l_DisplayRows[li_y].getString(1) %></option><%
+				<option value="<%=form.table.getRowId(li_y) %>" selected ><%=form.table.getText(li_y, 1) %></option><%
 		} 
 		else
 		{
 		%>
-			<option value="<%=l_DisplayRows[li_y].getRowId() %>"><%=l_DisplayRows[li_y].getString(1) %></option><%
+			<option value="<%=form.table.getRowId(li_y) %>"><%=form.table.getText(li_y, 1) %></option><%
 		}
 	}
 	%>

@@ -87,4 +87,16 @@ public class DisplayRow
 	{
 		return iS_Columns != null;
 	}
+	
+	public int getColumnCount()
+	{
+		if(iS_Columns==null)
+		{
+			return 0;
+		}
+		else
+		{
+			return iS_Columns.length;
+		}
+	}
 }

@@ -17,6 +17,7 @@ public class TimestampField extends TextField
 	Timestamp i_Timestamp;
 	boolean ib_emptyIsValid = true;
 	boolean ib_nullAllowed = true;
+	Object lO_Info; 
 
 	ComponentValidator i_ComponentValidator = new ComponentValidator()
 	{
@@ -113,13 +114,23 @@ public class TimestampField extends TextField
 		setTimestamp((Timestamp) a_Object);
 	}
 
-	public TableComponent newInstance()
+	public Component cloneComponent()
 	{
 		TimestampField l_TimestampField = new TimestampField(getParent());
 		l_TimestampField.setEmptyIsNull(emptyIsNull());
 		l_TimestampField.setVisible(isVisible());
 		l_TimestampField.setEnabled(isEnabled());
-		//l_TimestampField.setNullIsAllowed(isNullAllowed());
+		l_TimestampField.setNullIsAllowed(isNullAllowed());
 		return l_TimestampField;
+	}
+	
+	private void setNullIsAllowed(boolean ab_nullAllowed)
+	{
+		ib_nullAllowed = ab_nullAllowed;
+	}
+	
+	private boolean isNullAllowed()
+	{
+		return ib_nullAllowed;
 	}
 }

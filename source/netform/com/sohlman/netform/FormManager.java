@@ -1,7 +1,9 @@
 package com.sohlman.netform;
 
 import java.lang.reflect.Method;
+import java.util.Hashtable;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,14 +24,73 @@ public class FormManager implements HttpSessionListener
 	private Form i_Form;
 	private Object iO_LoginInfo = null;
 	private String iS_NextPageAfterLogin = null;
+	private Hashtable i_Hashtable = null;
 
-	private FormManager()
+	protected FormManager()
 	{
 	}
 
 	private void setForm(Form a_Form)
 	{
 		i_Form = a_Form;
+	}
+	
+	/**
+	 * Add user level attribute. If you add user level 
+	 * attribute with this method it is always available for
+	 * all forms. Don't put very memory consuming objects here
+	 * or you might create very heavy session object.
+	 * <br>
+	 * If key is already defined it is replaced by new.
+	 * @param aS_Key Key
+	 * @param a_Object Object 
+	 */
+	protected final void setUserAttribute(String aS_Key, Object a_Object)
+	{
+		if(i_Hashtable==null)
+		{
+			i_Hashtable = new Hashtable();
+		}
+		i_Hashtable.remove(aS_Key);	
+	
+		i_Hashtable.put(aS_Key, a_Object);
+	}
+	
+	/**
+	 * Get user attribute
+	 * 
+	 * @param aS_Key
+	 * @return Object for key
+	 */
+	protected final Object getUserAttribute(String aS_Key)
+	{
+		if(i_Hashtable==null)
+		{
+			return null;
+		}
+		return i_Hashtable.get(aS_Key);
+	}
+	
+	/**
+	 * Remove key and object assiated with it.
+	 * 
+	 * @param aS_Key
+	 */
+	protected final void removeAttribute(String aS_Key)
+	{
+		if(i_Hashtable!=null)
+		{
+			i_Hashtable.remove(aS_Key);
+		}	
+	}
+	
+	/**
+	 * <u>Implement this method if you have to do something on application level
+	 * when session is expiring.</u>
+	 * Session may end example if time out occurs
+	 */
+	protected void endSession()
+	{
 	}
 
 	/**
@@ -57,7 +118,7 @@ public class FormManager implements HttpSessionListener
 		return l_FormManager.isLoggedIn();
 
 	}
-	
+
 	/**
 	 * To use on JSP page<br>
 	 * make example logout.jsp page and call this there and configure page to redirect after that.
@@ -69,11 +130,11 @@ public class FormManager implements HttpSessionListener
 	public static void logout(HttpServletRequest a_HttpServletRequest, HttpServletResponse a_HttpServletResponse)
 	{
 		HttpSession l_HttpSession = a_HttpServletRequest.getSession(false);
-		if(l_HttpSession!=null)
+		if (l_HttpSession != null)
 		{
 			FormManager l_FormManager = (FormManager) l_HttpSession.getAttribute(FormManager.FORM_MANAGER);
 			Form l_Form = l_FormManager.getForm();
-			if(l_Form!=null)
+			if (l_Form != null)
 			{
 				l_Form.formDestroyed();
 			}
@@ -95,9 +156,14 @@ public class FormManager implements HttpSessionListener
 		}
 	}
 
-	public static Form getForm(HttpServletRequest a_HttpServletRequest, HttpServletResponse a_HttpServletResponse, Class a_Class_Form) throws NetFormException, DoRedirectException
+	public static Form getForm(
+		HttpServletRequest a_HttpServletRequest,
+		HttpServletResponse a_HttpServletResponse,
+		ServletContext a_ServletContext, 
+		Class a_Class_Form)
+		throws NetFormException, DoRedirectException
 	{
-		return getForm(a_HttpServletRequest, a_HttpServletResponse, a_Class_Form, null);
+		return getForm(a_HttpServletRequest, a_HttpServletResponse, a_ServletContext, a_Class_Form, null);
 	}
 
 	public String getNextPageAfterLogin()
@@ -105,10 +171,20 @@ public class FormManager implements HttpSessionListener
 		return iS_NextPageAfterLogin;
 	}
 
-	public static Form getForm(HttpServletRequest a_HttpServletRequest, HttpServletResponse a_HttpServletResponse, Class a_Class_Form, String aS_LoginPage)
+	public static Form getForm(
+		HttpServletRequest a_HttpServletRequest,
+		HttpServletResponse a_HttpServletResponse,
+		ServletContext a_ServletContext,
+		Class a_Class_Form,
+		String aS_LoginPage)
 		throws NetFormException, DoRedirectException
 	{
 		boolean lb_isLoginRequired = isLoginRequired(a_Class_Form);
+		
+		if(a_ServletContext==null)
+		{
+			throw new NullPointerException("getForm ServletContext is null");
+		}
 
 		if (lb_isLoginRequired && aS_LoginPage == null)
 		{
@@ -129,14 +205,20 @@ public class FormManager implements HttpSessionListener
 
 		if (l_FormManager != null)
 		{
-
+			if((!l_FormManager.isLoggedIn()) && lb_isLoginRequired)
+			{
+				l_FormManager.iS_NextPageAfterLogin = a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath();
+				throw new DoRedirectException(aS_LoginPage);
+			}
+			
 			Form l_Form_Old = l_FormManager.getForm();
 
 			// Check if form is same
 
 			if (l_Form_Old != null)
-			{
+			{	
 				String lS_ServletPath = a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath();
+
 				if ((!l_Form_Old.getClass().equals(a_Class_Form)) || (lS_ServletPath != null && !lS_ServletPath.equals(l_Form_Old.getName())))
 				{
 					if (l_Form_Old.allowFormChange())
@@ -159,7 +241,7 @@ public class FormManager implements HttpSessionListener
 			l_FormManager = new FormManager();
 			l_FormManager.iS_NextPageAfterLogin = a_HttpServletRequest.getContextPath() + a_HttpServletRequest.getServletPath();
 			l_HttpSession.setAttribute(FormManager.FORM_MANAGER, l_FormManager);
-			
+
 			throw new DoRedirectException(aS_LoginPage);
 		}
 		else if (l_FormManager == null)
@@ -186,7 +268,7 @@ public class FormManager implements HttpSessionListener
 		{
 			l_Form.setHttpServletRequest(a_HttpServletRequest);
 		}
-
+		l_Form.setServletContext(a_ServletContext);
 		return l_Form;
 	}
 
@@ -251,6 +333,7 @@ public class FormManager implements HttpSessionListener
 		{
 			i_Form.formDestroyed();
 		}
+		endSession();
 	}
 
 	public void setLoginInfo(Object aO_LoginInfo)
@@ -270,6 +353,13 @@ public class FormManager implements HttpSessionListener
 
 	public boolean isLoggedIn()
 	{
-		return iO_LoginInfo != null;
+		if(iO_LoginInfo==null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }
