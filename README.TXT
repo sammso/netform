@@ -4,8 +4,25 @@
 
    What is new on 0.64
    ------------------------------------------------------------ 
-   - 937703 Bug on Table.getText() doesn't notformat correctly fixed
-
+   - 937703 Bug on Table.getText() doesn't format correctly fixed
+   - JSP inteface Table.getBoolean(..), see JavaDoc
+   - New Components
+     + PasswordField
+     + CheckBox field
+   - TimestampField was empty and null was not allowed. It was valid.
+     This was found also on all number fields
+   - Button can be attached to Table row, and events from Table components
+     are catchable.
+   - Table component events are catchable.
+   - Bug on Table, It caused error on Table.synchRowNumbers() on
+     sertain cases. It is now fixed
+   - ListTableModel, didn't update table when using setList()
+   - SimpleTableModel.resetAll(Object[]) -> setObjects()
+   - SimpleTableModel.reset() new method makes SimpleTableModel empty
+   - New Method DataSetTableModel.setDataSet()
+   - More methods for Timestamp
+     + To get dates
+     + To get value by specific format
 
    What is new on 0.63
    ------------------------------------------------------------ 
