@@ -20,6 +20,11 @@ public class TextFieldTag extends ComponentTag
 	private String iS_Format = null;
 	
 
+	public void setFormat(String aS_Format)
+	{
+		iS_Format = aS_Format;
+	}
+	
 	public void setStyle(String aS_Style)
 	{
 		iS_Style = aS_Style;
@@ -30,20 +35,16 @@ public class TextFieldTag extends ComponentTag
 		iS_Class = aS_Class;
 	}
 
-	public void setNotValidStyle(String aS_NotValidStyle)
+	public void setNotvalidstyle(String aS_NotValidStyle)
 	{
 		iS_NotValidStyle = aS_NotValidStyle;
 	}
 
-	public void setNotValidClass(String aS_NotValidClass)
+	public void setNotvalidclass(String aS_NotValidClass)
 	{
 		iS_NotValidClass = aS_NotValidClass;
 	}
 
-	public void setFormat(String aS_Format)
-	{
-		iS_Format = aS_Format;
-	}
 	
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
@@ -58,29 +59,38 @@ public class TextFieldTag extends ComponentTag
 
 			i_PageContext.getOut().print(" value=\"" + i_TextField.getText() + "\"");
 
-			if(iS_Style != null)
+			
+			if(i_TextField.isValid())
 			{
-				if(iS_NotValidStyle == null || i_TextField.isValid())
+				if(iS_Style!=null)
 				{
 					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
-				}
-				else
-				{
-					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
-				}
-			}
-
-			if(iS_Class != null)
-			{
-				if(iS_NotValidClass == null || i_TextField.isValid())
+				}		
+				if(iS_Class!=null)
 				{
 					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
 				}
-				else
+			}
+			else
+			{
+				if(iS_NotValidStyle == null && iS_Style!=null)
+				{
+					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+				}
+				else if(iS_NotValidStyle != null)
+				{
+					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
+				}
+				if(iS_NotValidClass == null || iS_Class!=null)
+				{
+					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+				}
+				else if(iS_NotValidClass != null)
 				{
 					i_PageContext.getOut().print(" class=\"" + iS_NotValidClass + "\"");
-				}
+				}				
 			}
+
 
 			return EVAL_PAGE;
 		}

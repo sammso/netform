@@ -55,28 +55,35 @@ public class ButtonTag extends ComponentTag
 			i_PageContext.getOut().print(" type=\"submit\"");
 			i_PageContext.getOut().print(" name=\"" + i_Button.getResponseName() + "\"");
 
-			if(iS_Style != null)
+			if(i_Button.isValid())
 			{
-				if(iS_NotValidStyle == null || i_Button.isValid())
+				if(iS_Style!=null)
 				{
 					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
-				}
-				else
-				{
-					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
-				}
-			}
-
-			if(iS_Class != null)
-			{
-				if(iS_NotValidClass == null || i_Button.isValid())
+				}		
+				if(iS_Class!=null)
 				{
 					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
 				}
-				else
+			}
+			else
+			{
+				if(iS_NotValidStyle == null && iS_Style!=null)
+				{
+					i_PageContext.getOut().print(" style=\"" + iS_Style + "\"");
+				}
+				else if(iS_NotValidStyle != null)
+				{
+					i_PageContext.getOut().print(" style=\"" + iS_NotValidStyle + "\"");
+				}
+				if(iS_NotValidClass == null || iS_Class!=null)
+				{
+					i_PageContext.getOut().print(" class=\"" + iS_Class + "\"");
+				}
+				else if(iS_NotValidClass != null)
 				{
 					i_PageContext.getOut().print(" class=\"" + iS_NotValidClass + "\"");
-				}
+				}				
 			}
 			
 			if(iS_Value !=null)

@@ -23,8 +23,8 @@ public class SelectTag extends ComponentTag implements IterationTag
 	private String iS_NotValidClass = null;
 
 	private String iS_Id = null;
-
-	private String iS_Size = null;
+	
+	private int ii_size = 1;
 
 	private int ii_index = 1;
 
@@ -38,19 +38,19 @@ public class SelectTag extends ComponentTag implements IterationTag
 		iS_Class = aS_Class;
 	}
 
-	public void setNotValidStyle(String aS_NotValidStyle)
+	public void setNotvalidstyle(String aS_NotValidStyle)
 	{
 		iS_NotValidStyle = aS_NotValidStyle;
 	}
 
-	public void setNotValidClass(String aS_NotValidClass)
+	public void setNotvalidclass(String aS_NotValidClass)
 	{
 		iS_NotValidClass = aS_NotValidClass;
 	}
 
 	public void setSize(String aS_Size)
 	{
-		iS_Size = aS_Size;
+		ii_size = Integer.valueOf(aS_Size).intValue();
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class SelectTag extends ComponentTag implements IterationTag
 		}
 		catch (IOException l_IOException)
 		{
-			return EVAL_PAGE;
+			throw new JspException(l_IOException);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class SelectTag extends ComponentTag implements IterationTag
 				i_PageContext.getOut().print("<select");
 				i_PageContext.getOut().print(" name=\"" + i_Table.getResponseName() + "\"");
 
-				i_PageContext.getOut().print(" size=\"" + iS_Size + "\"");
+				i_PageContext.getOut().print(" size=\"" + String.valueOf(ii_size) + "\"");
 
 				if(iS_Style != null)
 				{
@@ -149,6 +149,11 @@ public class SelectTag extends ComponentTag implements IterationTag
 		iS_NotValidStyle = null;
 		iS_NotValidClass = null;
 		iS_Id = null;
-		iS_Size = null;
+		ii_size = 1;
+	}
+	
+	final int getCurrentRow()
+	{
+		return ii_index;
 	}
 }
