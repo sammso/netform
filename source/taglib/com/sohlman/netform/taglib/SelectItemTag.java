@@ -63,7 +63,7 @@ public class SelectItemTag extends MasterTag
 		iS_Style = aS_Style;
 	}
 
-	public void setClass(String aS_Class)
+	public void setStyleClass(String aS_Class)
 	{
 		iS_Class = aS_Class;
 	}

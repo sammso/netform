@@ -41,12 +41,7 @@ public class ButtonTag extends ComponentTag
 	public void setStyle(String aS_Style)
 	{
 		iS_Style = aS_Style;
-	}
-
-	public void setClass(String aS_Class)
-	{
-		iS_Class = aS_Class;
-	}
+	} 
 
 	public void setNotValidStyle(String aS_NotValidStyle)
 	{
@@ -62,6 +57,11 @@ public class ButtonTag extends ComponentTag
 	{
 		iS_Value = aS_Value;
 	}
+
+	public void setStyleClass(String aS_Class) 
+	{
+		iS_Class = aS_Class;
+	}	
 	
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()

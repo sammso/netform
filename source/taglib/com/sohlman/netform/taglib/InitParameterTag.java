@@ -34,14 +34,8 @@ public class InitParameterTag extends MasterTag
 
 	private String iS_Method = null;
 	private String iS_Value = null;
-	private String iS_Component = null;
-
-	public void setComponent(String aS_Component)
-	{
-		iS_Component = aS_Component;
-	}
 	
-	public void setMethod(String aS_Method)
+	public void setName(String aS_Method)
 	{
 		iS_Method = aS_Method;
 	}

@@ -54,12 +54,12 @@ public class TextFieldTag extends ComponentTag
 		iS_Class = aS_Class;
 	}
 
-	public void setNotvalidstyle(String aS_NotValidStyle)
+	public void setNotValidStyle(String aS_NotValidStyle)
 	{
 		iS_NotValidStyle = aS_NotValidStyle;
 	}
 
-	public void setNotvalidclass(String aS_NotValidClass)
+	public void setNotValidClass(String aS_NotValidClass)
 	{
 		iS_NotValidClass = aS_NotValidClass;
 	}

@@ -52,17 +52,17 @@ public class SelectTag extends ComponentTag implements IterationTag
 		iS_Style = aS_Style;
 	}
 
-	public void setClass(String aS_Class)
+	public void setStyleClass(String aS_Class)
 	{
 		iS_Class = aS_Class;
 	}
 
-	public void setNotvalidstyle(String aS_NotValidStyle)
+	public void setNotValidStyle(String aS_NotValidStyle)
 	{
 		iS_NotValidStyle = aS_NotValidStyle;
 	}
 
-	public void setNotvalidclass(String aS_NotValidClass)
+	public void setNotValidClass(String aS_NotValidClass)
 	{
 		iS_NotValidClass = aS_NotValidClass;
 	}
