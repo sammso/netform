@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * @author Sampsa Sohlman
 /*
- * Version: 28.10.2003
+ * Version: 2003-11-20
  *
  */
 public class SimpleTableModel extends TableModel
@@ -20,9 +20,12 @@ public class SimpleTableModel extends TableModel
 	public SimpleTableModel(Object[] a_Objects)
 	{
 		super();
-		for(int li_y = 0 ; li_y < a_Objects.length ; li_y++)
+		if(a_Objects!=null)
 		{
-			addValue(a_Objects[li_y]);
+			for(int li_y = 0 ; li_y < a_Objects.length ; li_y++)
+			{
+				addValue(a_Objects[li_y]);
+			}
 		}
 	}
 
