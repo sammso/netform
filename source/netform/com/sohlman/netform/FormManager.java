@@ -43,7 +43,8 @@ public class FormManager implements HttpSessionListener
 	private Form i_Form;
 	private Object iO_LoginInfo = null;
 	private String iS_NextPageAfterLogin = null;
-	private Hashtable i_Hashtable = null;
+	private Hashtable i_Hashtable = null; 
+	private Hashtable iHs_Portlets = null;
 
 	protected FormManager()
 	{

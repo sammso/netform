@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -54,7 +55,8 @@ public abstract class Form
 
 	final static String FORM_CONTAINER = "@FORM_CONTAINER";
 	final static String SESSION_PAGE = "@PAGE";
-	private ArrayList iAL_Components;
+	private ArrayList iAL_Components = null;
+	private ArrayList iAL_Portlets = null;
 	private String iS_NextPage = null;
 	private HttpServletRequest i_HttpServletRequest;
 	private boolean ib_isInitialized = false;
@@ -131,26 +133,97 @@ public abstract class Form
 	 */
 	public abstract void init();
 
+	private void initPortlets()
+	{
+		if(iAL_Portlets!=null && iAL_Portlets.size() > 0)
+		{
+			Iterator l_Iterator = iAL_Portlets.iterator();
+			while(l_Iterator.hasNext())
+			{
+				Portlet l_Portlet = (Portlet)l_Iterator.next();
+				l_Portlet.startService();
+			}
+		}
+	}
+	
 	/** 
 	 * This method is called before events are generated, by defaults does nothing.
 	 */
 	public void startService()
 	{
-
+		
 	}
 
+	private void addPortlet(Portlet a_Portlet)
+	{
+		if (a_Portlet != null)
+		{
+			if (iAL_Portlets == null)
+			{
+				iAL_Portlets = new ArrayList();
+			}
+			iAL_Portlets.add(a_Portlet);
+			addComponent(a_Portlet);
+		}		
+	}
+	
+	public Portlet getPortlet(Class a_Class_Portlet)
+	{
+		Object l_Object = null;
+		
+		if(a_Class_Portlet.isAssignableFrom(Portlet.class))
+		{
+			try
+			{
+				Constructor l_Constructor = a_Class_Portlet.getConstructor(new Class[] {Form.class});
+				Portlet l_Portlet = (Portlet)l_Constructor.newInstance(new Object[]{ this });
+			}
+			catch(Exception l_Exception)
+			{
+				throw new NetFormException("Portlet Not Found");
+			}
+		}
+		throw new NetFormException("Class is not portlet");
+	}
+	
+	private void callPortletStartService()
+	{
+		if(iAL_Portlets!=null && iAL_Portlets.size() > 0)
+		{
+			Iterator l_Iterator = iAL_Portlets.iterator();
+			while(l_Iterator.hasNext())
+			{
+				Portlet l_Portlet = (Portlet)l_Iterator.next();
+				l_Portlet.startService();
+			}
+		}
+	}
+	
 	/**
 	 * This method is called after events were generated, by default does nothing.
 	 */
-	public void endService()
+	protected void endService()
 	{
 	}
 
+	private void callPortletEndService()
+	{
+		if(iAL_Portlets!=null && iAL_Portlets.size() > 0)
+		{
+			Iterator l_Iterator = iAL_Portlets.iterator();
+			while(l_Iterator.hasNext())
+			{
+				Portlet l_Portlet = (Portlet)l_Iterator.next();
+				l_Portlet.endService();
+			}
+		}
+	}	
+	
 	/** AddComponent to form. After this component is able to receive events.
-	 * @param aS_Name Name of the component. This is also leaf name of DOM tree.
+	 * @param aS_Name Name of the component.
 	 * @param a_Component Component to be added.
 	 */
-	public final void addComponent(Component a_Component)
+	final void addComponent(Component a_Component)
 	{
 		if (a_Component != null)
 		{
@@ -189,13 +262,17 @@ public abstract class Form
 			{
 				ii_currentState = FORM_STATE_INIT;
 				init();
+				initPortlets();
 				preValidateComponents();
 				ib_isInitialized = true;
 				startService();
+				callPortletStartService();
+				
 			}
 			else
 			{
 				startService();
+				callPortletStartService();
 
 				// We generate events only second run.
 				// Faster :D
@@ -233,7 +310,7 @@ public abstract class Form
 				}
 			}
 			endService();
-
+			callPortletEndService();
 			// Do last thing to components
 
 			if (iAL_Components != null)
@@ -349,7 +426,19 @@ public abstract class Form
 			while (l_Iterator.hasNext())
 			{
 				Component l_Component = (Component) l_Iterator.next();
-				l_Component.dispose();
+				
+				// Don't dispose Portlets
+				
+				if(!Portlet.class.isInstance(l_Component))
+				{
+					l_Component.dispose();
+				}
+				else
+				{
+					Portlet l_Portlet = (Portlet)l_Component;
+					// TODO: Fixit
+					//getFormManager().removePortlet(l_Component);
+				}
 			}
 		}
 	}
