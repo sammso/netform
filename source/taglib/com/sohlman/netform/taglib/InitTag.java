@@ -47,7 +47,7 @@ public class InitTag extends MasterTag
 		iS_FormClassName = aS_FormClassName;
 	}
 
-	public void setLoginpage(String aS_LoginPage)
+	public void setLoginPage(String aS_LoginPage)
 	{
 		iS_LoginPage = aS_LoginPage;
 	}

@@ -1,6 +1,6 @@
 <%@ page language="java" %>
 <%@ taglib uri="http://netform.sohlman.com/taglib" prefix="nf" %>
-<nf:init form="com.sohlman.webapp.netform.reflection.PersonForm" loginpage="login.jsp">
+<nf:init form="com.sohlman.webapp.netform.reflection.PersonForm" loginPage="login.jsp">
 </nf:init>
 <jsp:include page="header.jsp" />
 <h1>This example shows how to map Javabeans / POJOs to Form.</h1>
@@ -10,11 +10,11 @@
 	<table>
 		<tr>
 			<td>First name : </td>
-			<td><nf:textfield component="firstNameTextField"/></td>
+			<td><nf:textField component="firstNameTextField"/></td>
 		</tr>
 		<tr>
 			<td>Last name :</td>
-			<td><nf:textfield component="lastNameTextField"/></td>
+			<td><nf:textField component="lastNameTextField"/></td>
 		</tr>
 	</table>
 	<table>
@@ -26,13 +26,14 @@
 		</tr>
 		<nf:table component="propertiesTable">
 		<tr>		
-			<td><nf:tableselection/></td>
-			<td><nf:textfield index="1"/></td>
-			<td><nf:textfield index="2"/></td>
+			<td><nf:tableSelection/></td>
+			<td><nf:textField index="1"/></td>
+			<td><nf:textField index="2"/></td>
 		</tr>			
-		</nf:table>
+		</nf:table> 
 	</table>
-	<nf:button component="addButton" value="Add"/>
-	<nf:button component="removeButton" value="Remove"/>
+	<nf:button component="addButton" value="Add" styleClass="submit"/>
+	<nf:button component="insertButton" value="Insert" styleClass="submit"/>	
+	<nf:button component="removeButton" value="Remove" styleClass="submit"/>
 </nf:form>
 <jsp:include page="footer.jsp" />

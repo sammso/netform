@@ -43,14 +43,14 @@
 									</tr>																											
 									<tr>
 										<td width="18"></td>
-										<td width="110"><a href="table1.jsp" class="menuitem">1. Table</a></td>
+										<td width="110"><a href="table1.jsp" class="menuitem">1. Table</a><br><a href="tagstable1.jsp" class="menuitem">with taglibrary</a></td>
 									</tr>
 									<tr>
 										<td width="128" colspan="2" bgcolor="#0313DD"><img src="1x1.gif" height="1" width="128" border="0" alt=""></td>
 									</tr>										
 									<tr>
 										<td width="18"></td>
-										<td width="110"><a href="table2.jsp" class="menuitem">2. Table</a></td>
+										<td width="110"><a href="table2.jsp" class="menuitem">2. Table</a><br><a href="tagstable2.jsp" class="menuitem"> with taglibrary</a></td>
 									</tr>
 									<tr>
 										<td width="128" colspan="2" bgcolor="#0313DD"><img src="1x1.gif" height="1" width="128" border="0" alt=""></td>
@@ -65,7 +65,14 @@
 									<tr>
 										<td width="18"></td>
 										<td width="110"><a href="container1.jsp" class="menuitem">Tabs</a></td>
-									</tr>									
+									</tr>
+									<tr>
+										<td width="128" colspan="2" class="menutitle1"  bgcolor="#0313DD">Project</td>
+									</tr>																	
+									<tr>
+										<td width="18"></td>
+										<td width="110"><a href="reflection.jsp" class="menuitem">Reflection</a></td>
+									</tr>
 									<tr>
 										<td width="128" colspan="2" class="menutitle1"  bgcolor="#0313DD">Project</td>
 									</tr>

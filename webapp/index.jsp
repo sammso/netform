@@ -1,6 +1,6 @@
 <%@ page language="java" import="com.sohlman.netform.*" %>
 					<jsp:include page="header.jsp" />
-						<h1>NetForm test application v0.65 beta</h1>
+						<h1>NetForm test application v0.80 beta</h1>
 						<h2>Introduction</h2>
 						<p>NetForm example application is test and show case of NetForm framework 
 						features and capabilities. </p>
@@ -29,12 +29,19 @@
 						<p>One of the power of the Netform is it's ability maintain table form data with Table component. 
 						This table component is exactly same as used in Fields example, but it has been layouted little bit different way and also TextFields has been connected to
 						it's columns.  
+						<p>There is also example of same form of working with NetForm JSP tags (<a href="tagstable1.jsp">table1.jsp</a>)</p>						
 						</p>
 						<h2>2. Table form (<a href="table2.jsp">table2.jsp</a>)</h2>
 						<p>This is another example of Table form. Table itself can be used as Table component. 
 						</p>
+						<p>There is also example of same form of working with NetForm JSP tags (<a href="tagstable2.jsp">table2.jsp</a>)</p>
 						<h2>3. Table Example (<a href="table3.jsp">table3.jsp</a>)</h2>
 						<p>To show how to put Button inside table and catch events from that Button.</p>
+						<h2>Reflection example (<a href="reflection.jsp">reflection.jsp</a>)</h2>
+						<p>This is example which shows how to use NetForm with POJO. This version of netform is supporting mapping POJOs to NetForm form. This is example, shows Power of netform. 
+						This way it is possible to user <a href="http://www.hibernate.org">Hibernate</a> for DB persistence and
+						NetForm for GUI.
+						</p>						
 						<h2>Tabs Example (<a href="container1.jsp">container1.jsp</a>)</h2>
 						<p>This shows how to make server side tab sheets by using Container component.</p>						
 					<jsp:include page="footer.jsp" />						

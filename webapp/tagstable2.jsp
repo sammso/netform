@@ -1,6 +1,6 @@
 <%@ page language="java" import="com.sohlman.webapp.netform.*, com.sohlman.netform.*, com.sohlman.netform.component.*, com.sohlman.netform.component.table.*" %>
 <%@ taglib uri="http://netform.sohlman.com/taglib" prefix="nf" %>
-<nf:init form="com.sohlman.webapp.netform.Table2Form" loginpage="login.jsp">
+<nf:init form="com.sohlman.webapp.netform.Table2Form" loginPage="login.jsp">
 </nf:init>
 <jsp:include page="header.jsp" />
 <h1>2. Table Example</h1>
@@ -22,14 +22,14 @@ same as s second (2) list  and by modifying data inside list naturally changed d
 		<nf:table component="tableList">
 		<tr>
 			<td align="center">
-				<nf:tableselection/>
+				<nf:tableSelection/>
 			</td>
 			<td align="center">
-				<nf:select index="1" style="width: 90;" notvalidclass="notvalid">
-					<nf:selectitem index="1"/>
+				<nf:select index="1" style="width: 90;" notValidClass="notvalid">
+					<nf:selectItem index="1"/>
 				</nf:select>
 			</td>
-			<td align="center"><nf:textfield index="2" style="width: 90;" notvalidclass="notvalid"/></td>		
+			<td align="center"><nf:textField index="2" style="width: 90;" notValidClass="notvalid"/></td>		
 		</tr>
 		</nf:table>
 	</table>
@@ -45,7 +45,7 @@ same as s second (2) list  and by modifying data inside list naturally changed d
 			<td>New Choise Text</td>
 		</tr>
 		<tr>
-			<td><nf:textfield component="textField"/></td>
+			<td><nf:textField component="textField"/></td>
 		</tr>
 		<tr>
 			<td><nf:button component="addTextButton" value="Add"/></td>
@@ -53,7 +53,7 @@ same as s second (2) list  and by modifying data inside list naturally changed d
 		<tr>
 			<td>
 				<nf:select component="tableSelect" size="10" >
-					<nf:selectitem index="1"/>
+					<nf:selectItem index="1"/>
 				</nf:select>					
 			</td>
 		</tr>	

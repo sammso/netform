@@ -98,12 +98,13 @@ public class SelectTag extends ComponentTag implements IterationTag
 	{
 		if(init())
 		{
+			i_Table = (Table) getComponentFormThisTag();
 			if(!i_Table.isVisible())
 			{
 				return SKIP_BODY;
 			}
 
-			i_Table = (Table) getComponentFormThisTag();
+			
 			ii_index = 1;
 			try
 			{

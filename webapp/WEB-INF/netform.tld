@@ -17,22 +17,17 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>loginpage</name>
+			<name>loginPage</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>		
 	</tag>
 	<tag>
-		<name>initparameter</name>
+		<name>initParameter</name>
 		<tag-class>com.sohlman.netform.taglib.InitParameterTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
-			<name>component</name>
-			<required>true</required>
-			<rtexprvalue>false</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>method</name>
+			<name>name</name>
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
@@ -52,7 +47,7 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>class</name>
+			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
@@ -62,7 +57,7 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>style</name>
+			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
@@ -73,7 +68,7 @@
 		</attribute>							
 	</tag>
 	<tag>
-		<name>textfield</name>
+		<name>textField</name>
 		<tag-class>com.sohlman.netform.taglib.TextFieldTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -102,17 +97,17 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>class</name>
+			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>notvalidstyle</name>
+			<name>notValidStyle</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>notvalidclass</name>
+			<name>notValidClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>							
@@ -138,21 +133,21 @@
 		</attribute>
 		<attribute>
 			<name>style</name>
+			<required>false</required> 
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>class</name>
+			<name>notvalidStyle</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>notvalidstyle</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>notvalidclass</name>
+			<name>notValidClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
@@ -187,17 +182,17 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>class</name>
+			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>notvalidstyle</name>
+			<name>notValidStyle</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>notvalidclass</name>
+			<name>notValidClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
@@ -208,7 +203,7 @@
 		</attribute>								
 	</tag>
 	<tag>
-		<name>selectitem</name>
+		<name>selectItem</name>
 		<tag-class>com.sohlman.netform.taglib.SelectItemTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -227,7 +222,7 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>class</name>
+			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
@@ -258,9 +253,10 @@
 		</attribute>	
 	</tag>
 	<tag>
-		<name>tableselection</name>
+		<name>tableSelection</name>
 		<tag-class>com.sohlman.netform.taglib.TableSelectionTag</tag-class>
 		<body-content>JSP</body-content>
+		<description>This generates checkbox or radion button for Table component</description>
 		<attribute>
 			<name>type</name>
 			<required>false</required>
@@ -268,7 +264,7 @@
 			<description>Value has to be radio or checkbox. If not set then checkbox.</description>
 		</attribute>
 		<attribute>
-			<name>class</name>
+			<name>styleClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>		
 		</attribute>
