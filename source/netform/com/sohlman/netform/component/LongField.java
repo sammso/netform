@@ -14,7 +14,7 @@ import com.sohlman.netform.Utils;
  * @version 2004-01-15
  */
 public class LongField extends TextField
-{	
+{
 	protected Long i_Long = null;
 	protected DecimalFormat i_DecimalFormat = null;
 
@@ -47,11 +47,13 @@ public class LongField extends TextField
 	{
 		return i_Long;
 	}
-	
+
 	public long getlong()
 	{
 		return i_Long.longValue();
 	}
+
+
 
 	/**
 	 * Set long value, this causes also value validation, if value is not valid it is not set
@@ -61,8 +63,19 @@ public class LongField extends TextField
 	 */
 	public boolean setLong(Long a_Long)
 	{
-		validate(new LongFieldValidate(this, a_Long));
+		return setLong(a_Long, true);
+	}
 
+	protected boolean setLong(Long a_Long, boolean ab_setData)
+	{
+		if (ib_isNullAllowed == false && a_Long == null)
+		{
+			setValid(false);
+		}
+		else
+		{
+			validate(new LongFieldValidate(this, a_Long));
+		}
 		if (isValid())
 		{
 			i_Long = a_Long;
@@ -77,7 +90,7 @@ public class LongField extends TextField
 			{
 				iS_Text = String.valueOf(a_Long);
 			}
-			if (hasComponentData())
+			if (hasComponentData() && ab_setData)
 			{
 				setData(a_Long);
 			}
@@ -91,18 +104,18 @@ public class LongField extends TextField
 	/**
 	 * @see TextField#getText()
 	 */
-	public void setText(String aS_Text)
+	public boolean setText(String aS_Text)
 	{
-		iS_Text = formatStringByRules(aS_Text); 
+		iS_Text = formatStringByRules(aS_Text);
 		i_Long = null;
-		if(aS_Text!=null)
+		if (aS_Text != null)
 		{
 			try
 			{
 				i_Long = new Long(iS_Text);
 				validate(new LongFieldValidate(this, i_Long));
 			}
-			catch(NumberFormatException l_NumberFormatException)
+			catch (NumberFormatException l_NumberFormatException)
 			{
 				setValid(false);
 			}
@@ -120,9 +133,10 @@ public class LongField extends TextField
 			}
 			else
 			{
-				setData(i_Long); 
+				setData(i_Long);
 			}
 		}
+		return isValid();
 	}
 	/**
 	 * @see TextField#getText()
@@ -163,7 +177,7 @@ public class LongField extends TextField
 			}
 		}
 	}
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#cloneComponent()
 	 */
@@ -176,7 +190,7 @@ public class LongField extends TextField
 		l_LongField.setEmptyIsNull(isEmptyNull());
 		l_LongField.setTrim(isTrim());
 		l_LongField.setComponentValidator(getComponentValidator());
-		
+
 		return l_LongField;
 	}
 
@@ -187,7 +201,7 @@ public class LongField extends TextField
 	{
 		if (hasComponentData())
 		{
-		//	setLong((Long)getData());
+			setLong((Long)getData(), false);
 		}
 	}
 }

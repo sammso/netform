@@ -16,6 +16,7 @@ import com.sohlman.netform.Utils;
 public class DoubleField extends TextField
 {
 	protected String iS_Format;
+	protected Double i_Double = null;
 	protected DecimalFormat i_DecimalFormat = null;
 
 	public DoubleField(Component a_Component_Parent)
@@ -34,7 +35,7 @@ public class DoubleField extends TextField
 	}
 
 	/**
-	 * @see #setLong(Long)
+	 * @see #setDouble(Long)
 	 */
 	public void setDouble(double a_double)
 	{
@@ -48,10 +49,22 @@ public class DoubleField extends TextField
 	 */
 	public void setDouble(Double a_Double)
 	{
-		validate(new DoubleFieldValidate(this, a_Double));
-
+		setDouble(a_Double, true);
+	}
+	
+	protected void setDouble(Double a_Double, boolean ab_setData)
+	{
+		if (ib_isNullAllowed == false && a_Double == null)
+		{
+			setValid(false);
+		}
+		else
+		{
+			validate(new DoubleFieldValidate(this, a_Double));
+		}
 		if (isValid())
 		{
+			i_Double = a_Double;
 			if (i_DecimalFormat != null)
 			{
 				StringBuffer l_StringBuffer = new StringBuffer();
@@ -63,7 +76,7 @@ public class DoubleField extends TextField
 			{
 				iS_Text = String.valueOf(a_Double);
 			}
-			if (hasComponentData())
+			if (hasComponentData() && ab_setData)
 			{
 				setData(a_Double);
 			}
@@ -72,18 +85,18 @@ public class DoubleField extends TextField
 	/**
 	 * @see TextField#getText()
 	 */
-	public void setText(String aS_Text)
+	public boolean setText(String aS_Text)
 	{
-		iS_Text = formatStringByRules(aS_Text); 
+		iS_Text = formatStringByRules(aS_Text);
 		Double l_Double = null;
-		if(aS_Text!=null)
+		if (aS_Text != null)
 		{
 			try
 			{
 				l_Double = new Double(iS_Text);
 				validate(new DoubleFieldValidate(this, l_Double));
 			}
-			catch(NumberFormatException l_NumberFormatException)
+			catch (NumberFormatException l_NumberFormatException)
 			{
 				setValid(false);
 			}
@@ -101,9 +114,10 @@ public class DoubleField extends TextField
 			}
 			else
 			{
-				setData(l_Double); 
+				setData(l_Double);
 			}
 		}
+		return isValid();
 	}
 	/**
 	 * @see TextField#getText()
@@ -144,7 +158,7 @@ public class DoubleField extends TextField
 			}
 		}
 	}
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#cloneComponent()
 	 */
@@ -157,7 +171,7 @@ public class DoubleField extends TextField
 		l_DoubleField.setEmptyIsNull(isEmptyNull());
 		l_DoubleField.setTrim(isTrim());
 		l_DoubleField.setComponentValidator(getComponentValidator());
-		
+
 		return l_DoubleField;
 	}
 
@@ -168,7 +182,7 @@ public class DoubleField extends TextField
 	{
 		if (hasComponentData())
 		{
-			//setDouble((Double)getData());
+			setDouble((Double)getData(), false);
 		}
 	}
 }

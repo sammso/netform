@@ -9,11 +9,7 @@
 		form.execute();
 %>
 <jsp:include page="header.jsp" />
-<h1>Field Example <% if(!form.isValid())
-{
-	%>(form is not valid)<%
-}
-%></h1> 
+<h1>Field Example <% if(!form.isValid()) {%>(form is not valid)<% } %></h1>
 <form method="POST" action="<%=form.getRequestURI() %>">
 <table>
 	<tr>

@@ -40,7 +40,6 @@ public class FloatField extends TextField
 	{
 		return setFloat(new Float(a_float));
 	}
-
 	/**
 	 * Set long value, this causes also value validation
 	 * 
@@ -48,8 +47,19 @@ public class FloatField extends TextField
 	 */
 	public boolean setFloat(Float a_Float)
 	{
-		validate(new FloatFieldValidate(this, a_Float));
+		return setFloat(a_Float, true);
+	}
 
+	protected boolean setFloat(Float a_Float, boolean ab_setData)
+	{
+		if (ib_isNullAllowed == false && a_Float == null)
+		{
+			setValid(false);
+		}
+		else
+		{
+			validate(new FloatFieldValidate(this, a_Float));
+		}
 		if (isValid())
 		{
 			i_Float = a_Float;
@@ -63,7 +73,7 @@ public class FloatField extends TextField
 			{
 				iS_Text = String.valueOf(a_Float);
 			}
-			if (hasComponentData())
+			if (hasComponentData() && ab_setData)
 			{
 				setData(a_Float);
 			}
@@ -77,18 +87,18 @@ public class FloatField extends TextField
 	/**
 	 * @see TextField#getText()
 	 */
-	public void setText(String aS_Text)
+	public boolean setText(String aS_Text)
 	{
-		iS_Text = formatStringByRules(aS_Text); 
+		iS_Text = formatStringByRules(aS_Text);
 		Float l_Float = null;
-		if(aS_Text!=null)
+		if (aS_Text != null)
 		{
 			try
 			{
 				l_Float = new Float(iS_Text);
 				validate(new FloatFieldValidate(this, l_Float));
 			}
-			catch(NumberFormatException l_NumberFormatException)
+			catch (NumberFormatException l_NumberFormatException)
 			{
 				setValid(false);
 			}
@@ -106,9 +116,10 @@ public class FloatField extends TextField
 			}
 			else
 			{
-				setData(l_Float); 
+				setData(l_Float);
 			}
 		}
+		return isValid();
 	}
 	/**
 	 * @see TextField#getText()
@@ -149,7 +160,7 @@ public class FloatField extends TextField
 			}
 		}
 	}
-	
+
 	/**
 	 * @see com.sohlman.netform.Component#cloneComponent()
 	 */
@@ -162,7 +173,7 @@ public class FloatField extends TextField
 		l_FloatField.setEmptyIsNull(isEmptyNull());
 		l_FloatField.setTrim(isTrim());
 		l_FloatField.setComponentValidator(getComponentValidator());
-		
+
 		return l_FloatField;
 	}
 
@@ -173,7 +184,7 @@ public class FloatField extends TextField
 	{
 		if (hasComponentData())
 		{
-			//setFloat((Float)getData());
+			setFloat((Float) getData(), false);
 		}
 	}
 }

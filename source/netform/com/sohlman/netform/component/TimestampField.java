@@ -42,7 +42,19 @@ public class TimestampField extends TextField
 	
 	public void setTimestamp(Timestamp a_Timestamp)
 	{
-		validate(new TimestampFieldValidate(this, a_Timestamp));
+		setTimestamp(a_Timestamp, true);
+	}
+	
+	protected void setTimestamp(Timestamp a_Timestamp, boolean ab_setData)
+	{
+		if(ib_isNullAllowed==false && a_Timestamp==null)
+		{
+			setValid(false);
+		}
+		else
+		{		
+			validate(new TimestampFieldValidate(this, a_Timestamp));
+		}
 		if (isValid())
 		{
 			// If iS_Format is null then format is default of
@@ -58,7 +70,7 @@ public class TimestampField extends TextField
 				iS_Text = formatStringByRules(null);
 			}
 			
-			if (hasComponentData())
+			if (hasComponentData() && ab_setData)
 			{
 				setData(a_Timestamp);
 			}
@@ -73,7 +85,7 @@ public class TimestampField extends TextField
 	/**
 	 * @see TextField#getText()
 	 */
-	public void setText(String aS_Text)
+	public boolean setText(String aS_Text)
 	{
 		iS_Text = formatStringByRules(aS_Text); 
 		i_Timestamp = null;
@@ -106,6 +118,7 @@ public class TimestampField extends TextField
 				setData(i_Timestamp); 
 			}
 		}
+		return isValid();
 	}
 	/**
 	 * @see TextField#getText()
@@ -160,7 +173,7 @@ public class TimestampField extends TextField
 	{
 		if (hasComponentData())
 		{
-			//setTimestamp((Timestamp)getData());
+			setTimestamp((Timestamp)getData(), false);
 		}
 	}
 }

@@ -72,7 +72,18 @@ public class IntegerField extends TextField
 	 */
 	public boolean setInteger(Integer a_Integer)
 	{
-		validate(new IntegerFieldValidate(this, a_Integer));
+		return setInteger(a_Integer, true);
+	}
+	protected boolean setInteger(Integer a_Integer, boolean ab_setData)
+	{
+		if(ib_isNullAllowed==false && a_Integer==null)
+		{
+			setValid(false);
+		}
+		else
+		{
+			validate(new IntegerFieldValidate(this, a_Integer));
+		}
 
 		if (isValid())
 		{
@@ -88,7 +99,7 @@ public class IntegerField extends TextField
 			{
 				iS_Text = String.valueOf(a_Integer);
 			}
-			if (hasComponentData())
+			if (hasComponentData() && ab_setData)
 			{
 				setData(a_Integer);
 			}
@@ -102,7 +113,7 @@ public class IntegerField extends TextField
 	/**
 	 * @see TextField#getText()
 	 */
-	public void setText(String aS_Text)
+	public boolean setText(String aS_Text)
 	{
 		iS_Text = formatStringByRules(aS_Text); 
 		i_Integer = null;
@@ -134,6 +145,7 @@ public class IntegerField extends TextField
 				setData(i_Integer); 
 			}
 		}
+		return isValid();
 	}
 	/**
 	 * @see TextField#getText()
@@ -198,7 +210,7 @@ public class IntegerField extends TextField
 	{
 		if (hasComponentData())
 		{
-			//setInteger((Integer)getData());
+			setInteger((Integer)getData(), false);
 		}
 	}
 }

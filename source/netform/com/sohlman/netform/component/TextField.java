@@ -16,8 +16,8 @@ public class TextField extends Component
 {
 	protected String iS_Text = null;
 
-	protected boolean ib_emptyIsNull = true;
-	protected boolean  ib_nullIsAllowed = true;
+	protected boolean ib_isEmptyNull = true;
+	protected boolean  ib_isNullAllowed = false;
 	protected boolean ib_isTrim = false;
 
 	/** Creates new TextComponent */
@@ -41,12 +41,12 @@ public class TextField extends Component
 	 */
 	public void setEmptyIsNull(boolean ab_emptyIsNull)
 	{
-		ib_emptyIsNull = ab_emptyIsNull;
+		ib_isEmptyNull = ab_emptyIsNull;
 	}
 	
 	public void setNullIsAllowed(boolean ab_isNullAllowed)
 	{
-		ib_nullIsAllowed = ab_isNullAllowed;
+		ib_isNullAllowed = ab_isNullAllowed;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class TextField extends Component
 
 	public boolean isEmptyNull()
 	{
-		return ib_emptyIsNull;
+		return ib_isEmptyNull;
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class TextField extends Component
 	 */
 	public boolean isNullAllowed()
 	{
-		return ib_nullIsAllowed;
+		return ib_isNullAllowed;
 	}
 
 	/**
@@ -95,16 +95,22 @@ public class TextField extends Component
 	 * @param aS_Text if parameter is null then and null is not allowed then
 	 * it holds "" and {@link #hasNull() hasNull()} returns always false
 	 */
-	public void setText(String aS_Text)
+	public boolean setText(String aS_Text)
+	{
+		return setText(aS_Text, true);
+	}
+	
+	protected boolean setText(String aS_Text, boolean ab_setData)
 	{
 		iS_Text = formatStringByRules(aS_Text);
 		
 		validate(new TextFieldValidate(this,iS_Text));
 
-		if (hasComponentData() && isValid())
+		if (hasComponentData() && isValid() && ab_setData)
 		{
 			setData(iS_Text);
 		}
+		return isValid();
 	}
 
 	/**
@@ -200,7 +206,7 @@ public class TextField extends Component
 
 	protected String formatStringByRules(String a_String)
 	{
-		if (a_String == null && !ib_emptyIsNull)
+		if (a_String == null && !ib_isEmptyNull)
 		{
 			a_String = "";
 		}
@@ -208,7 +214,7 @@ public class TextField extends Component
 		{
 			a_String = a_String.trim();
 		}
-		if(ib_emptyIsNull && a_String!=null && a_String.equals("") )
+		if(ib_isEmptyNull && a_String!=null && a_String.equals("") )
 		{
 			a_String = null;
 		}
@@ -247,7 +253,7 @@ public class TextField extends Component
 	{
 		if(hasComponentData())
 		{			
-		//	iS_Text = (String)getData();
+			setText((String)getData(), false);
 		}
 	}
 	/**
