@@ -1236,6 +1236,18 @@ public class Table extends Component
 	/**
 	 * JSP use
 	 * 
+	 * @param ai_displayRow displayRow number
+	 * @param aS_ColumnName Name of the column
+	 * @return Component
+	 */
+	public Component getComponentAt(int ai_displayRow, String aS_ColumnName)
+	{
+		return getComponentAt(ai_displayRow, i_TableModel.getIndexByName(aS_ColumnName));
+	}
+	
+	/**
+	 * JSP use
+	 * 
 	 * @param ai_displayRow
 	 * @param ai_column
 	 * @return Component
