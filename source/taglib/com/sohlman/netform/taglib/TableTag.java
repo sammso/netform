@@ -19,11 +19,10 @@
  */
 package com.sohlman.netform.taglib;
 
-import java.io.IOException;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.IterationTag;
 
+import com.sohlman.netform.Form;
 import com.sohlman.netform.component.table.Table;
 
 /**
@@ -42,6 +41,7 @@ public class TableTag extends ComponentTag implements IterationTag
 	{
 		init();
 		i_Table = (Table) getComponentFormThisTag();
+		
 		ii_row = 1;
 		if(!i_Table.isVisible())
 		{

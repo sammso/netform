@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform.taglib;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Stack;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
@@ -43,6 +43,11 @@ public abstract class ComponentTag extends MasterTag
 	private String iS_Name = null;
 
 	private int ii_index = 0;
+	
+	
+	// This is used on init() method
+	// but it is
+	private Stack i_Stack = new Stack();
 
 	public void setComponent(String aS_Component)
 	{
@@ -79,11 +84,38 @@ public abstract class ComponentTag extends MasterTag
 	 */
 	public abstract int doEndTag() throws JspException;
 
+	/**
+	 * 
+	 * get Component from name
+	 * 
+	 * @throws JspException
+	 */
 	protected void init() throws JspException
 	{
 		Tag l_Tag = getParent();
+		String lS_ComponentName = iS_Name;
 		Object l_Object = null;
-
+		int li_pos = 0;
+		int li_oldPos = 0;
+		
+		// TODO:
+		// Finish this
+		// So it is possible to reference object
+		// directly example
+		// form.
+//		if( (li_pos = iS_Name.indexOf(".",li_pos)) > 0)
+//		{
+//			i_Stack.clear();
+//			while(( li_pos = iS_Name.indexOf(".",li_pos))>0 && li_oldPos < iS_Name.length())
+//			{
+//				li_pos = li_pos > 0 ? li_pos : iS_Name.length(); 
+//				String lS_Name = iS_Name.substring(li_oldPos, li_pos);
+//				i_Stack.push(lS_Name);
+//				
+//				li_oldPos = li_pos;
+//			}
+//			
+//		}
 		if(TableTag.class.isInstance(l_Tag))
 		{
 			TableTag l_TableTag = (TableTag) l_Tag;

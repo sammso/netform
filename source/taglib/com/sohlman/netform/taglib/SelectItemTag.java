@@ -84,7 +84,7 @@ public class SelectItemTag extends MasterTag
 
 			l_JspWriter.print("<option value=\"");
 			int li_row = i_SelectTag.getCurrentRow();
-			l_JspWriter.print(String.valueOf(li_row));
+			l_JspWriter.print(i_Table.getRowId(li_row));
 			l_JspWriter.print("\"");
 
 			if(i_Table.isRowSelected(li_row))
