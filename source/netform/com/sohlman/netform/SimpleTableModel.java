@@ -14,7 +14,7 @@ public class SimpleTableModel extends TableModel
 
 	public SimpleTableModel()
 	{
-		super();
+		super(); 
 	}
 	
 	
@@ -225,5 +225,4 @@ public class SimpleTableModel extends TableModel
 	{
 		return 1;
 	}
-
 }

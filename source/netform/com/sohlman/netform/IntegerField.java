@@ -129,12 +129,14 @@ public class IntegerField extends Component
 
 	private void setText(String aS_Text)
 	{
-		if(aS_Text.trim().equals(""))
+		if(aS_Text!=null && aS_Text.trim().equals(""))
 		{
 			aS_Text = null;
 		}
 		
+		iS_Text = aS_Text;
 		Integer l_Integer = stringToInteger(aS_Text);
+		
 		validate(new IntegerFieldValidate(this, l_Integer));
 
 		if (hasComponentData() && isValid())

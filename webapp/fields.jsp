@@ -25,6 +25,18 @@
 		<td><% if(!form.integerField.isValid()){	%>*<% } %><input type="text" name="<%=form.integerField.getResponseName() %>" value="<%=form.integerField.getText() %>"></td>
 		<td><input name="<%=form.increaseIntButton.getResponseName() %>" type="submit" value="+"> - <input name="<%=form.decreaseIntButton.getResponseName() %>" type="submit" value="-"></td>
 	</tr>
+	<tr>  
+		<td class="text">FloatField component</td>
+		<td colspan="2"><% if(!form.floatField.isValid()){	%>*<% } %><input type="text" name="<%=form.floatField.getResponseName() %>" value="<%=form.floatField.getText() %>"></td>
+	</tr>	
+	<tr>  
+		<td class="text">DoubleField component</td>
+		<td colspan="2"><% if(!form.doubleField.isValid()){	%>*<% } %><input type="text" name="<%=form.doubleField.getResponseName() %>" value="<%=form.doubleField.getText() %>"></td>
+	</tr>
+	<tr>  
+		<td class="text">LongField component</td>
+		<td colspan="2"><% if(!form.longField.isValid()){	%>*<% } %><input type="text" name="<%=form.longField.getResponseName() %>" value="<%=form.longField.getText() %>"></td>
+	</tr>	
 	<tr>
 		<td class="text">Timestamp field<br><i>(yyyy-mm-dd)</i></td>
 		<td><% if(!form.timestampField.isValid()){	%>*<% } %><input type="text" name="<%=form.timestampField.getResponseName() %>" value="<%=form.timestampField.getText() %>"></td>
@@ -63,7 +75,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="text" cospan="3"><input type="submit" name="" value="Validate"></td>
+		<td class="text" colspan="3"><input type="submit" name="" value="Validate"></td>
 	</tr>		
 </table>
 </form>
