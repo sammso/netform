@@ -1184,26 +1184,29 @@ public class Table extends Component
 	{
 		int li_row = translateDisplayRowToRealRow(ai_displayRow);
 
-		if (li_row > 0 && li_row <= i_TableModel.getRowCount() && ai_column > 0)
+		if (li_row <= 0 || li_row > i_TableModel.getRowCount())
 		{
-			Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(li_row - 1);
-
-			if (l_Components == null)
-			{
-				return null;
-			}
-
-			if ((ai_column - 1) >= l_Components.length)
-			{
-				return null;
-			}
-
-			return l_Components[ai_column - 1];
+			throw new ArrayIndexOutOfBoundsException(li_row + " is out of range ( 1 - " + i_TableModel.getRowCount() + " )");			
 		}
-		else
+				
+		Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(li_row - 1);
+
+		if (l_Components == null)
 		{
-			return null;
+			throw new IllegalStateException("No components defined for this table.");
 		}
+
+		if(ai_column < 0 || ai_column > l_Components.length)
+		{
+			throw new ArrayIndexOutOfBoundsException(ai_column + " is out of range ( 1 -" + l_Components.length + " )");
+		}
+		
+		if(l_Components[ai_column - 1]==null)
+		{
+			throw new NullPointerException("No component defined to column index = " + ai_column );
+		}
+
+		return l_Components[ai_column - 1];		
 	}
 
 	/**
