@@ -19,30 +19,25 @@ import com.sohlman.dataset.netform.DataSetTableModel;
  */
 public class TableForm extends Form
 {
-	Button i_Button_Reload = new Button(this);
-	Button i_Button_Save = new Button(this);
-	Button i_Button_AddRow = new Button(this);
-	Button i_Button_DeleteRow = new Button(this);
-	DataSet i_DataSet;
-	Table i_Table;
+	public Button reloadButton = new Button(this);
+	public Button addRowButton = new Button(this);
+	public Button deleteRowButton = new Button(this);
+	public Table table;
 
-	int ii_counter = 1;
-
-	ComponentListener i_ComponentListener = new ComponentListener()
+	private int ii_counter = 1;
+	private DataSet i_DataSet;
+	
+	private ComponentListener i_ComponentListener = new ComponentListener()
 	{
 		public void eventAction(Component a_Component)
 		{
-			if( a_Component == i_Button_AddRow )
+			if( a_Component == addRowButton )
 			{
 				i_DataSet.addRow();
 			}
-			else if( a_Component == i_Button_DeleteRow )
+			else if( a_Component == deleteRowButton )
 			{
-				i_Table.deleteSelectedRows();
-			}
-			else if( a_Component == i_Button_Save )
-			{
-				
+				table.deleteSelectedRows();
 			}
 		}
 	};
@@ -70,24 +65,23 @@ public class TableForm extends Form
 
 	public void init()
 	{
-		i_Button_Reload.addComponentListener(i_ComponentListener);
-		i_Button_Save.addComponentListener(i_ComponentListener);
-		i_Button_AddRow.addComponentListener(i_ComponentListener);
-		i_Button_DeleteRow.addComponentListener(i_ComponentListener);
+		reloadButton.addComponentListener(i_ComponentListener);
+		addRowButton.addComponentListener(i_ComponentListener);
+		deleteRowButton.addComponentListener(i_ComponentListener);
 
 		i_DataSet = new DataSet();
 		ColumnInfo[] l_ColumnInfos =
 			{ new ColumnInfo("First Name", String.class), new ColumnInfo("Last Name", String.class), new ColumnInfo("Birthday", String.class)};
 
 		i_DataSet.setRowInfo(new RowInfo(l_ColumnInfos));
-		i_Table = new Table(this,new DataSetTableModel(i_DataSet));
-		i_Table.setMultiSelection(true);
+		table = new Table(this,new DataSetTableModel(i_DataSet));
+		table.setMultiSelection(true);
 		
-		TextField l_Textfield_FirstName = new TextField(i_Table);
+		TextField l_Textfield_FirstName = new TextField(table);
 		l_Textfield_FirstName.setEmptyIsNull(true);
-		i_Table.setTableModelComponent(l_Textfield_FirstName,1);
-		TextField l_Textfield_LastName = new TextField(i_Table);
-		i_Table.setTableModelComponent(l_Textfield_LastName,2);
+		table.setTableModelComponent(l_Textfield_FirstName,1);
+		TextField l_Textfield_LastName = new TextField(table);
+		table.setTableModelComponent(l_Textfield_LastName,2);
 
 		int li_row = i_DataSet.addRow();
 
@@ -98,37 +92,5 @@ public class TableForm extends Form
 
 		i_DataSet.setValueAt("Gabriela", li_row, 1);
 		i_DataSet.setValueAt("Ortiz Piña", li_row, 2);
-	}
-
-	public void startService()
-	{
-	};
-	public void endService()
-	{
-	};
-	
-	public Button getButtonAddRow()
-	{
-		return i_Button_AddRow;
-	}
-	
-	public Button getButtonDeleteRow()
-	{
-		return i_Button_DeleteRow;
-	}
-
-	public Button getButtonSave()
-	{
-		return i_Button_Save;
-	}
-
-	public Button getButtonReload()
-	{
-		return i_Button_Reload;
-	}
-
-	public Table getTable()
-	{
-		return i_Table;
 	}
 }

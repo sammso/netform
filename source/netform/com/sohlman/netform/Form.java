@@ -26,6 +26,7 @@ public abstract class Form
 	//private Hashtable iVe_Components;
 	private ArrayList iAL_Components;
 	private HttpServletRequest i_HttpServletRequest;
+	private boolean ib_isInitialized = false;
 
 	private String iS_Name;
 
@@ -47,11 +48,6 @@ public abstract class Form
 	final public HttpServletRequest getHttpServletRequest()
 	{
 		return i_HttpServletRequest;
-	}
-
-	final void prepareForm() throws NetFormException
-	{
-		init();
 	}
 
 	/** 
@@ -96,7 +92,12 @@ public abstract class Form
 
 	public final synchronized void execute()
 	{
-		
+		if(!ib_isInitialized)
+		{
+			init();
+			ib_isInitialized = true;
+		}
+			
 		//
 		// Check the all components if they have new values
 		//
@@ -214,7 +215,6 @@ public abstract class Form
 				l_HttpSession.setAttribute(Form.FORM_CONTAINER, l_Form);
 				l_HttpSession.setAttribute(Form.SESSION_PAGE, l_Form.getName());
 				l_Form.setHttpServletRequest(a_HttpServletRequest);
-				l_Form.init();
 			}
 			else
 			{

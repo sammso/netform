@@ -14,12 +14,13 @@
 %>
 <jsp:include page="header.jsp" />
 <h1>Table Example</h1>
+<p>This is using <a href="http://dataset.sohlman.com">DataSet</a> as internal datastore</p>
 <form method="POST" action="table.jsp">
 <table>
 	<tr>
-		<td>Selected</td><td>Column 1</td><td>Column 2</td>
+		<td>Selected</td><td>First name</td><td>Last name</td>
 	</tr><%
-	DisplayRow[] l_DisplayRows = form.getTable().getDisplayRows();
+	DisplayRow[] l_DisplayRows = form.table.getDisplayRows();
 	
 	for(int li_y = 0 ; li_y < l_DisplayRows.length ; li_y++)
 	{
@@ -30,7 +31,7 @@
 	{
 	%><tr>
 		<td>
-			<input type="checkbox" name="<%=form.getTable().getResponseName() %>"  value="<%=l_DisplayRows[li_y].getRowId() %>" checked>
+			<input type="checkbox" name="<%=form.table.getResponseName() %>"  value="<%=l_DisplayRows[li_y].getRowId() %>" checked>
 		</td>
 		<td>
 			<input type="text" name="<%=l_Textfield_First_Name.getResponseName() %>" value="<%=l_Textfield_First_Name.getText() %>">
@@ -43,8 +44,8 @@
 	else
 	{
 	%><tr>
-		<td>
-			<input type="checkbox" name="<%=form.getTable().getResponseName() %>" value="<%=l_DisplayRows[li_y].getRowId() %>">
+		<td> 
+			<input type="checkbox" name="<%=form.table.getResponseName() %>" value="<%=l_DisplayRows[li_y].getRowId() %>">
 		</td>
 		<td>
 			<input type="text" name="<%=l_Textfield_First_Name.getResponseName() %>" value="<%=l_Textfield_First_Name.getText() %>">
@@ -56,8 +57,8 @@
 	}
 	}
 	%></table>
-<input type="submit" name="<%=form.getButtonAddRow().getResponseName()%>" value="Add">
-<input type="submit" name="<%=form.getButtonDeleteRow().getResponseName()%>" value="Delete">
+<input type="submit" name="<%=form.addRowButton.getResponseName()%>" value="Add">
+<input type="submit" name="<%=form.deleteRowButton.getResponseName()%>" value="Delete">
 <input type="submit" name="" value="Validate">
 </form>
 <jsp:include page="footer.jsp" />

@@ -207,7 +207,7 @@ TD.doctitle
  text-align: left;
 }
 
- TD.1sttitle 
+TD.1sttitle 
 {
  color: #000000;
  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -217,9 +217,33 @@ TD.doctitle
  font-weight: bold;  
  text-decoration: underline;
  text-align: left;
- 
 }
- TD.2sttitle 
+
+H1 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 15px; 
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;  
+ text-decoration: underline;
+ text-align: left;
+}
+
+TD.2sttitle 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 13px; 
+ font-style: normal;
+ line-height: normal;
+ font-weight: bold;  
+ text-decoration: underline;
+ text-align: left;
+}
+
+H2
 {
  color: #000000;
  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -243,7 +267,29 @@ TD.3sttitle
  text-align: left;
 }
 
+H3
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 13px; 
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;  
+ text-decoration: underline;
+ text-align: left;
+}
+
 TD.4sttitle 
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: bold;
+ text-decoration: none;
+}
+
+H4
 {
  color: #000000;
  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -274,6 +320,29 @@ P.text
  font-weight: normal;
  text-decoration: none;
  
+}
+
+P
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+ text-decoration: none;
+ 
+}
+
+LI
+{
+ color: #000000;
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 12px;
+ font-style: normal;
+ line-height: normal;
+ font-weight: normal;
+
 }
 
 LI.text 
@@ -319,10 +388,6 @@ LI.text
  font-weight: normal;
  text-decoration: none;
  
-}
- UL LI 
-{
- list-style-image: url(/pics/layout/list.gif) 
 }
 
 TD.tabletitle 

@@ -58,7 +58,7 @@ public class DisplayRow
 			return "";
 		}
 
-		if (ai_column <= 0 || ai_column >= iS_Columns.length)
+		if (ai_column < 1 || ai_column > iS_Columns.length)
 		{
 			throw new ArrayIndexOutOfBoundsException("Column number " + ai_column + " is out of range");
 		}

@@ -328,7 +328,12 @@ public class Table extends Component
 			// Here is row selected
 
 			String[] lS_Values = new String[i_TableModel.getColumnCount()];
-			Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(li_r - 1);
+			Component[] l_Components = null;
+			if(iAL_TableComponentsInRow!=null)
+			{
+				l_Components = (Component[]) iAL_TableComponentsInRow.get(li_r - 1);
+			}
+			
 
 			for (int li_c = 1, li_rx = 0; li_c <= i_TableModel.getColumnCount(); li_c++)
 			{
