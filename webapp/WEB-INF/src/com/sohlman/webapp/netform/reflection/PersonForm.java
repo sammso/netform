@@ -1,7 +1,5 @@
 package com.sohlman.webapp.netform.reflection;
 
-import com.sohlman.netform.Component;
-import com.sohlman.netform.ComponentListener;
 import com.sohlman.netform.component.Button;
 import com.sohlman.netform.component.ReflectionData;
 import com.sohlman.netform.component.TextField;
@@ -22,7 +20,7 @@ public class PersonForm extends MasterForm
 	public Table propertiesTable = new Table(this);
 	public Button addButton = new AddRowButton(this, propertiesTable, 10);
 	public Button insertButton = new InsertRowButton(this, propertiesTable, 10);
-	public Button removeButton = new DeleteRowButton(this, propertiesTable, 1);
+	public Button removeButton = new DeleteRowButton(this, propertiesTable, 0);
 	
 	public PersonForm()
 	{
