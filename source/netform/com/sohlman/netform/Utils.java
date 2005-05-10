@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.sohlman.netform;
 
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -556,4 +557,89 @@ public class Utils
 		}
 		return null;
 	}
+	
+	/**
+	 * Return method name from Method object 
+	 * 
+	 * @param a_Method
+	 * @return method name including return type and throws.
+	 */
+	public static String getMethodName(Method a_Method) 
+	{
+		if(a_Method==null)
+		{
+			throw new NullPointerException("Parameter method is null");
+		}
+		StringBuffer l_StringBuffer = new StringBuffer();
+		l_StringBuffer.append(a_Method.getReturnType().getName());
+		l_StringBuffer.append(" ");
+		l_StringBuffer.append(a_Method.getName());
+		l_StringBuffer.append("(");
+		Class[] l_Classes =  a_Method.getParameterTypes();
+		for(int li_index = 0 ; li_index < l_Classes.length ; li_index++ )
+		{
+			if(li_index != 0 ) l_StringBuffer.append(",");
+			l_StringBuffer.append(l_Classes[li_index].getName());
+		}
+		l_Classes =  a_Method.getExceptionTypes();
+		for(int li_index = 0 ; li_index < l_Classes.length ; li_index++ )
+		{
+			if(li_index == 0 )
+			{
+				l_StringBuffer.append(" implements ");
+			}
+			else
+			{		
+				l_StringBuffer.append(",");
+			}
+			l_StringBuffer.append(l_Classes[li_index].getName());
+		}
+		l_StringBuffer.append(")");	
+		return l_StringBuffer.toString();
+	}
+	
+	/**
+	 * Return method name from Method object 
+	 * 
+	 * @param a_Method
+	 * @return method name including return type and throws.
+	 */
+	public static String getMethodNameWithClassName(Method a_Method)
+	{
+		if(a_Method==null)
+		{
+			throw new NullPointerException("Parameter method is null");
+		}
+		
+		StringBuffer l_StringBuffer = new StringBuffer();
+		l_StringBuffer.append(a_Method.getReturnType().getName());
+		l_StringBuffer.append(" ");
+		l_StringBuffer.append(a_Method.getDeclaringClass().getName());
+		l_StringBuffer.append(".");
+		l_StringBuffer.append(a_Method.getName());
+		l_StringBuffer.append("(");
+		Class[] l_Classes =  a_Method.getParameterTypes();
+		for(int li_index = 0 ; li_index < l_Classes.length ; li_index++ )
+		{
+			if(li_index != 0 ) l_StringBuffer.append(",");
+			l_StringBuffer.append(l_Classes[li_index].getName());
+		}
+		l_Classes =  a_Method.getExceptionTypes();
+		for(int li_index = 0 ; li_index < l_Classes.length ; li_index++ )
+		{
+			if(li_index == 0 )
+			{
+				l_StringBuffer.append(" implements ");
+			}
+			else
+			{		
+				l_StringBuffer.append(",");
+			}
+			l_StringBuffer.append(l_Classes[li_index].getName());
+		}
+		
+		
+		l_StringBuffer.append(")");	
+		return l_StringBuffer.toString();
+	}	
 }

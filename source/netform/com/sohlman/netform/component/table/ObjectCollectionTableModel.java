@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 
 import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.NetFormException;
+import com.sohlman.netform.Utils;
 
 /**
  * @author Sampsa Sohlman
@@ -43,8 +44,9 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 	/**
 	 * @param a_Class
 	 */
-	public void setCollectoinItemClass(Class a_Class)
+	public void setCollectionItemClass(Class a_Class)
 	{
+		if(a_Class==null) throw new NullPointerException("Parameter class is null");
 		i_Class_CollectionItem = a_Class;
 	}
 
@@ -97,15 +99,8 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 			StringBuffer lSb_Methods = new StringBuffer();
 			for(int li_x = 0 ; li_x < l_Methods.length ; li_x++ )
 			{
-				
 				lSb_Methods.append("\t\t" + l_Methods[li_x].getReturnType().getName() + " ");
-				lSb_Methods.append(l_Methods[li_x].getName() + "(");
-				Class[] l_Classes = l_Methods[li_x].getParameterTypes();
-				for(int li_y = 0; li_y < l_Classes.length ; li_y++)
-				{
-					lSb_Methods.append( ( li_y==0 ? "" : "," ) + l_Classes[li_y].getName());
-				}
-				lSb_Methods.append(")\n");
+				lSb_Methods.append(Utils.getMethodName(l_Methods[li_x]));
 			}
 			
 			throw new NoSuchMethodError(aS_MethodName + "(" + iO_Parent.getClass().getName() + ")\n Following methods found for class " + i_Class_CollectionItem.getName() +  " :\n" + lSb_Methods);
@@ -118,6 +113,8 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 	 */
 	public void assignCollectionColumn(String aS_Name, int ai_index )
 	{
+		if(aS_Name==null) throw new NullPointerException("Name parameter is null");
+		
 		if(i_Class_CollectionItem == null)
 		{
 			throw new IllegalStateException(
@@ -130,9 +127,10 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 					"No column count set. Before using setMethods(int,String, String) use setColummnCount(int) ");
 		}
 		
-		String lS_SetMethod = "set" + aS_Name;
-		String lS_GetMethod = "get" + aS_Name;
 		setColumnName(aS_Name, ai_index);
+		String lS_SetMethod = "set" + aS_Name.substring(0,1).toUpperCase() + aS_Name.substring(1);
+		String lS_GetMethod = "get" + aS_Name.substring(0,1).toUpperCase() + aS_Name.substring(1);
+		
 
 		Method[] l_Methods = i_Class_CollectionItem.getMethods();
 		
@@ -146,6 +144,30 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 			{
 				i_Method_getMethods[ai_index - 1] = l_Methods[li_index];
 			}
+		}
+
+		if(i_Method_getMethods[ai_index - 1]==null)
+		{
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("No get method \"").append(lS_GetMethod).append("\" for column ").append(aS_Name);
+			l_StringBuffer.append(" at class ").append(i_Class_CollectionItem.getName());
+			l_StringBuffer.append("\nMethods found :");
+			l_Methods = i_Class_CollectionItem.getMethods();
+			for(int li_index = 0; li_index < l_Methods.length ; li_index++ )
+			{
+				l_StringBuffer.append("\n\t\t").append(Utils.getMethodName(l_Methods[li_index]));
+			}
+			
+			throw new NetFormException(l_StringBuffer.toString());
+		}
+		else if(i_Method_setMethods[ai_index - 1]!=null && !i_Method_setMethods[ai_index - 1].getParameterTypes()[0].equals(i_Method_getMethods[ai_index - 1].getReturnType()))
+		{
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("Set and getMethods parameter class are not match\n\t");
+			l_StringBuffer.append(i_Method_setMethods[ai_index - 1]);
+			l_StringBuffer.append("\n\t");
+			l_StringBuffer.append(i_Method_getMethods[ai_index - 1]);	
+			throw new NetFormException(l_StringBuffer.toString());
 		}
 	}	
 	
@@ -173,11 +195,15 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 		}
 		catch(IllegalAccessException l_IllegalAccessException)
 		{
-			throw new NetFormException(l_IllegalAccessException);
-		}
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("IllegalAccessException on ").append(Utils.getMethodNameWithClassName(i_Method_SetParent));		
+			throw new NetFormException(l_StringBuffer.toString(), l_IllegalAccessException);
+		}		
 		catch(InstantiationException l_InstantiationException)
 		{
-			throw new NetFormException(l_InstantiationException);
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("InstantiationException on ").append(Utils.getMethodNameWithClassName(i_Method_SetParent));
+			throw new NetFormException(l_StringBuffer.toString(), l_InstantiationException);
 		}
 	}
 	
@@ -192,7 +218,11 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 		}
 		catch(Exception l_Exception)
 		{
-			throw new NetFormException(l_Exception);
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("Exception on ").append(Utils.getMethodNameWithClassName(i_Method_getMethods[ai_columnIndex - 1]));
+			l_StringBuffer.append(" Row object ").append(aO_row);
+			l_StringBuffer.append(" columnIndex ").append(ai_columnIndex);
+			throw new NetFormException(l_StringBuffer.toString(), l_Exception);
 		}
 	}
 	
@@ -207,11 +237,21 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 		}
 		catch(IllegalAccessException l_IllegalAccessException)
 		{
-			throw new NetFormException(l_IllegalAccessException.getMessage(), l_IllegalAccessException);
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("IllegalAccessException on ").append(Utils.getMethodNameWithClassName(i_Method_setMethods[ai_columnIndex - 1]));
+			l_StringBuffer.append(" Object ").append(a_Object);
+			l_StringBuffer.append(" Row object ").append(aO_row);
+			l_StringBuffer.append(" columnIndex ").append(ai_columnIndex);			
+			throw new NetFormException(l_StringBuffer.toString(), l_IllegalAccessException);
 		}		
 		catch(InvocationTargetException l_InvocationTargetException)
 		{
-			throw new ComponentDataException(l_InvocationTargetException.getCause());
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("InvocationTargetException on ").append(Utils.getMethodNameWithClassName(i_Method_setMethods[ai_columnIndex - 1]));
+			l_StringBuffer.append(" Object ").append(a_Object);
+			l_StringBuffer.append(" Row object ").append(aO_row);
+			l_StringBuffer.append(" columnIndex ").append(ai_columnIndex);			
+			throw new ComponentDataException(l_StringBuffer.toString(), l_InvocationTargetException.getCause());
 		}	
 	}
 	
@@ -227,10 +267,22 @@ public class ObjectCollectionTableModel extends CollectionTableModel
 			{
 				i_Method_SetParent.invoke(aO_Row, new Object[] { null });
 			}
-			catch(Exception l_Exception)
+			catch(IllegalAccessException l_IllegalAccessException)
 			{
-				throw new NetFormException("Couln't setParent to null for " + iO_Parent.getClass().getName(), l_Exception);
-			}
+				StringBuffer l_StringBuffer = new StringBuffer();
+				l_StringBuffer.append("IllegalAccessException on ").append(Utils.getMethodNameWithClassName(i_Method_SetParent));
+				l_StringBuffer.append(" rowIndex ").append(ai_row);
+				l_StringBuffer.append(" Row object ").append(aO_Row);		
+				throw new NetFormException(l_StringBuffer.toString(), l_IllegalAccessException);
+			}		
+			catch(InvocationTargetException l_InvocationTargetException)
+			{
+				StringBuffer l_StringBuffer = new StringBuffer();
+				l_StringBuffer.append("InvocationTargetException on ").append(Utils.getMethodNameWithClassName(i_Method_SetParent));
+				l_StringBuffer.append(" rowIndex ").append(ai_row);
+				l_StringBuffer.append(" Row object ").append(aO_Row);			
+				throw new NetFormException(l_StringBuffer.toString(), l_InvocationTargetException.getCause());
+			}			
 		}
 	}
 	

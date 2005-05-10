@@ -61,6 +61,7 @@ public abstract class LoginForm extends Form
 	public void init()
 	{
 		loginButton.addComponentListener(i_ComponentListener);
+		
 	}
 	
 	public abstract Object doLogin(String aS_LoginName, String aS_Password);

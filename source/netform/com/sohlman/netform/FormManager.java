@@ -20,8 +20,12 @@
 package com.sohlman.netform;
 
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +44,7 @@ public class FormManager implements HttpSessionListener
 {
 	private final static String FORM_MANAGER = "NetForm form Manager";
 
-	private Form i_Form;
+	//private Form i_Form;
 
 	private Object iO_LoginInfo = null;
 
@@ -53,7 +57,7 @@ public class FormManager implements HttpSessionListener
 	private HttpSession i_HttpSession = null;
 
 	private Hashtable iHt_Forms = new Hashtable();
-	
+
 	private ArrayList iAL_Forms = new ArrayList();
 
 	protected FormManager()
@@ -124,6 +128,9 @@ public class FormManager implements HttpSessionListener
 	 */
 	protected void endSession()
 	{
+		Logger l_Logger = Logger.getLogger("com.sohlman.netform");
+
+		l_Logger.log(Level.INFO, new Timestamp(System.currentTimeMillis()) + " - session is dead");
 	}
 
 	/**
@@ -167,7 +174,7 @@ public class FormManager implements HttpSessionListener
 		if(l_HttpSession != null)
 		{
 			FormManager l_FormManager = (FormManager) l_HttpSession.getAttribute(FormManager.FORM_MANAGER);
-			
+
 			l_FormManager.cleanUp();
 			l_HttpSession.removeAttribute(FormManager.FORM_MANAGER);
 		}
@@ -222,8 +229,6 @@ public class FormManager implements HttpSessionListener
 	 * JSP use
 	 * <p>
 	 * Create form.
-	 * 
-	 * 
 	 * 
 	 * @param a_HttpServletRequest
 	 *            current HttpServletRequest
@@ -280,7 +285,7 @@ public class FormManager implements HttpSessionListener
 			}
 
 			l_Form = l_FormManager.getForm(getUrlFromHttpServletRequest(a_HttpServletRequest));
-
+			
 
 		}
 		else
@@ -295,7 +300,7 @@ public class FormManager implements HttpSessionListener
 				// Using netfrom login and user is not logged in
 				l_FormManager.iS_NextPageAfterLogin = a_HttpServletRequest.getContextPath()
 						+ a_HttpServletRequest.getServletPath();
-				
+
 				throw new DoRedirectException(aS_LoginPage);
 			}
 
@@ -319,15 +324,15 @@ public class FormManager implements HttpSessionListener
 			l_Form.setHttpServletRequest(a_HttpServletRequest);
 		}
 		l_Form.setServletContext(a_ServletContext);
+
 		return l_Form;
 	}
 
 	private Form getForm(String aS_Url)
 	{
 		Form l_Form = (Form) iHt_Forms.get(aS_Url);
-
+		cleanUpOldFormsExcept(l_Form);
 		return l_Form;
-		//return i_Form;
 	}
 
 	private static String getUrlFromHttpServletRequest(HttpServletRequest a_HttpServletRequest)
@@ -395,10 +400,7 @@ public class FormManager implements HttpSessionListener
 	 */
 	public void sessionDestroyed(HttpSessionEvent a_HttpSessionEvent)
 	{
-		if(i_Form != null)
-		{
-			i_Form.formDestroyed();
-		}
+		cleanUp();
 		endSession();
 	}
 
@@ -453,37 +455,42 @@ public class FormManager implements HttpSessionListener
 	{
 		return i_HttpSession;
 	}
-	
+
 	/**
 	 * @param aS_Url
 	 */
 	final void removeForm(String aS_Url)
 	{
-		Form l_Form = (Form)iHt_Forms.remove(aS_Url);
+		Form l_Form = (Form) iHt_Forms.remove(aS_Url);
 		iAL_Forms.remove(l_Form);
 	}
-	
-	final void cleanUpOldForms()
+
+	final void cleanUpOldFormsExcept(Form a_Form)
 	{
 		long ll_currentTimeMillis = System.currentTimeMillis();
-		for(int li_index = (iAL_Forms.size()-1) ; li_index > 0  ; li_index --)
+		for (int li_index = (iAL_Forms.size() - 1); li_index >= 0; li_index--)
 		{
-			Form l_Form = (Form)iAL_Forms.get(li_index);
-			if(l_Form.getTimeOutTime()!=Form.TIMEOUT_SESSION && l_Form.getTimeOutTime() < ll_currentTimeMillis)
-			{			
-				iHt_Forms.remove(l_Form.getName());
-				iAL_Forms.remove(li_index);
+			Form l_Form = (Form) iAL_Forms.get(li_index);
+			if(a_Form!=null && a_Form!=l_Form ) 
+			{
+				if(l_Form.getTimeOutTime() != Form.TIMEOUT_SESSION && l_Form.getTimeOutTime() < ll_currentTimeMillis)
+				{
+					l_Form.formDestroyed();
+					iHt_Forms.remove(l_Form.getName());
+					iAL_Forms.remove(li_index);
+				}
 			}
-		}		
+		}
 	}
-	
+
 	final void cleanUp()
 	{
-		for(int li_index = (iAL_Forms.size()-1) ; li_index > 0  ; li_index --)
+		for (int li_index = (iAL_Forms.size() - 1); li_index > 0; li_index--)
 		{
-			Form l_Form = (Form)iAL_Forms.get(li_index);
+			Form l_Form = (Form) iAL_Forms.get(li_index);
+			l_Form.formDestroyed();
 			iHt_Forms.remove(l_Form.getName());
 			iAL_Forms.remove(li_index);
-		}		
+		}
 	}
 }

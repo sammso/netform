@@ -23,6 +23,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 
 import javax.servlet.ServletContext;
@@ -57,6 +59,9 @@ import javax.servlet.http.HttpSession;
 public abstract class Form
 {
 	public static final int TIMEOUT_SESSION = -1;
+
+	private HashSet iHS_ReDirects = null;
+	private Hashtable iHt_ReDirectTargets = null;
 
 	public final static String FORM = "form";
 
@@ -95,9 +100,9 @@ public abstract class Form
 
 	private ServletContext i_ServletContext;
 
-	private long il_timeOutMinutes = TIMEOUT_SESSION;
+	private long il_formTimeOutMinutes = 0;
 
-	private long il_timeOutTime = TIMEOUT_SESSION;
+	private long il_timeOutTime = 0;
 
 	private String iS_Name;
 
@@ -355,7 +360,7 @@ public abstract class Form
 				}
 
 				// Generate events to to components
-				
+
 				if(iAL_Components != null)
 				{
 					Iterator l_Iterator = iAL_Components.iterator();
@@ -519,16 +524,6 @@ public abstract class Form
 	final protected FormManager getFormManager()
 	{
 		return i_FormManager;
-	}
-
-	/**
-	 * This method is for need to be make re
-	 * 
-	 * @param aS_Page
-	 */
-	final protected void setNextPage(String aS_Page)
-	{
-		iS_NextPage = aS_Page;
 	}
 
 	final void redirectToNextPage() throws DoRedirectException
@@ -777,14 +772,24 @@ public abstract class Form
 	 * 
 	 * @return
 	 */
-	public long getTimeOutMinutes()
+	public long getFormTimeOutMinutes()
 	{
-		return il_timeOutMinutes;
+		return il_formTimeOutMinutes;
 	}
 
-	public void setTimeOutMinutes(long al_timeOutMinutes)
+	/**
+	 * This gives possiblity to designer to decide if there can be multiple forms
+	 * and when they are collected if not used.
+	 * <p>
+	 * Form is collected when page is loaded and if the Form is requested it
+	 * is not collected.
+	 * <p>
+	 * Default form time out is 0 minutes
+	 * @param al_formTimeOutMinutes
+	 */
+	public void setFormTimeOutMinutes(long al_formTimeOutMinutes)
 	{
-		il_timeOutMinutes = al_timeOutMinutes;
+		il_formTimeOutMinutes = al_formTimeOutMinutes;
 	}
 
 	final long getTimeOutTime()
@@ -796,7 +801,87 @@ public abstract class Form
 	{
 		if(il_timeOutTime != TIMEOUT_SESSION)
 		{
-			il_timeOutTime = System.currentTimeMillis() + (il_timeOutMinutes * 60000);
+			il_timeOutTime = System.currentTimeMillis() + (il_formTimeOutMinutes * 60000);
 		}
+	}
+
+	protected final void addRedirect(String aS_RedirectName)
+	{
+		if(iHS_ReDirects == null)
+		{
+			iHS_ReDirects = new HashSet();
+		}
+		iHS_ReDirects.add(aS_RedirectName);
+	}
+
+	public final void setRedirectTarget(String aS_RedirectName, String aS_Jsp)
+	{
+		if(iHS_ReDirects.contains(aS_RedirectName))
+		{
+			if(iHt_ReDirectTargets == null)
+			{
+				iHt_ReDirectTargets = new Hashtable();
+			}
+			iHt_ReDirectTargets.put(aS_RedirectName, aS_Jsp);
+		}
+		else
+		{
+			throw new NotFoundException("Redirect name \"" + aS_RedirectName + "\" not found");
+		}
+	}
+
+	public final String getRedirectTarget(String aS_RedirectName)
+	{
+		if(iHS_ReDirects != null)
+		{
+			String lS_Url = (String) iHt_ReDirectTargets.get(aS_RedirectName);
+			if(lS_Url != null)
+			{
+				return lS_Url;
+			}
+			else
+			{
+				throw new ParametrisizingException("Redirect target \"" + aS_RedirectName + "\" are not defined.");
+			}
+
+		}
+		else
+		{
+			throw new NotFoundException("Redirect targets are not defined.");
+		}
+	}
+
+	protected final void redirect(String aS_RedirectName)
+	{
+		setNextPage(getRedirectTarget(aS_RedirectName));
+	}
+
+	protected final void redirect(String aS_RedirectName, String[] aS_ParamNames, String[] aS_ParamValues)
+	{
+		if(aS_ParamNames.length != aS_ParamValues.length) throw new IllegalArgumentException(
+				"There has to be equal amout of parameteter names as values ");
+		StringBuffer lSb_Redirect = new StringBuffer();
+		lSb_Redirect.append(getRedirectTarget(aS_RedirectName));
+		if(aS_ParamNames.length > 0)
+		{
+			lSb_Redirect.append("?");
+			for (int li_index = 0; li_index < aS_ParamNames.length; li_index++)
+			{
+				if(aS_ParamNames[li_index] == null) throw new NullPointerException(
+						"Parameter name is not allowed to be null");
+				if(aS_ParamValues[li_index] == null) throw new NullPointerException(
+						"Parameter value is not allowed to be null");
+				if(li_index != 0) lSb_Redirect.append("&");
+				lSb_Redirect.append(aS_ParamNames[li_index]);
+				lSb_Redirect.append("=");
+				lSb_Redirect.append(aS_ParamValues[li_index]);
+			}
+		}
+		setNextPage(lSb_Redirect.toString());
+	}
+
+	final void setNextPage(String aS_NextPage)
+	{
+		iS_NextPage = aS_NextPage;
 	}
 }

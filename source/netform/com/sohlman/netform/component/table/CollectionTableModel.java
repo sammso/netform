@@ -44,7 +44,7 @@ public abstract class CollectionTableModel extends TableModel
 
 	private String[] iS_ColumnNames = null;
 
-//	private int ii_rowCount = 0;
+	//	private int ii_rowCount = 0;
 
 	public void setCollection(Collection a_Collection)
 	{
@@ -238,13 +238,20 @@ public abstract class CollectionTableModel extends TableModel
 		{
 			throw new ArrayIndexOutOfBoundsException("Tried get from out of row range");
 		}
-		if(ai_column < 1 || ai_column > getColumnCount())
+		Object l_Object = i_List.get(ai_row -1);
+		if(ai_column == WHOLEROW || l_Object==null)
 		{
-			throw new ArrayIndexOutOfBoundsException(
-					"Tried to get column out of column range. Column range is always 1");
+			return l_Object;
 		}
-
-		return mapObjectFromRow(i_List.get(ai_row - 1), ai_column);
+		else
+		{
+			if(ai_column < 1 || ai_column > getColumnCount())
+			{
+				throw new ArrayIndexOutOfBoundsException(
+						"Tried to get column out of column range. Column range is always 1");
+			}
+			return mapObjectFromRow(l_Object, ai_column);
+		}
 	}
 
 	/**
@@ -269,12 +276,27 @@ public abstract class CollectionTableModel extends TableModel
 			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of row range");
 		}
 
-		if(ai_column < 1 || ai_column > getColumnCount())
+		if(ai_column == WHOLEROW)
 		{
-			throw new ArrayIndexOutOfBoundsException("Tried to set value to out of column range");
+			if(isList())
+			{
+				i_List.set(ai_row - 1, a_Object);
+			}
+			else
+			{
+				throw new NotSupportedException(
+						"TableModel.setValueAt() is not supported for Collections which are not implementing List interface.");
+			}
 		}
-		Object lO_Row = i_List.get(ai_row - 1);
-		mapObjectToRow(a_Object, lO_Row, ai_column);
+		else
+		{
+			if(ai_column < 1 || ai_column > getColumnCount())
+			{
+				throw new ArrayIndexOutOfBoundsException("Tried to set value to out of column range");
+			}
+			Object lO_Row = i_List.get(ai_row - 1);
+			mapObjectToRow(a_Object, lO_Row, ai_column);
+		}
 		fireColumnChanged(ai_row, ai_column);
 		return true;
 	}

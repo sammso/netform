@@ -560,7 +560,7 @@ public class Table extends Component
 
 			validate(new TableValidate(this, ai_indexes));
 
-			if (hasComponentData() && isValidWithoutChilds() && ii_dataColumn > 0 && ii_dataColumn <= i_TableModel.getColumnCount())
+			if (hasComponentData() && isValidWithoutChilds() && ( ii_dataColumn > 0 || ii_dataColumn == TableModel.WHOLEROW ) && ii_dataColumn <= i_TableModel.getColumnCount())
 			{
 				if (i_IntArray_Selection.isEmpty())
 				{
@@ -577,6 +577,16 @@ public class Table extends Component
 		{
 			return false;
 		}
+	}
+	
+	/**
+	 * Deselect all items. After this method no item is selected.
+	 * 
+	 * @return boolean if selection has changed
+	 */
+	public boolean deSelectItems()
+	{
+		return selectItems(null);
 	}
 	
 	/**
@@ -928,7 +938,7 @@ public class Table extends Component
 		}
 	}
 
-	private void updateComponentRow(int ai_index)
+	public void updateComponentRow(int ai_index)
 	{
 
 		Component[] l_Components = (Component[]) iAL_TableComponentsInRow.get(ai_index - 1);

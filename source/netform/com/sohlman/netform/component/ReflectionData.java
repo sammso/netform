@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import com.sohlman.netform.ComponentData;
 import com.sohlman.netform.ComponentDataException;
 import com.sohlman.netform.NetFormException;
+import com.sohlman.netform.Utils;
+import com.sun.corba.se.internal.javax.rmi.CORBA.Util;
 
 /**
  * @author Sampsa Sohlman
@@ -46,8 +48,8 @@ public class ReflectionData extends Object implements ComponentData
 		setObjectToBeReflected(objectToBeReflected);
 		String modFieldName= field.substring(0,1).toUpperCase() + field.substring(1);
 		
-		assignGetMethod("set" + modFieldName );
-		assignSetMethod("get" + modFieldName );
+		assignGetMethod("get" + modFieldName );
+		assignSetMethod("set" + modFieldName );
 	}
 	/**
 	 * @param objectToBeReflected
@@ -56,7 +58,7 @@ public class ReflectionData extends Object implements ComponentData
 	{
 		if(objectToBeReflected==null)
 		{
-			throw new NullPointerException("null object cannot be reflected");
+			throw new NullPointerException("null cannot be reflected");
 		}
 		
 		this.object = objectToBeReflected;
@@ -122,11 +124,17 @@ public class ReflectionData extends Object implements ComponentData
 		}
 		catch(IllegalAccessException l_IllegalAccessException)
 		{
-			throw new NetFormException(l_IllegalAccessException);
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("IllegalAccessException on ");
+			l_StringBuffer.append(Utils.getMethodNameWithClassName(this.getMethod));			
+			throw new NetFormException(l_StringBuffer.toString(),l_IllegalAccessException);
 		}
 		catch(InvocationTargetException l_InvocationTargetException)
 		{
-			throw new ComponentDataException(l_InvocationTargetException);
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("InvocationTargetException for ");
+			l_StringBuffer.append(Utils.getMethodNameWithClassName(this.getMethod));						
+			throw new ComponentDataException(l_StringBuffer.toString(),l_InvocationTargetException.getCause());
 		}
 	}
 
@@ -141,7 +149,12 @@ public class ReflectionData extends Object implements ComponentData
 		}
 		catch(Exception l_Exception)
 		{
-			throw new NetFormException("Reflection Exception (Get)", l_Exception);
+			StringBuffer l_StringBuffer = new StringBuffer();
+			l_StringBuffer.append("Exception on ");
+			l_StringBuffer.append(Utils.getMethodNameWithClassName(this.getMethod));
+			l_StringBuffer.append(Utils.getMethodName(this.getMethod));
+			
+			throw new NetFormException(l_StringBuffer.toString(), l_Exception);
 		}
 	}
 

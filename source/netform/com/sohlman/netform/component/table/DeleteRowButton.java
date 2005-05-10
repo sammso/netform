@@ -78,6 +78,10 @@ public class DeleteRowButton extends Button implements ComponentListener, TableM
 			{
 				i_Table.deleteSelectedRows();
 			}
+			else
+			{
+				i_Table.deSelectItems();
+			}
 		}
 	}
 	
