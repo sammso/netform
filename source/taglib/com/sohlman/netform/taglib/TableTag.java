@@ -23,6 +23,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.IterationTag;
 
 import com.sohlman.netform.component.table.Table;
+import com.sohlman.netform.component.table.TableModel;
 
 /**
  * @author Sampsa Sohlman
@@ -32,6 +33,7 @@ public class TableTag extends ComponentTag implements IterationTag
 	private int ii_row = 1;
 
 	private Table i_Table = null;
+	private TableRow i_TableRow = null;
 
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#doStartTag()
@@ -41,7 +43,6 @@ public class TableTag extends ComponentTag implements IterationTag
 		init();
 		i_Table = (Table) getComponentFormThisTag();
 		
-		ii_row = 1;
 		if(!i_Table.isVisible())
 		{
 			return SKIP_BODY;
@@ -49,6 +50,14 @@ public class TableTag extends ComponentTag implements IterationTag
 		if(i_Table.getTableModel().getRowCount() <= 0)
 		{
 			return SKIP_BODY;
+		}
+		i_TableRow = new TableRow(i_Table);
+		ii_row = 1;
+		TableModel l_TableModel = i_Table.getTableModel();
+		for(int li_index = 1 ; li_index <= l_TableModel.getColumnCount() ; li_index++ )
+		{
+			String lS_Name = i_Table.getTableModel().getColumnName(li_index);
+			i_PageContext.setAttribute(lS_Name,i_Table.getText(ii_row,li_index));
 		}
 		return EVAL_BODY_INCLUDE;
 	}
@@ -66,19 +75,32 @@ public class TableTag extends ComponentTag implements IterationTag
 	 */
 	public int doAfterBody() throws JspException
 	{
-		ii_row++;
-		if(ii_row <= i_Table.getDisplayRowCount())
+		i_TableRow.addRow();
+		if(i_TableRow.getRowNo() <= i_Table.getDisplayRowCount())
 		{
+			TableModel l_TableModel = i_Table.getTableModel();
+			for(int li_index = 1 ; li_index <= l_TableModel.getColumnCount() ; li_index++ )
+			{
+				String lS_Name = i_Table.getTableModel().getColumnName(li_index);
+				i_PageContext.setAttribute(lS_Name, i_Table.getText(ii_row,li_index));
+			}			
 			return EVAL_BODY_AGAIN;
 		}
 		else
 		{
+			TableModel l_TableModel = i_Table.getTableModel();
+			
+			for(int li_index = 1 ; li_index <= l_TableModel.getColumnCount() ; li_index++ )
+			{
+				String lS_Name = i_Table.getTableModel().getColumnName(li_index);
+				i_PageContext.removeAttribute(lS_Name);
+			}
 			return EVAL_PAGE;
 		}
 	}
 
 	final int getCurrentRow()
 	{
-		return ii_row;
+		return i_TableRow.getRowNo();
 	}
 }

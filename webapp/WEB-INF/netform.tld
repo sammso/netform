@@ -116,7 +116,25 @@
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<description>As &lt;input type="text" class=""&gt; attribute when TextField is not valid</description>
-		</attribute>							
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>If the type="textarea" then textarea is generated. </description>
+		</attribute>
+		<attribute>
+			<name>cols</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>Is handled if type="textarea" othervice ignored</description>
+		</attribute>
+		<attribute>
+			<name>rows</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>Is handled if type="textarea" othervice ignored</description>
+		</attribute>											
 	</tag>
 	<tag>
 		<name>button</name>

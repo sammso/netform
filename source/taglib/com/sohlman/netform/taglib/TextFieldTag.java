@@ -45,6 +45,12 @@ public class TextFieldTag extends ComponentTag
 
 	private String iS_Format = null;
 
+	private String iS_Cols = null;
+
+	private String iS_Rows = null;
+
+	private boolean ib_typeTextArea = false;
+
 	public void setFormat(String aS_Format)
 	{
 		iS_Format = aS_Format;
@@ -70,6 +76,21 @@ public class TextFieldTag extends ComponentTag
 		iS_NotValidClass = aS_NotValidClass;
 	}
 
+	public void setType(String aS_Type)
+	{
+		ib_typeTextArea = "textarea".equalsIgnoreCase(aS_Type);
+	}
+
+	public void setCols(String aS_Cols)
+	{
+		iS_Cols = aS_Cols;
+	}
+
+	public void setRows(String aS_Rows)
+	{
+		iS_Rows = aS_Rows;
+	}
+
 	/**
 	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
 	 */
@@ -78,50 +99,92 @@ public class TextFieldTag extends ComponentTag
 		try
 		{
 			StringBuffer l_StringBuffer = new StringBuffer();
-
-			l_StringBuffer.append("<input");
-			if(PasswordField.class.isInstance(i_TextField))
+			
+			if(ib_typeTextArea && !PasswordField.class.isInstance(i_TextField))
 			{
-				l_StringBuffer.append(" type=\"password\"");
-			}
-			else
-			{
+				l_StringBuffer.append("<textarea");
 				l_StringBuffer.append(" type=\"text\"");
-			}
-			l_StringBuffer.append(" name=\"").append(i_TextField.getResponseName()).append("\"").append(" value=\"").append(i_TextField.getText())
-					.append("\"");
+				l_StringBuffer.append(" name=\"").append(i_TextField.getResponseName()).append("\"");
 
-			if(i_TextField.isValid())
-			{
-				if(iS_Style != null)
+				if(i_TextField.isValid())
 				{
-					l_StringBuffer.append(" style=\"" + iS_Style + "\"");
+					if(iS_Style != null)
+					{
+						l_StringBuffer.append(" style=\"" + iS_Style + "\"");
+					}
+					if(iS_Class != null)
+					{
+						l_StringBuffer.append(" class=\"" + iS_Class + "\"");
+					}
 				}
-				if(iS_Class != null)
+				else
 				{
-					l_StringBuffer.append(" class=\"" + iS_Class + "\"");
+					if(iS_NotValidStyle == null && iS_Style != null)
+					{
+						l_StringBuffer.append(" style=\"" + iS_Style + "\"");
+					}
+					else if(iS_NotValidStyle != null)
+					{
+						l_StringBuffer.append(" style=\"" + iS_NotValidStyle + "\"");
+					}
+					if(iS_NotValidClass == null || iS_Class != null)
+					{
+						l_StringBuffer.append(" class=\"" + iS_Class + "\"");
+					}
+					else if(iS_NotValidClass != null)
+					{
+						l_StringBuffer.append(" class=\"" + iS_NotValidClass + "\"");
+					}
 				}
+				l_StringBuffer.append(">");
+				l_StringBuffer.append(i_TextField.getText()).append("</textarea>");
 			}
 			else
 			{
-				if(iS_NotValidStyle == null && iS_Style != null)
+				l_StringBuffer.append("<input");
+				if(PasswordField.class.isInstance(i_TextField))
 				{
-					l_StringBuffer.append(" style=\"" + iS_Style + "\"");
+					l_StringBuffer.append(" type=\"password\"");
 				}
-				else if(iS_NotValidStyle != null)
+				else
 				{
-					l_StringBuffer.append(" style=\"" + iS_NotValidStyle + "\"");
+					l_StringBuffer.append(" type=\"text\"");
 				}
-				if(iS_NotValidClass == null || iS_Class != null)
+				l_StringBuffer.append(" name=\"").append(i_TextField.getResponseName()).append("\"")
+						.append(" value=\"").append(i_TextField.getText()).append("\"");
+
+				if(i_TextField.isValid())
 				{
-					l_StringBuffer.append(" class=\"" + iS_Class + "\"");
+					if(iS_Style != null)
+					{
+						l_StringBuffer.append(" style=\"" + iS_Style + "\"");
+					}
+					if(iS_Class != null)
+					{
+						l_StringBuffer.append(" class=\"" + iS_Class + "\"");
+					}
 				}
-				else if(iS_NotValidClass != null)
+				else
 				{
-					l_StringBuffer.append(" class=\"" + iS_NotValidClass + "\"");
+					if(iS_NotValidStyle == null && iS_Style != null)
+					{
+						l_StringBuffer.append(" style=\"" + iS_Style + "\"");
+					}
+					else if(iS_NotValidStyle != null)
+					{
+						l_StringBuffer.append(" style=\"" + iS_NotValidStyle + "\"");
+					}
+					if(iS_NotValidClass == null || iS_Class != null)
+					{
+						l_StringBuffer.append(" class=\"" + iS_Class + "\"");
+					}
+					else if(iS_NotValidClass != null)
+					{
+						l_StringBuffer.append(" class=\"" + iS_NotValidClass + "\"");
+					}
 				}
+				l_StringBuffer.append(">");
 			}
-			l_StringBuffer.append(">");
 
 			i_PageContext.getOut().print(l_StringBuffer.toString());
 			return EVAL_PAGE;

@@ -11,6 +11,7 @@
 	<property name="zipfile" value="NetForm.zip"/>
 	<property name="netformsrc" location="source/netform"/>
 	<property name="datasetsrc" location="source/dataset"/>
+	<property name="taglibsrc" location="source/taglib"/>	
 	<property name="examplesrc" location="webapp/WEB-INF/src"/>	
 	<property name="builddir" location="build"/>
 	<property name="distribution"  location="distribution"/>
@@ -44,7 +45,7 @@
 		<delete dir="${builddir}" failonerror="false"/>
 	</target>
 	
-	<target name="OnlyJars" depends="CompileNetForm, CompileDataSet" description="Compile DataSet extension">
+	<target name="OnlyJars" depends="CompileNetForm, CompileDataSet, CompileTags" description="Compile DataSet extension">
 		<copy todir=".">
 			<fileset dir="${NetForm.zip}/libs/">
 			</fileset>
@@ -52,7 +53,21 @@
 		<delete dir="${distribution}"/>		
 	</target>
 	
-	<target name="CreateTestAppWar" depends="CompileDataSet" description="Create Test application war" >
+	<target name="CompileTags" depends="CompileNetForm" description="Compile DataSet extension" >
+	<!-- Complile and create jar -->
+		<mkdir dir="${builddir}"/>
+		<javac srcdir="${taglibsrc}" destdir="${builddir}" optimize="true" nowarn="true">
+			<classpath>
+				<pathelement location="${servlet.jar}"/>
+				<pathelement location="${NetForm.zip}/libs/netform.jar"/>				
+			</classpath>
+		</javac>
+		<jar jarfile="${NetForm.zip}/libs/taglib-netform.jar" basedir="${builddir}" compress="true"/>
+		<copy file="webapp/WEB-INF/netform.tld" todir="${NetForm.zip}"/>
+		<delete dir="${builddir}" failonerror="false"/>
+	</target>	
+	
+	<target name="CreateTestAppWar" depends="CompileTags" description="Create Test application war" >
 	<!-- Create temp dir for war file creation -->
 		<mkdir dir="${example.war}"/>
 		<mkdir dir="${example.war}/WEB-INF/lib"/>
@@ -70,6 +85,8 @@
 		
 	<!-- Copy libs to war -->
 
+		<copy file="webapp/WEB-INF/netform.tld" todir="${example.war}/WEB-INF"/>
+		
 		<copy todir="${example.war}/WEB-INF/lib">
 			<fileset dir="${NetForm.zip}/libs">
 			</fileset>
@@ -140,6 +157,7 @@
 			>
 			<packageset dir="${netformsrc}" defaultexcludes="yes"/>
 			<packageset dir="${datasetsrc}" defaultexcludes="yes"/>			
+			<packageset dir="${taglibsrc}" defaultexcludes="yes"/>
 			<doctitle><![CDATA[<h1>${title}</h1>]]></doctitle>
 			<bottom><![CDATA[<i>Sampsa Sohlman 2001-2004</i>]]></bottom>
 			<group title="NetForm Core" packages="com.sohlman.netform"/>

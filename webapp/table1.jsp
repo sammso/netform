@@ -18,6 +18,11 @@
 it also demonstrates the validation of fields inside of Table. 
 Form is not valid if all components are not valid. 
 Not valid fields are shown as <b class="pink" >Pink</b></p>
+<h2>Source</h2>
+<ul>
+	<li><a href="table1.jsp">table1.jsp</a></li>
+	<li><a href="com.sohlman.webapp.netform.Table1Form"></a></li>	
+</ul>
 <h2>Column validation rules</h2>
 <ul>
 	<li>Number has to be number</li>

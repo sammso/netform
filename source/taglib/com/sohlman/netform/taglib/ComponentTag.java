@@ -193,7 +193,7 @@ public abstract class ComponentTag extends MasterTag
 		{
 			Method l_Method = l_Methods[li_index];
 			if(lS_MethodName.equalsIgnoreCase(l_Method.getName()) && l_Method.getParameterTypes().length == 0
-					&& l_Method.getReturnType().isAssignableFrom(Component.class))
+					&& Component.class.isAssignableFrom(l_Method.getReturnType()))
 			{
 				return l_Method;
 			}
@@ -221,6 +221,7 @@ public abstract class ComponentTag extends MasterTag
 			Field[] l_Fields = a_Class.getFields();
 
 			StringBuffer lSb_Error = new StringBuffer();
+			lSb_Error.append("Fields: \n");
 			for (int li_x = 0; li_x < l_Fields.length; li_x++)
 			{
 				lSb_Error.append("\t\t");
@@ -229,6 +230,24 @@ public abstract class ComponentTag extends MasterTag
 				lSb_Error.append(l_Fields[li_x].getName());
 				lSb_Error.append("\n");
 			}
+			lSb_Error.append("Methods: \n");
+			Method[] l_Methods = a_Class.getMethods();
+			for (int li_index = 0; li_index < l_Methods.length; li_index++)
+			{
+				Method l_Method = l_Methods[li_index];
+				lSb_Error.append("\t\t");
+				lSb_Error.append(l_Methods[li_index].getReturnType().getName());
+				lSb_Error.append(" ");
+				lSb_Error.append(l_Methods[li_index].getName());
+				lSb_Error.append("(");
+				Class[] l_Classes = l_Method.getParameterTypes();
+				for(int li_y = 0 ; li_y < l_Classes.length ; li_y++ )
+				{
+					if(li_y > 0 )lSb_Error.append(", ");
+					lSb_Error.append(l_Classes[li_y].getName());
+				}
+				lSb_Error.append(")\n");				
+			}			
 
 			throw new JspException("Component named " + aS_Component + " not found from " + a_Class
 					+ "\n Following fields found:\n" + lSb_Error.toString(), l_NoSuchFieldException);
