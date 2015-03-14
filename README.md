@@ -108,18 +108,16 @@
 ** is valid handing
 ** test application look and feel
 ** fixes on table and other components
-   
+
 # Author
 ======
-   Sampsa Sohlman (http://sampsa.sohlman.com)
-    * All comments are more than welcome   
-        
- # Goal of project
- ======
+Sampsa Sohlman (http://sampsa.sohlman.com)
+* All comments are more than welcome   
 
- Goal of NetForm Web Application Framework for Java is to be easy, productive and 
- maintainable way to create complex HTML application forms and logic.
-   
+# Goal of project
+======
+Goal of NetForm Web Application Framework for Java is to be easy, productive and maintainable way to create complex HTML application forms and logic.
+
 # Directory structure
 ======
 * source contains sources for netform libraries
